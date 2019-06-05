@@ -1,0 +1,20 @@
+apply plugin: 'application'
+
+sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
+mainClassName = 'be.particulitis.hourglass.lwjgl3.Lwjgl3Launcher'
+sourceCompatibility = 1.7
+
+dependencies {
+  api project(':core')
+  api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
+jar {
+  archiveFileName = "${appName}-${version}.jar"
+  from files(sourceSets.main.output.classesDirs)
+  from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } } 
+  manifest {
+    attributes 'Main-Class': project.mainClassName
+  }
+}

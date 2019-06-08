@@ -4,6 +4,7 @@ import be.particulitis.hourglass.archetypes.Builder
 import be.particulitis.hourglass.common.GAction
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.comp.CompControl
 import be.particulitis.hourglass.system.*
 import com.artemis.World
@@ -11,6 +12,8 @@ import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.OrthographicCamera
 
 /** First screen of the application. Displayed after the application is created.  */
 class FirstScreen : Screen {
@@ -27,6 +30,9 @@ class FirstScreen : Screen {
     }
 
     override fun render(delta: Float) {
+        cls()
+        cam.update()
+        batch.projectionMatrix = cam.combined
         GInput.newFrame()
         world.setDelta(delta)
         batch.begin()
@@ -34,24 +40,28 @@ class FirstScreen : Screen {
         batch.end()
     }
 
+    private fun cls() {
+        Gdx.graphics.gL20.glClearColor(0f, 0f, 0f, 0f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
+    }
+
     override fun resize(width: Int, height: Int) {
-        // Resize your screen here. The parameters represent the new window size.
+        GResolution.compute()
+        cam.viewportWidth = GResolution.screenWidth
+        cam.viewportHeight = GResolution.screenHeight
+        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0f)
     }
 
     override fun pause() {
-        // Invoked when your application is paused.
     }
 
     override fun resume() {
-        // Invoked when your application is resumed after pause.
     }
 
     override fun hide() {
-        // This method is called when another screen replaces this one.
     }
 
     override fun dispose() {
-        // Destroy screen's assets here.
     }
 
     companion object {
@@ -60,9 +70,11 @@ class FirstScreen : Screen {
                 .with(SysControl())
                 .with(SysCharMovement())
                 .with(SysCollider())
+                .with(SysMap())
                 .with(SysDrawer())
                 .with(SysClearActions())
                 .build()
         val world = World(config)
+        val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
     }
 }

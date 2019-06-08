@@ -70,6 +70,7 @@ class FirstScreen : Screen {
                 .with(SysControl())
                 .with(SysCharMovement())
                 .with(SysCollider())
+                .with(SysClampPos())
                 .with(SysMap())
                 .with(SysDrawer())
                 .with(SysClearActions())

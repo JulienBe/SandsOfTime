@@ -5,7 +5,7 @@ import com.artemis.ArchetypeBuilder
 
 object Builder {
     val player = ArchetypeBuilder()
-            .add(CompPos::class.java)
+            .add(CompDimension::class.java)
             .add(CompDraw::class.java)
             .add(CompCollide::class.java)
             .add(CompControl::class.java)

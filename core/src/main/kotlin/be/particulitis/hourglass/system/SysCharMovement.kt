@@ -3,27 +3,27 @@ package be.particulitis.hourglass.system
 import be.particulitis.hourglass.common.GAction
 import be.particulitis.hourglass.comp.CompAction
 import be.particulitis.hourglass.comp.CompCharMovement
-import be.particulitis.hourglass.comp.CompPos
+import be.particulitis.hourglass.comp.CompDimension
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.systems.IteratingSystem
 
-class SysCharMovement : IteratingSystem(Aspect.all(CompAction::class.java, CompCharMovement::class.java, CompPos::class.java)) {
+class SysCharMovement : IteratingSystem(Aspect.all(CompAction::class.java, CompCharMovement::class.java, CompDimension::class.java)) {
 
     private lateinit var mAction: ComponentMapper<CompAction>
-    private lateinit var mPos: ComponentMapper<CompPos>
+    private lateinit var mDimension: ComponentMapper<CompDimension>
     private lateinit var mMvt: ComponentMapper<CompCharMovement>
 
     override fun process(entityId: Int) {
         val action = mAction[entityId]
-        val pos = mPos[entityId]
+        val pos = mDimension[entityId].pos
         val mvt = mMvt[entityId]
-        action.actions.onEach { println(it) }.forEach {
+        action.actions.forEach {
             when (it) {
-                GAction.LEFT -> pos.pos.x -= mvt.speed
-                GAction.RIGHT -> pos.pos.x += mvt.speed
-                GAction.UP -> pos.pos.y += mvt.speed
-                GAction.DOWN -> pos.pos.y -= mvt.speed
+                GAction.LEFT -> pos.x -= mvt.speed
+                GAction.RIGHT -> pos.x += mvt.speed
+                GAction.UP -> pos.y += mvt.speed
+                GAction.DOWN -> pos.y -= mvt.speed
              }
         }
     }

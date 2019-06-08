@@ -5,9 +5,9 @@ import com.artemis.Component
 import com.badlogic.gdx.graphics.Color
 
 class CompDraw : Component() {
-    fun draw(pos: CompPos, batch: GBatch) {
+    fun draw(dimension: CompDimension, batch: GBatch) {
         batch.setColor(1f, 0f, 0f, 1f)
-        batch.draw(pos)
+        batch.draw(dimension)
         batch.color = Color.WHITE
     }
 }

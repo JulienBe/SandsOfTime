@@ -18,13 +18,17 @@ class SysCharMovement : IteratingSystem(Aspect.all(CompAction::class.java, CompC
         val action = mAction[entityId]
         val pos = mDimension[entityId].pos
         val mvt = mMvt[entityId]
+
+        mvt.vec.set(0f, 0f)
         action.actions.forEach {
             when (it) {
-                GAction.LEFT -> pos.x -= mvt.speed
-                GAction.RIGHT -> pos.x += mvt.speed
-                GAction.UP -> pos.y += mvt.speed
-                GAction.DOWN -> pos.y -= mvt.speed
+                GAction.LEFT    -> mvt.vec.x -= 1f
+                GAction.RIGHT   -> mvt.vec.x += 1f
+                GAction.UP      -> mvt.vec.y += 1f
+                GAction.DOWN    -> mvt.vec.y -= 1f
              }
         }
+        mvt.vec.nor().scl(mvt.speed)
+        pos.set(pos.x + mvt.vec.x, pos.y + mvt.vec.y)
     }
 }

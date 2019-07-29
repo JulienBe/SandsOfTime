@@ -1,9 +1,24 @@
 package be.particulitis.hourglass.comp
 
-import com.artemis.PooledComponent
+class CompCollide : Comp() {
 
-class CompCollide : PooledComponent() {
-    override fun reset() {
+    var dmgToInflict = 1
+        private set
+    var dmgToTake = 0
+        private set
+    var dmgTakenTime = 0L
+        private set
+
+    fun setDmgToInflict(dmg: Int) {
+        this.dmgToInflict = dmg
+    }
+
+    fun setDmgToTake(dmg: Int) {
+        this.dmgToTake = dmg
+    }
+
+    fun setDmgTakenTime(time: Long) {
+        dmgTakenTime = time
     }
 
     fun collidesWith(collide: CompCollide) {

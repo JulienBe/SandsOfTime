@@ -16,7 +16,7 @@ class SysCharMovement : IteratingSystem(Aspect.all(CompAction::class.java, CompC
 
     override fun process(entityId: Int) {
         val action = mAction[entityId]
-        val pos = mDimension[entityId].pos
+        val dim = mDimension[entityId]
         val mvt = mMvt[entityId]
 
         mvt.vec.set(0f, 0f)
@@ -29,6 +29,6 @@ class SysCharMovement : IteratingSystem(Aspect.all(CompAction::class.java, CompC
              }
         }
         mvt.vec.nor().scl(mvt.speed)
-        pos.set(pos.x + mvt.vec.x, pos.y + mvt.vec.y)
+        dim.move(mvt.vec.x, mvt.vec.y)
     }
 }

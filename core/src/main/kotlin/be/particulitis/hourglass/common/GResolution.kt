@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 
 object GResolution {
     const val areaDim = 300f
+    const val areaHDim = areaDim / 2f
     var ratio = 0f
     var screenWidth = 0f
     var screenHeight = 0f

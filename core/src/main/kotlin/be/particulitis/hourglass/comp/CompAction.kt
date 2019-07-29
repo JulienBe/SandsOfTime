@@ -3,7 +3,7 @@ package be.particulitis.hourglass.comp
 import be.particulitis.hourglass.common.GAction
 import com.artemis.PooledComponent
 
-class CompAction : PooledComponent() {
+class CompAction : Comp() {
     val actions = mutableListOf<GAction>()
 
     fun add(action: GAction) {

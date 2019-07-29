@@ -3,7 +3,7 @@ package be.particulitis.hourglass.comp
 import com.artemis.PooledComponent
 import com.badlogic.gdx.math.Vector2
 
-class CompCharMovement : PooledComponent() {
+class CompCharMovement : Comp() {
 
     var speed = 1f
     var vec = Vector2()

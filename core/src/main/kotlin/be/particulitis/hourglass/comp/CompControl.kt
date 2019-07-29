@@ -4,7 +4,7 @@ import be.particulitis.hourglass.common.GAction
 import be.particulitis.hourglass.common.GActionBinding
 import com.artemis.PooledComponent
 
-class CompControl : PooledComponent() {
+class CompControl : Comp() {
 
     val actions = mutableListOf<GActionBinding>()
 

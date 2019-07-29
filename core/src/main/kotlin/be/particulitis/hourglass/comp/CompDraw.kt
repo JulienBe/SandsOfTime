@@ -4,7 +4,7 @@ import be.particulitis.hourglass.common.GBatch
 import com.artemis.Component
 import com.badlogic.gdx.graphics.Color
 
-class CompDraw : Component() {
+class CompDraw : Comp() {
     fun draw(dimension: CompDimension, batch: GBatch) {
         batch.setColor(1f, 0f, 0f, 1f)
         batch.draw(dimension)

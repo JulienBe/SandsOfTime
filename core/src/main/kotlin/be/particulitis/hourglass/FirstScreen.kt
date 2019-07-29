@@ -1,16 +1,14 @@
 package be.particulitis.hourglass
 
-import be.particulitis.hourglass.archetypes.Builder
-import be.particulitis.hourglass.common.GAction
+import be.particulitis.hourglass.builds.Builder
+import be.particulitis.hourglass.builds.Setup
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GResolution
-import be.particulitis.hourglass.comp.CompControl
 import be.particulitis.hourglass.system.*
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -20,12 +18,9 @@ class FirstScreen : Screen {
 
     override fun show() {
         val playerEntityId = world.create(Builder.player.build(world))
-        val playerControl = world.getEntity(playerEntityId).getComponent(CompControl::class.java)
-        playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A, Input.Keys.LEFT), GAction.LEFT)
-        playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT), GAction.RIGHT)
-        playerControl.addAction(listOf(Input.Keys.Z, Input.Keys.W, Input.Keys.UP), GAction.UP)
-        playerControl.addAction(listOf(Input.Keys.S, Input.Keys.DOWN), GAction.DOWN)
-
+        Setup.player(playerEntityId, world)
+        val enemyEntityId = world.create(Builder.enemy.build(world))
+        Setup.enemy(enemyEntityId, world)
         Gdx.input.inputProcessor = GInput
     }
 
@@ -70,6 +65,7 @@ class FirstScreen : Screen {
                 .with(SysControl())
                 .with(SysCharMovement())
                 .with(SysCollider())
+                .with(SysDamage())
                 .with(SysClampPos())
                 .with(SysMap())
                 .with(SysDrawer())

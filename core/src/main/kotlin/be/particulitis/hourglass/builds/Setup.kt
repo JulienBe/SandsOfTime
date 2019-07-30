@@ -6,6 +6,7 @@ import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.comp.CompCollide
 import be.particulitis.hourglass.comp.CompControl
 import be.particulitis.hourglass.comp.CompDimension
+import be.particulitis.hourglass.comp.CompHp
 import com.artemis.World
 import com.badlogic.gdx.Input
 
@@ -22,6 +23,7 @@ object Setup {
         playerControl.addAction(listOf(Input.Keys.Z, Input.Keys.W,      Input.Keys.UP),     GAction.UP)
         playerControl.addAction(listOf(Input.Keys.S, Input.Keys.DOWN),                      GAction.DOWN)
 
+        world.getEntity(playerEntityId).getComponent(CompHp::class.java).setHp(10)
         dim(playerEntityId, world, GResolution.areaHDim - playerHDim, GResolution.areaHDim - playerHDim, playerDim, playerDim)
     }
 

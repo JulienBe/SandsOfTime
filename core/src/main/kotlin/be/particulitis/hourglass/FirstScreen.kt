@@ -70,6 +70,7 @@ class FirstScreen : Screen {
                 .with(SysMap())
                 .with(SysDrawer())
                 .with(SysClearActions())
+                .with(SysDead())
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)

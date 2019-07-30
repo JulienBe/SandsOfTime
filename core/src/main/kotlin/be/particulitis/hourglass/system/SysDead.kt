@@ -1,7 +1,5 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.comp.CompDimension
-import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompHp
 import com.artemis.Aspect
 import com.artemis.ComponentMapper

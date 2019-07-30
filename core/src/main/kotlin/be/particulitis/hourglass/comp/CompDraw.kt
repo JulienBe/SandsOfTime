@@ -1,13 +1,12 @@
 package be.particulitis.hourglass.comp
 
 import be.particulitis.hourglass.common.GBatch
-import com.artemis.Component
 import com.badlogic.gdx.graphics.Color
 
 class CompDraw : Comp() {
-    fun draw(dimension: CompDimension, batch: GBatch) {
+    fun draw(space: CompSpace, batch: GBatch) {
         batch.setColor(1f, 0f, 0f, 1f)
-        batch.draw(dimension)
+        batch.draw(space)
         batch.color = Color.WHITE
     }
 }

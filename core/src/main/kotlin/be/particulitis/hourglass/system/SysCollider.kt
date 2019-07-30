@@ -3,23 +3,19 @@ package be.particulitis.hourglass.system
 import be.particulitis.hourglass.common.GAngleCollision
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.comp.CompCollide
-import be.particulitis.hourglass.comp.CompDimension
+import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.utils.IntBag
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.utils.Align.center
-import jdk.nashorn.internal.ir.Block
-import ktx.math.minus
 import kotlin.math.atan2
 
-class SysCollider : BaseEntitySystem(Aspect.all(CompDimension::class.java, CompCollide::class.java)) {
+class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompCollide::class.java)) {
 
-    private lateinit var mDimension: ComponentMapper<CompDimension>
+    private lateinit var mSpace: ComponentMapper<CompSpace>
     private lateinit var mCollide: ComponentMapper<CompCollide>
 
     override fun processSystem() {
@@ -31,10 +27,10 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompDimension::class.java, CompC
     private fun updatePos(actives: IntBag, ids: IntArray) {
         for (it in actives.size() - 1 downTo 0) {
             val col = mCollide[it]
-            val dim = mDimension[ids[it]]
+            val dim = mSpace[ids[it]]
             for (oIt in it - 1 downTo 0) {
                 val oCol = mCollide[oIt]
-                val oDim = mDimension[ids[oIt]]
+                val oDim = mSpace[ids[oIt]]
 
                 if (dim.rect.overlaps(oDim.rect)) {
                     val side = determineRectangleSideHit(dim.rect, oDim.rect)
@@ -46,7 +42,7 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompDimension::class.java, CompC
         }
     }
 
-    private fun pushAway(dim: CompDimension, side: GSide, oDim: CompDimension, thickness: Int = 5) {
+    private fun pushAway(dim: CompSpace, side: GSide, oDim: CompSpace, thickness: Int = 5) {
         var cpt = thickness
         do {
             dim.move(-side.x, -side.y)

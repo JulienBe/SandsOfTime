@@ -64,11 +64,16 @@ class FirstScreen : Screen {
         val config = WorldConfigurationBuilder()
                 .with(SysControl())
                 .with(SysCharMovement())
+                .with(SysDirMovement())
+                .with(SysShooter())
+
                 .with(SysCollider())
                 .with(SysDamage())
                 .with(SysClampPos())
                 .with(SysMap())
+
                 .with(SysDrawer())
+
                 .with(SysClearActions())
                 .with(SysDead())
                 .build()

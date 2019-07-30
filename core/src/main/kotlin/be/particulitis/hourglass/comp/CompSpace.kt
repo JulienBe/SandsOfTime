@@ -4,7 +4,7 @@ import com.artemis.PooledComponent
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
-class CompDimension : Comp() {
+class CompSpace : Comp() {
     private val pos = Vector2()
     var w: Float = 1f
         private set

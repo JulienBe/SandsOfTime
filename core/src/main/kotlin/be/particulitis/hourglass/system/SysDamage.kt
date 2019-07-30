@@ -16,6 +16,7 @@ class SysDamage : BaseEntitySystem(Aspect.all(CompCollide::class.java, CompHp::c
         val ids: IntArray = actives.data
         for (it in actives.size() - 1 downTo 0) {
             val col = mCollide[it]
+            println("$col for $it")
             if (col.dmgToTake > 0 && col.dmgTakenTime < System.currentTimeMillis()) {
                 col.setDmgTakenTime(System.currentTimeMillis() + 100L)
                 val hp = mHp[it]

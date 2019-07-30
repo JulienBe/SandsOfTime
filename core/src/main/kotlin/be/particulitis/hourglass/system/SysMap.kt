@@ -2,13 +2,13 @@ package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.common.GResolution
-import be.particulitis.hourglass.comp.CompDimension
+import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.graphics.Color
 
-// checking that ratio is properly dealt with. Just replace CompDimension by something when tiles are added
-class SysMap : IteratingSystem(Aspect.all(CompDimension::class.java)) {
+// checking that ratio is properly dealt with. Just replace CompSpace by something when tiles are added
+class SysMap : IteratingSystem(Aspect.all(CompSpace::class.java)) {
 
     override fun begin() {
         super.begin()

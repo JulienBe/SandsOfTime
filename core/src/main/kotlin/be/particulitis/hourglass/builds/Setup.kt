@@ -34,8 +34,9 @@ object Setup {
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
         dim(id, world, posX, posY, 1f, 1f)
-
-        world.getEntity(id).getComponent(CompDir::class.java).set(dir)
+        val bullet = world.getEntity(id)
+        bullet.getComponent(CompDir::class.java).set(dir)
+        bullet.getComponent(CompHp::class.java).setHp(1)
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {

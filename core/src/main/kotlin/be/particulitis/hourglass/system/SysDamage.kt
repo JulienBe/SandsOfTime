@@ -5,6 +5,7 @@ import be.particulitis.hourglass.comp.CompHp
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
+import com.badlogic.gdx.Gdx
 
 class SysDamage : BaseEntitySystem(Aspect.all(CompCollide::class.java, CompHp::class.java)) {
 
@@ -15,12 +16,11 @@ class SysDamage : BaseEntitySystem(Aspect.all(CompCollide::class.java, CompHp::c
         val actives = subscription.entities
         val ids: IntArray = actives.data
         for (it in actives.size() - 1 downTo 0) {
-            val col = mCollide[it]
-            println("$col for $it")
+            val col = mCollide[ids[it]]
             if (col.dmgToTake > 0 && col.dmgTakenTime < System.currentTimeMillis()) {
-                col.setDmgTakenTime(System.currentTimeMillis() + 100L)
-                val hp = mHp[it]
+                val hp = mHp[ids[it]]
                 hp.addHp(-col.dmgToTake)
+                col.setDmgTakenTime(System.currentTimeMillis() + 100L)
             }
             col.setDmgToTake(0)
         }

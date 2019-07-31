@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.system
 
+import be.particulitis.hourglass.Debug
 import be.particulitis.hourglass.common.GAngleCollision
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.comp.CompCollide
@@ -8,6 +9,7 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.utils.IntBag
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
@@ -26,14 +28,15 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
 
     private fun updatePos(actives: IntBag, ids: IntArray) {
         for (it in actives.size() - 1 downTo 0) {
-            val col = mCollide[it]
+            val col = mCollide[ids[it]]
             val dim = mSpace[ids[it]]
             for (oIt in it - 1 downTo 0) {
-                val oCol = mCollide[oIt]
+                val oCol = mCollide[ids[oIt]]
                 val oDim = mSpace[ids[oIt]]
 
                 if (dim.rect.overlaps(oDim.rect)) {
                     val side = determineRectangleSideHit(dim.rect, oDim.rect)
+                    oCol.dmgToTake
                     col.setDmgToTake(oCol.dmgToInflict)
                     oCol.setDmgToTake(col.dmgToInflict)
                     pushAway(dim, side, oDim)

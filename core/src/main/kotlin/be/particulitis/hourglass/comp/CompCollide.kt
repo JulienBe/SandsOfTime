@@ -19,6 +19,7 @@ class CompCollide : Comp() {
 
     fun setDmgTakenTime(time: Long) {
         dmgTakenTime = time
+        dmgToTake = 0
     }
 
     fun collidesWith(collide: CompCollide) {

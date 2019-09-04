@@ -1,5 +1,7 @@
 package be.particulitis.hourglass.system
 
+import be.particulitis.hourglass.common.GHelper
+import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.comp.*
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
@@ -13,12 +15,13 @@ class SysShooter : IteratingSystem(Aspect.all(CompShooter::class.java, CompSpace
 
     override fun process(entityId: Int) {
         val shoot = mShoot[entityId]
-        val dim = mSpace[entityId]
+        val space = mSpace[entityId]
 
         if (shoot.nextShoot < System.currentTimeMillis() &&
                 (!shoot.keyCheck || (shoot.keyCheck && Gdx.input.isKeyPressed(shoot.keyToCheck)))) {
             val id = world.create(shoot.bullet.first.build(world))
-            shoot.bullet.second.invoke(id, world, dim.x + shoot.offsetX, dim.y + shoot.offsetY, shoot.dir)
+            shoot.bullet.second.invoke(id, world, space.x + shoot.offsetX, space.y + shoot.offsetY, shoot.dir.invoke(space.x, space.y))
+            shoot.nextShoot = System.currentTimeMillis() + shoot.firerate
         }
     }
 }

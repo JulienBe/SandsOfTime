@@ -1,10 +1,12 @@
 package be.particulitis.hourglass.builds
 
 import be.particulitis.hourglass.common.GAction
+import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.comp.*
 import com.artemis.World
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 
@@ -25,7 +27,11 @@ object Setup {
         player.getComponent(CompHp::class.java).setHp(10)
         dim(playerEntityId, world, GResolution.areaHDim - playerHDim, GResolution.areaHDim - playerHDim, playerDim, playerDim)
 
-        player.getComponent(CompShooter::class.java).setKey(Input.Keys.SPACE)
+        val shoot = player.getComponent(CompShooter::class.java)
+        shoot.setKey(Input.Keys.SPACE)
+        shoot.setShootingDir { x, y ->
+            shoot.iDir.set(GHelper.x - x, GHelper.y - y)
+        }
     }
 
     fun enemy(id: Int, world: World) {
@@ -36,12 +42,12 @@ object Setup {
         dim(id, world, posX, posY, 1f, 1f)
         val bullet = world.getEntity(id)
         bullet.getComponent(CompDir::class.java).set(dir)
-        bullet.getComponent(CompHp::class.java).setHp(1)
+        bullet.getComponent(CompHp::class.java).setHp(100000)
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {
         val dim = world.getEntity(id).getComponent(CompSpace::class.java)
-        dim.setDim(10f, 10f)
+        dim.setDim(w, h)
         dim.setPos(x, y)
     }
 }

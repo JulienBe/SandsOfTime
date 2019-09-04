@@ -1,6 +1,8 @@
 package be.particulitis.hourglass.common
 
 import com.badlogic.gdx.Gdx
+import kotlin.math.max
+import kotlin.math.min
 
 object GResolution {
     const val areaDim = 300f
@@ -10,6 +12,8 @@ object GResolution {
     var screenHeight = 0f
     var baseX = 0f
     var baseY = 0f
+    var percentageUsedX = 0f
+    var percentageUsedY = 0f
 
     init {
         compute()
@@ -17,9 +21,11 @@ object GResolution {
 
     fun compute() {
         ratio = Gdx.graphics.width / Gdx.graphics.height.toFloat()
-        screenWidth = Math.max(areaDim * ratio, areaDim)
-        screenHeight = Math.max(areaDim / ratio, areaDim)
-        baseX = Math.max((screenWidth - screenHeight) / 2f, 0f)
-        baseY = Math.max((screenHeight - screenWidth) / 2f, 0f)
+        screenWidth = max(areaDim * ratio, areaDim)
+        screenHeight = max(areaDim / ratio, areaDim)
+        baseX = max((screenWidth - screenHeight) / 2f, 0f)
+        baseY = max((screenHeight - screenWidth) / 2f, 0f)
+        percentageUsedX = min(1 / ratio, 1f)
+        percentageUsedY = min(ratio, 1f)
     }
 }

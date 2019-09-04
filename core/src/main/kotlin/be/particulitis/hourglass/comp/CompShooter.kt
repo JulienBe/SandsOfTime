@@ -8,8 +8,6 @@ import com.badlogic.gdx.math.Vector2
 
 class CompShooter : Comp() {
 
-    var nextShoot = 0f
-        private set
     var keyCheck = false
         private set
     var keyToCheck = 0
@@ -20,10 +18,20 @@ class CompShooter : Comp() {
         private set
     var offsetY = 0f
         private set
-    val dir = Vector2(1f, 0f)
+    var firerate = 500L
+        private set
+    var nextShoot = 0L
+    val iDir = Vector2(1f, 0f)
+    var dir: (myPosX: Float, myPosY: Float) -> Vector2 = { x, y ->
+        iDir.set(x, y)
+    }
 
     fun setKey(i: Int) {
         keyToCheck = i
         keyCheck = true
+    }
+
+    fun setShootingDir(shootingFunction: (x: Float, y: Float) -> Vector2) {
+       this.dir = shootingFunction
     }
 }

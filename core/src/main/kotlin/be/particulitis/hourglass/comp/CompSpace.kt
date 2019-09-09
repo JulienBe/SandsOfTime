@@ -18,6 +18,8 @@ class CompSpace : Comp() {
         private set
     val x get() = pos.x
     val y get() = pos.y
+    val centerX get() = pos.x + hw
+    val centerY get() = pos.y + hh
     val rect = Rectangle()
 
     override fun reset() {

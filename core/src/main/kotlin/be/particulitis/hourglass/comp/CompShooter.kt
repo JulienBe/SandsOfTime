@@ -22,6 +22,7 @@ class CompShooter : Comp() {
         private set
     var nextShoot = 0L
     val iDir = Vector2(1f, 0f)
+
     var dir: (myPosX: Float, myPosY: Float) -> Vector2 = { x, y ->
         iDir.set(x, y)
     }

@@ -31,6 +31,7 @@ object Setup {
         shoot.setKey(Input.Keys.SPACE)
         shoot.setShootingDir { x, y ->
             shoot.iDir.set(GHelper.x - x, GHelper.y - y)
+            shoot.iDir.nor()
         }
 
         val collide = player.getComponent(CompCollide::class.java)

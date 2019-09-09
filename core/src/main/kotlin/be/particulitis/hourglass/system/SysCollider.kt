@@ -34,12 +34,14 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
                 val oCol = mCollide[ids[oIt]]
                 val oDim = mSpace[ids[oIt]]
 
-                if (dim.rect.overlaps(oDim.rect)) {
+                if (oCol.id and col.collidesWith != 0 && dim.rect.overlaps(oDim.rect)) {
                     val side = determineRectangleSideHit(dim.rect, oDim.rect)
                     oCol.dmgToTake
                     col.setDmgToTake(oCol.dmgToInflict)
                     oCol.setDmgToTake(col.dmgToInflict)
                     pushAway(dim, side, oDim)
+                    oCol.collidesWith(col)
+                    col.collidesWith(oCol)
                 }
             }
         }

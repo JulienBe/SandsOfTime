@@ -1,12 +1,12 @@
 package be.particulitis.hourglass.builds
 
+import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GAction
 import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.comp.*
 import com.artemis.World
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 
@@ -32,10 +32,18 @@ object Setup {
         shoot.setShootingDir { x, y ->
             shoot.iDir.set(GHelper.x - x, GHelper.y - y)
         }
+
+        val collide = player.getComponent(CompCollide::class.java)
+        collide.setIds(Ids.player)
+        collide.addCollidingWith(Ids.enemy)
     }
 
     fun enemy(id: Int, world: World) {
         dim(id, world, GRand.float(0f, GResolution.areaDim - enemyDim), GRand.float(0f, GResolution.areaDim - enemyDim), enemyDim, enemyDim)
+
+        val collide = world.getEntity(id).getComponent(CompCollide::class.java)
+        collide.setIds(Ids.enemy)
+        collide.addCollidingWith(Ids.player, Ids.playerBullet)
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
@@ -43,6 +51,9 @@ object Setup {
         val bullet = world.getEntity(id)
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompHp::class.java).setHp(100000)
+        val collide = bullet.getComponent(CompCollide::class.java)
+        collide.setIds(Ids.playerBullet)
+        collide.addCollidingWith(Ids.enemy)
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {

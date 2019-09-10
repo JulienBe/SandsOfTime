@@ -13,6 +13,10 @@ class CompHp : Comp() {
 
     fun addHp(hp: Int) {
         this.hp += hp
-        println("new hp ${this.hp} after adding $hp")
+    }
+
+    override fun reset() {
+        super.reset()
+        hp = 1
     }
 }

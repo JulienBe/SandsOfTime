@@ -42,7 +42,8 @@ object Setup {
     fun enemy(id: Int, world: World) {
         dim(id, world, GRand.float(0f, GResolution.areaDim - enemyDim), GRand.float(0f, GResolution.areaDim - enemyDim), enemyDim, enemyDim)
 
-        val collide = world.getEntity(id).getComponent(CompCollide::class.java)
+        val enemy = world.getEntity(id)
+        val collide = enemy.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemy)
         collide.addCollidingWith(Ids.player, Ids.playerBullet)
     }

@@ -19,8 +19,6 @@ class FirstScreen : Screen {
     override fun show() {
         val playerEntityId = world.create(Builder.player.build(world))
         Setup.player(playerEntityId, world)
-        val enemyEntityId = world.create(Builder.enemy.build(world))
-        Setup.enemy(enemyEntityId, world)
         Gdx.input.inputProcessor = GInput
     }
 
@@ -76,6 +74,7 @@ class FirstScreen : Screen {
 
                 .with(SysClearActions())
                 .with(SysDead())
+                .with(SysSpawner())
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)

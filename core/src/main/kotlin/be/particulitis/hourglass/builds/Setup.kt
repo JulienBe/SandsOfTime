@@ -46,6 +46,7 @@ object Setup {
         val collide = enemy.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemy)
         collide.addCollidingWith(Ids.player, Ids.playerBullet)
+        enemy.getComponent(CompSeekTarget::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {

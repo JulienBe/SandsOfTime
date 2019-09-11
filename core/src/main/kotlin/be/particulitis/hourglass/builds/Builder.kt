@@ -20,6 +20,8 @@ object Builder {
             .add(CompAction::class.java)
             .add(CompHp::class.java)
             .add(CompEnemy::class.java)
+            .add(CompDir::class.java)
+            .add(CompSeekTarget::class.java)
     val bullet = ArchetypeBuilder()
             .add(CompSpace::class.java)
             .add(CompDraw::class.java)

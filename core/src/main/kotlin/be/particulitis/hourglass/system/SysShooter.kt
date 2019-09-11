@@ -20,7 +20,7 @@ class SysShooter : IteratingSystem(Aspect.all(CompShooter::class.java, CompSpace
         if (shoot.nextShoot < System.currentTimeMillis() &&
                 (!shoot.keyCheck || (shoot.keyCheck && Gdx.input.justTouched()))) {
             val id = world.create(shoot.bullet.first.build(world))
-            shoot.bullet.second.invoke(id, world, space.x + shoot.offsetX, space.y + shoot.offsetY, shoot.dir.invoke(space.centerX, space.centerY).scl(75f))
+            shoot.bullet.second.invoke(id, world, space.x + shoot.offsetX, space.y + shoot.offsetY, shoot.dir.invoke(space.centerX, space.centerY).scl(150f))
             shoot.nextShoot = System.currentTimeMillis() + shoot.firerate
         }
     }

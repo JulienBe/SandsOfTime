@@ -56,6 +56,7 @@ object Setup {
         val collide = bullet.getComponent(CompCollide::class.java)
         collide.setIds(Ids.playerBullet)
         collide.addCollidingWith(Ids.enemy)
+        bullet.getComponent(CompTtl::class.java).remaining = 1f
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {

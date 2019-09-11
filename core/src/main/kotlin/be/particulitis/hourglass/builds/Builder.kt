@@ -26,4 +26,5 @@ object Builder {
             .add(CompCollide::class.java)
             .add(CompHp::class.java)
             .add(CompDir::class.java)
+            .add(CompTtl::class.java)
 }

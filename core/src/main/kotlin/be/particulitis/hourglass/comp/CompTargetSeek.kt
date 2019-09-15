@@ -4,7 +4,7 @@ import be.particulitis.hourglass.common.GAction
 import com.artemis.PooledComponent
 import com.badlogic.gdx.math.Vector2
 
-class CompSeekTarget : Comp() {
+class CompTargetSeek : Comp() {
     val target = Vector2()
 
     val x get() = target.x
@@ -12,6 +12,9 @@ class CompSeekTarget : Comp() {
 
     fun set(target: Vector2) {
         this.target.set(target)
+    }
+    fun set(x: Float, y: Float) {
+        this.target.set(x, y)
     }
 
     fun clear() {

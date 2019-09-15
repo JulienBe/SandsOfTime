@@ -9,15 +9,24 @@ import be.particulitis.hourglass.comp.*
 import com.artemis.World
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
+import com.artemis.managers.TagManager
 
 object Setup {
 
     const val enemyDim = 10f
     const val playerDim = 5f
     const val playerHDim = playerDim / 2f
+    // tag manager is null for some reason, waiting on a response https://gitter.im/junkdog/artemis-odb. We'll see
+    const val playerTag = "PLAYER"
+    var playerId = -1
+    const val playerSpeed = 5f
 
     fun player(playerEntityId: Int, world: World) {
         val player = world.getEntity(playerEntityId)
+        val tagManager = world.getSystem(TagManager::class.java)
+        println("tagManager: $tagManager")
+        playerId = playerEntityId
+
         val playerControl = player.getComponent(CompControl::class.java)
         playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
@@ -37,16 +46,20 @@ object Setup {
         val collide = player.getComponent(CompCollide::class.java)
         collide.setIds(Ids.player)
         collide.addCollidingWith(Ids.enemy)
+
+        player.getComponent(CompCharMovement::class.java).speed = playerSpeed
     }
 
     fun enemy(id: Int, world: World) {
         dim(id, world, GRand.float(0f, GResolution.areaDim - enemyDim), GRand.float(0f, GResolution.areaDim - enemyDim), enemyDim, enemyDim)
-
         val enemy = world.getEntity(id)
         val collide = enemy.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemy)
         collide.addCollidingWith(Ids.player, Ids.playerBullet)
-        enemy.getComponent(CompSeekTarget::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
+
+        enemy.getComponent(CompTargetSeek::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
+//        val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
+        enemy.getComponent(CompTargetFollow::class.java).set(world.getEntity(playerId).getComponent(CompSpace::class.java))
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {

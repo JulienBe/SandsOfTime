@@ -1,22 +1,24 @@
 package be.particulitis.hourglass.system
 
-import com.artemis.systems.BaseSystem
 import be.particulitis.hourglass.common.GTime
+import com.artemis.BaseSystem
+import com.badlogic.gdx.Gdx
+import kotlin.math.min
 
-class SysControl : BaseSystem() {
+class SysTime : BaseSystem() {
 
     val phaseDuration = 3f
     var currentPhaseTimer = 0f    
     
     override fun processSystem() {
-        GTime.delta = Gdx.graphics.getDeltaTime()
+        GTime.delta = Gdx.graphics.deltaTime
         currentPhaseTimer -= GTime.delta
         
         if (currentPhaseTimer <= 0f) {
-            GTime.playerPhase != GTime.playerPhase
+            GTime.playerPhase = !GTime.playerPhase
             currentPhaseTimer = phaseDuration
         }
-        
+
         GTime.playerDelta = computeDeltas(GTime.playerPhase)
         GTime.enemyDelta = computeDeltas(!GTime.playerPhase)        
         
@@ -25,7 +27,7 @@ class SysControl : BaseSystem() {
     }
 
     fun computeDeltas(playerPhase: Boolean): Float {
-        return if (playerPhaser)
+        return if (playerPhase)
             GTime.delta * min(1f, currentPhaseTimer)
         else 
             0f

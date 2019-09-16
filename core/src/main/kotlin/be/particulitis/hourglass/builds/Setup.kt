@@ -19,7 +19,7 @@ object Setup {
     // tag manager is null for some reason, waiting on a response https://gitter.im/junkdog/artemis-odb. We'll see
     const val playerTag = "PLAYER"
     var playerId = -1
-    const val playerSpeed = 5f
+    const val playerSpeed = 150f
 
     fun player(playerEntityId: Int, world: World) {
         val player = world.getEntity(playerEntityId)
@@ -48,6 +48,7 @@ object Setup {
         collide.addCollidingWith(Ids.enemy)
 
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
+        player.getComponent(CompIsPlayer::class.java).setPlayer(true)
     }
 
     fun enemy(id: Int, world: World) {
@@ -60,12 +61,15 @@ object Setup {
         enemy.getComponent(CompTargetSeek::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
 //        val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
         enemy.getComponent(CompTargetFollow::class.java).set(world.getEntity(playerId).getComponent(CompSpace::class.java))
+        enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
+        enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 3f)
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
         dim(id, world, posX, posY, 1f, 1f)
         val bullet = world.getEntity(id)
         bullet.getComponent(CompDir::class.java).set(dir)
+        bullet.getComponent(CompIsPlayer::class.java).setPlayer(true)
         bullet.getComponent(CompHp::class.java).setHp(100000)
         val collide = bullet.getComponent(CompCollide::class.java)
         collide.setIds(Ids.playerBullet)

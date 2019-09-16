@@ -50,7 +50,7 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
     private fun pushAway(dim: CompSpace, side: GSide, oDim: CompSpace, thickness: Int = 5) {
         var cpt = thickness
         do {
-            dim.move(-side.x, -side.y)
+            dim.move(-side.x, -side.y, 1f)
         } while (cpt-- > 0 && dim.rect.overlaps(oDim.rect))
     }
 

@@ -1,26 +1,29 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.comp.CompIsPlayer
 import be.particulitis.hourglass.comp.CompTtl
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.systems.DelayedIteratingSystem
+import com.artemis.systems.IteratingSystem
 
-class SysTtl : DelayedIteratingSystem(Aspect.all(CompTtl::class.java)) {
+class SysTtl : IteratingSystem(Aspect.all(CompTtl::class.java, CompIsPlayer::class.java)) {
+
     private lateinit var mTtl: ComponentMapper<CompTtl>
+    private lateinit var mPlayer: ComponentMapper<CompIsPlayer>
 
-    override fun getRemainingDelay(entityId: Int): Float {
-        return mTtl[entityId].remaining
-    }
-
-    override fun processExpired(entityId: Int) {
-        mTtl[entityId].finished()
-        world.delete(entityId)
-    }
-
-    override fun processDelta(entityId: Int, accumulatedDelta: Float) {
+    override fun process(entityId: Int) {
         val ttl = mTtl[entityId]
-        ttl.remaining -= accumulatedDelta
+        if (mPlayer[entityId].isPlayer)
+            ttl.remaining -= GTime.playerDelta
+        else
+            ttl.remaining -= GTime.enemyDelta
+        if (ttl.remaining < 0f) {
+            ttl.finished()
+            world.delete(entityId)
+        }
     }
 
 }

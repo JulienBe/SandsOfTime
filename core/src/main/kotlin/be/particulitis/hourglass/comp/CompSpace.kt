@@ -35,8 +35,8 @@ class CompSpace : Comp() {
         rect.setSize(w, h)
     }
 
-    fun move(x: Float, y: Float) {
-        setPos(pos.x + x, pos.y + y)
+    fun move(x: Float, y: Float, delta: Float) {
+        setPos(pos.x + x * delta, pos.y + y * delta)
     }
 
     fun setPos(x: Float, y: Float) {

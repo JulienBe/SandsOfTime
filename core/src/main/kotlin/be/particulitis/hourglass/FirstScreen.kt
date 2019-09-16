@@ -60,6 +60,7 @@ class FirstScreen : Screen {
     companion object {
         val batch = GBatch(ImgMan())
         val config = WorldConfigurationBuilder()
+                .with(SysTime())
                 .with(SysControl())
                 .with(SysCharMovement())
                 .with(SysTargetAcquisition())

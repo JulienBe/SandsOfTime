@@ -9,6 +9,7 @@ import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
+import com.artemis.managers.TagManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
@@ -22,6 +23,7 @@ class FirstScreen : Screen {
         val playerEntityId = world.create(Builder.player.build(world))
         Setup.player(playerEntityId, world)
         Gdx.input.inputProcessor = GInput
+        StateManager.endPause(world)
     }
 
     override fun render(delta: Float) {
@@ -34,7 +36,7 @@ class FirstScreen : Screen {
         world.process()
         batch.end()
         if (Gdx.input.isKeyJustPressed(Input.Keys.P))
-            StateManager.notPause(world)
+            StateManager.invertPause(world)
     }
 
     private fun cls() {
@@ -64,6 +66,7 @@ class FirstScreen : Screen {
     companion object {
         val batch = GBatch(ImgMan())
         val config = WorldConfigurationBuilder()
+                .with(TagManager())
                 .with(SysTime())
                 .with(SysControl())
                 .with(SysCharMovement())
@@ -83,6 +86,7 @@ class FirstScreen : Screen {
                 .with(SysClearActions())
                 .with(SysDead())
                 .with(SysSpawner())
+                .with(SysStartGame())
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)

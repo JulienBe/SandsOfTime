@@ -18,14 +18,11 @@ object Setup {
     const val playerHDim = playerDim / 2f
     // tag manager is null for some reason, waiting on a response https://gitter.im/junkdog/artemis-odb. We'll see
     const val playerTag = "PLAYER"
-    var playerId = -1
     const val playerSpeed = 150f
 
     fun player(playerEntityId: Int, world: World) {
         val player = world.getEntity(playerEntityId)
-        val tagManager = world.getSystem(TagManager::class.java)
-        println("tagManager: $tagManager")
-        playerId = playerEntityId
+        world.getSystem(TagManager::class.java).register(playerTag, playerEntityId)
 
         val playerControl = player.getComponent(CompControl::class.java)
         playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
@@ -59,8 +56,8 @@ object Setup {
         collide.addCollidingWith(Ids.player, Ids.playerBullet)
 
         enemy.getComponent(CompTargetSeek::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
-//        val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
-        enemy.getComponent(CompTargetFollow::class.java).set(world.getEntity(playerId).getComponent(CompSpace::class.java))
+        val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
+        enemy.getComponent(CompTargetFollow::class.java).set(player.getComponent(CompSpace::class.java))
         enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
         enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 3f)
     }

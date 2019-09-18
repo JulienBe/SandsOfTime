@@ -16,7 +16,7 @@ object StateManager {
         changedState(world)
     }
 
-    fun notPause(world: World) {
+    fun invertPause(world: World) {
         when (currentState) {
             StateSystems.RUNNING -> pause(world)
             StateSystems.PAUSED -> endPause(world)
@@ -27,6 +27,11 @@ object StateManager {
         currentState.systems.forEach {
             world.getSystem(it.first).isEnabled = it.second
         }
+    }
+
+    fun playerDead(world: World) {
+        currentState = StateSystems.PLAYER_DEAD
+        changedState(world)
     }
 
 }

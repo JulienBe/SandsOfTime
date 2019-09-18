@@ -5,10 +5,12 @@ import be.particulitis.hourglass.builds.Setup
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -31,6 +33,8 @@ class FirstScreen : Screen {
         batch.begin()
         world.process()
         batch.end()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P))
+            StateManager.notPause(world)
     }
 
     private fun cls() {

@@ -1,5 +1,6 @@
 package be.particulitis.hourglass
 
+import be.particulitis.hourglass.builds.Aspects
 import be.particulitis.hourglass.builds.Builder
 import be.particulitis.hourglass.builds.Setup
 import be.particulitis.hourglass.common.GBatch
@@ -7,9 +8,12 @@ import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
+import com.artemis.Aspect
+import com.artemis.EntitySubscription
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.artemis.managers.TagManager
+import com.artemis.utils.IntBag
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
@@ -64,6 +68,7 @@ class FirstScreen : Screen {
     }
 
     companion object {
+        var score = 0
         val batch = GBatch(ImgMan())
         val config = WorldConfigurationBuilder()
                 .with(TagManager())
@@ -82,13 +87,25 @@ class FirstScreen : Screen {
                 .with(SysMap())
 
                 .with(SysDrawer())
+                .with(SysUiDisplay())
 
                 .with(SysClearActions())
                 .with(SysDead())
+                .with(SysScore())
                 .with(SysSpawner())
                 .with(SysStartGame())
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
+        val subscription = world.aspectSubscriptionManager.get(Aspect.all(Aspects.Enemy.comps))
+                .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
+                    override fun inserted(entities: IntBag) {
+                    }
+
+                    override fun removed(entities: IntBag) {
+                        score += entities.size()
+                    }
+                })
+
     }
 }

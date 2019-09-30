@@ -7,6 +7,7 @@ import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
+import com.badlogic.gdx.graphics.Color
 
 @Wire(failOnNull = false)
 class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::class.java)) {
@@ -14,7 +15,9 @@ class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::cl
     private lateinit var mDraw: ComponentMapper<CompDraw>
 
     override fun process(entityId: Int) {
-        mDraw[entityId].draw(mSpace[entityId], FirstScreen.batch)
+        FirstScreen.batch.setColor(1f, 0f, 0f, 1f)
+        FirstScreen.batch.draw(mSpace[entityId])
+        FirstScreen.batch.color = Color.WHITE
     }
 
 }

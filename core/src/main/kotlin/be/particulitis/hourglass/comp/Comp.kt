@@ -11,3 +11,6 @@ open class Comp : PooledComponent() {
         generation++
     }
 }
+class CompScore : Comp()
+class CompDraw : Comp()
+class CompEnemy : Comp()

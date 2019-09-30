@@ -33,9 +33,9 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompHp::class.java,
             CompDir::class.java,
             CompTtl::class.java)),
-    Ui(listOf(
+    Score(listOf(
             CompSpace::class.java,
-            CompDraw::class.java,
-            CompTxt::class.java
+            CompTxt::class.java,
+            CompScore::class.java
     ))
 }

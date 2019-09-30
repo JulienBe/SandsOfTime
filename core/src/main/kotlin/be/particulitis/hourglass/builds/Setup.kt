@@ -20,6 +20,11 @@ object Setup {
     const val playerTag = "PLAYER"
     const val playerSpeed = 150f
 
+    fun score(id: Int, world: World) {
+        val space = world.getEntity(id).getComponent(CompSpace::class.java)
+        space.setPos(50f, 200f)
+    }
+
     fun player(playerEntityId: Int, world: World) {
         val player = world.getEntity(playerEntityId)
         world.getSystem(TagManager::class.java).register(playerTag, playerEntityId)

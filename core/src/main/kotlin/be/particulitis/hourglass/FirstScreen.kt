@@ -24,8 +24,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 class FirstScreen : Screen {
 
     override fun show() {
-        val playerEntityId = world.create(Builder.player.build(world))
-        Setup.player(playerEntityId, world)
+        Setup.player(world.create(Builder.player.build(world)), world)
+        Setup.score(world.create(Builder.score.build(world)), world)
         Gdx.input.inputProcessor = GInput
         StateManager.endPause(world)
     }
@@ -101,7 +101,6 @@ class FirstScreen : Screen {
                 .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
                     override fun inserted(entities: IntBag) {
                     }
-
                     override fun removed(entities: IntBag) {
                         score += entities.size()
                     }

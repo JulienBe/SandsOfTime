@@ -1,7 +1,6 @@
 package be.particulitis.hourglass.comp
 
 import be.particulitis.hourglass.FontPixel
-import com.badlogic.gdx.math.Vector2
 import ktx.collections.GdxArray
 import ktx.collections.addAll
 

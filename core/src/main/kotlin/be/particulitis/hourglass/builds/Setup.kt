@@ -1,10 +1,7 @@
 package be.particulitis.hourglass.builds
 
 import be.particulitis.hourglass.Ids
-import be.particulitis.hourglass.common.GAction
-import be.particulitis.hourglass.common.GHelper
-import be.particulitis.hourglass.common.GRand
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.comp.*
 import com.artemis.World
 import com.badlogic.gdx.Input
@@ -22,7 +19,7 @@ object Setup {
 
     fun score(id: Int, world: World) {
         val space = world.getEntity(id).getComponent(CompSpace::class.java)
-        space.setPos(50f, 200f)
+        space.setPos(90f, 170f)
     }
 
     fun player(playerEntityId: Int, world: World) {
@@ -51,6 +48,7 @@ object Setup {
 
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
+        player.getComponent(CompDraw::class.java).color = Colors.player
     }
 
     fun enemy(id: Int, world: World) {
@@ -65,6 +63,7 @@ object Setup {
         enemy.getComponent(CompTargetFollow::class.java).set(player.getComponent(CompSpace::class.java))
         enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
         enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 3f)
+        enemy.getComponent(CompDraw::class.java).color = Colors.enemy
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
@@ -77,6 +76,7 @@ object Setup {
         collide.setIds(Ids.playerBullet)
         collide.addCollidingWith(Ids.enemy)
         bullet.getComponent(CompTtl::class.java).remaining = 1f
+        bullet.getComponent(CompDraw::class.java).color = Colors.playerBullets
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {

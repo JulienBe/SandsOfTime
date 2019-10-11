@@ -13,7 +13,7 @@ class CompDir : Comp() {
     val x get() = dir.x
     val y get() = dir.y
 
-    fun setSpeedACceleration(maxSpeed: Float, maxAcceleration: Float) {
+     fun setSpeedAcceleration(maxSpeed: Float, maxAcceleration: Float) {
         this.maxSpeed = maxSpeed
         this.maxAcceleration = maxAcceleration
     }
@@ -37,6 +37,5 @@ class CompDir : Comp() {
         maxAcceleration = 20f
         dir.set(0f, 0f)
     }
-
 
 }

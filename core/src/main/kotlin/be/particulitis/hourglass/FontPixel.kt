@@ -1,5 +1,6 @@
 package be.particulitis.hourglass
 
+import be.particulitis.hourglass.builds.Colors
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
 
@@ -11,7 +12,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     }
 
     fun draw(space: CompSpace) {
-        FirstScreen.batch.draw(1f, 1f, 1f, space.x + x, space.y + y, fontWidth)
+        FirstScreen.batch.draw(Colors.scoreFont, space.x + x, space.y + y, fontWidth)
     }
 
     var x = (charWidth * fontWidth) / 4f

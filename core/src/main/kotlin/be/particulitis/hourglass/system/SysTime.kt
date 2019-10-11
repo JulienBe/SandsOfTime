@@ -18,7 +18,7 @@ class SysTime : BaseSystem() {
             GTime.playerPhase = !GTime.playerPhase
             currentPhaseTimer = phaseDuration
         }
-
+        println("player time ${GTime.playerTime}")
         GTime.playerDelta = computeDeltas(GTime.playerPhase)
         GTime.enemyDelta = computeDeltas(!GTime.playerPhase)        
         
@@ -28,8 +28,8 @@ class SysTime : BaseSystem() {
 
     fun computeDeltas(playerPhase: Boolean): Float {
         return if (playerPhase)
-            GTime.delta * min(1f, currentPhaseTimer)
-        else 
             0f
+        else
+            GTime.delta * min(1f, currentPhaseTimer)
     }
 }

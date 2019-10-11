@@ -39,7 +39,6 @@ class CompCollide : Comp() {
     }
 
     fun collidesWith(collide: CompCollide) {
-        println("$id :: CCollide.collidesWith ${collide.id}")
     }
 
     override fun reset() {

@@ -15,9 +15,7 @@ class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::cl
     private lateinit var mDraw: ComponentMapper<CompDraw>
 
     override fun process(entityId: Int) {
-        FirstScreen.batch.setColor(1f, 0f, 0f, 1f)
-        FirstScreen.batch.draw(mSpace[entityId])
-        FirstScreen.batch.color = Color.WHITE
+        FirstScreen.batch.draw(mSpace[entityId], mDraw[entityId])
     }
 
 }

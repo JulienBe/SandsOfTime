@@ -6,6 +6,7 @@ import be.particulitis.hourglass.builds.Setup
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import com.artemis.Aspect
@@ -24,6 +25,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 class FirstScreen : Screen {
 
     override fun show() {
+        GTime.reset()
         Setup.player(world.create(Builder.player.build(world)), world)
         Setup.score(world.create(Builder.score.build(world)), world)
         Gdx.input.inputProcessor = GInput

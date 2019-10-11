@@ -2,8 +2,6 @@ package be.particulitis.hourglass.comp
 
 import be.particulitis.hourglass.builds.Builder
 import be.particulitis.hourglass.builds.Setup
-import com.artemis.ArchetypeBuilder
-import com.artemis.World
 import com.badlogic.gdx.math.Vector2
 
 class CompShooter : Comp() {
@@ -18,13 +16,18 @@ class CompShooter : Comp() {
         private set
     var offsetY = 0f
         private set
-    var firerate = 500L
+    var firerate = .15f
         private set
-    var nextShoot = 0L
+    var nextShoot = 0f
     val iDir = Vector2(1f, 0f)
 
     var dir: (myPosX: Float, myPosY: Float) -> Vector2 = { x, y ->
         iDir.set(x, y)
+    }
+
+    fun setOffset(x: Float, y: Float) {
+        offsetX = x
+        offsetY = y
     }
 
     fun setKey(i: Int) {

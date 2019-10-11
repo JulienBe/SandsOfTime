@@ -18,7 +18,7 @@ class SysTime : BaseSystem() {
             GTime.playerPhase = !GTime.playerPhase
             currentPhaseTimer = phaseDuration
         }
-        println("player time ${GTime.playerTime}")
+
         GTime.playerDelta = computeDeltas(GTime.playerPhase)
         GTime.enemyDelta = computeDeltas(!GTime.playerPhase)        
         

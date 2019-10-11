@@ -10,6 +10,7 @@ import com.artemis.managers.TagManager
 
 object Setup {
 
+    const val bulletDim = 2f
     const val enemyDim = 10f
     const val playerDim = 5f
     const val playerHDim = playerDim / 2f
@@ -36,6 +37,7 @@ object Setup {
         dim(playerEntityId, world, GResolution.areaHDim - playerHDim, GResolution.areaHDim - playerHDim, playerDim, playerDim)
 
         val shoot = player.getComponent(CompShooter::class.java)
+        shoot.setOffset((playerDim - bulletDim) / 2f, (playerDim - bulletDim) / 2f)
         shoot.setKey(Input.Keys.SPACE)
         shoot.setShootingDir { x, y ->
             shoot.iDir.set(GHelper.x - x, GHelper.y - y)
@@ -67,7 +69,7 @@ object Setup {
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
-        dim(id, world, posX, posY, 1f, 1f)
+        dim(id, world, posX, posY, bulletDim, bulletDim)
         val bullet = world.getEntity(id)
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompIsPlayer::class.java).setPlayer(true)

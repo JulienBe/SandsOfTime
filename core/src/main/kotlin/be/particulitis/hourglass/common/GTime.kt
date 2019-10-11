@@ -19,4 +19,11 @@ object GTime {
         playerTime = 0f
         enemyTime = 0f
     }
+
+    fun myTime(isPlayer: Boolean): Float {
+        return if (isPlayer)
+            playerTime
+        else
+            time
+    }
 }

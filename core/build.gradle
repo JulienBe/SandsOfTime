@@ -3,6 +3,7 @@
 dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
   api "com.github.czyzby:noise4j:$noise4jVersion"
   api "com.github.czyzby:gdx-kiwi:$kiwiVersion"

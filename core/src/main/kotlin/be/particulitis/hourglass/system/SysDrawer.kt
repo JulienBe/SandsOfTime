@@ -4,11 +4,11 @@ import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.comp.CompDir
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
+import be.particulitis.hourglass.comp.DrawStyle.*
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
-import com.badlogic.gdx.graphics.Color
 
 @Wire(failOnNull = false)
 class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::class.java)) {
@@ -20,6 +20,14 @@ class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::cl
         val draw = mDraw[entityId]
         val space = mSpace[entityId]
         FirstScreen.batch.draw(space, draw)
+        when (draw.drawingStyle) {
+            DIR_TRAIL -> drawTrail(entityId, draw, space)
+            NONE -> {}
+        }
+
+    }
+
+    private fun drawTrail(entityId: Int, draw: CompDraw, space: CompSpace) {
         val dir = mDir[entityId]
         if (dir != null) {
             for (i in 2..4) {

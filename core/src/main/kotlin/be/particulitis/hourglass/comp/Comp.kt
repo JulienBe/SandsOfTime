@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.comp
 
-import be.particulitis.hourglass.builds.Colors
 import com.artemis.PooledComponent
 
 open class Comp : PooledComponent() {
@@ -13,7 +12,5 @@ open class Comp : PooledComponent() {
     }
 }
 class CompScore : Comp()
-class CompDraw : Comp() {
-    var color = Colors.scoreFont
-}
+
 class CompEnemy : Comp()

@@ -15,4 +15,6 @@ spice:
     explosion particles
     lights
     border effect
-    get different drawing styles per enemies ?
+    ~~get different drawing styles~~
+    build map texture
+

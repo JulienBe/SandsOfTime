@@ -66,6 +66,7 @@ object Setup {
         enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
         enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 0.3f)
         enemy.getComponent(CompDraw::class.java).color = Colors.enemy
+        enemy.getComponent(CompDraw::class.java).drawingStyle = DrawStyle.DIR_TRAIL
     }
 
     fun bullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {

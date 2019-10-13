@@ -15,12 +15,12 @@ class SysTime : BaseSystem() {
         currentPhaseTimer -= GTime.delta
         
         if (currentPhaseTimer <= 0f) {
-            GTime.playerPhase = !GTime.playerPhase
+            GTime.enemyPhase = !GTime.enemyPhase
             currentPhaseTimer = phaseDuration
         }
 
-        GTime.playerDelta = computeDeltas(GTime.playerPhase)
-        GTime.enemyDelta = computeDeltas(!GTime.playerPhase)        
+        GTime.playerDelta = computeDeltas(GTime.enemyPhase)
+        GTime.enemyDelta = computeDeltas(!GTime.enemyPhase)
         
         GTime.playerTime += GTime.playerDelta
         GTime.enemyTime += GTime.enemyDelta

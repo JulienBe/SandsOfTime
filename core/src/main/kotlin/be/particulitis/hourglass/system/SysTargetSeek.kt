@@ -1,8 +1,9 @@
 package be.particulitis.hourglass.system
 
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompDir
-import be.particulitis.hourglass.comp.CompTargetSeek
 import be.particulitis.hourglass.comp.CompSpace
+import be.particulitis.hourglass.comp.CompTargetSeek
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.systems.IteratingSystem
@@ -15,6 +16,8 @@ class SysTargetSeek : IteratingSystem(Aspect.all(CompTargetSeek::class.java)) {
     private lateinit var mSpace: ComponentMapper<CompSpace>
 
     override fun process(entityId: Int) {
+        if (!GTime.enemyPhase)
+            return
         val target = mTarget[entityId]
         val dir = mDir[entityId]
         val space = mSpace[entityId]

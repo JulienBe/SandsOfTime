@@ -64,7 +64,7 @@ object Setup {
         val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
         enemy.getComponent(CompTargetFollow::class.java).set(player.getComponent(CompSpace::class.java))
         enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
-        enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 3f)
+        enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 0.3f)
         enemy.getComponent(CompDraw::class.java).color = Colors.enemy
     }
 

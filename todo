@@ -6,6 +6,7 @@ func:
         ~~difficulty curve~~
         ~~control enemies spawn~~
         ~~fix map and score display~~
+        ~~have enemies not turning when they are frozen~~
         prevent no move strategy => shooting enemies
     menus
 

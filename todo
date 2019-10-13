@@ -1,13 +1,13 @@
 func:
     in loop:
-        different enemies
+        ~~different enemies~~
         different weapons
         ~~see where enemies are going~~
         ~~difficulty curve~~
         ~~control enemies spawn~~
         ~~fix map and score display~~
         ~~have enemies not turning when they are frozen~~
-        prevent no move strategy => shooting enemies
+        ~~prevent no move strategy => shooting enemies~~
     menus
 
 spice:

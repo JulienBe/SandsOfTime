@@ -9,6 +9,8 @@ import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
+import com.badlogic.gdx.math.Vector2
+import kotlin.math.sqrt
 
 @Wire(failOnNull = false)
 class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::class.java)) {
@@ -27,13 +29,17 @@ class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::cl
 
     }
 
+
+    val dirDisplay = Vector2()
     private fun drawTrail(entityId: Int, draw: CompDraw, space: CompSpace) {
         val dir = mDir[entityId]
+        dirDisplay.set(dir.dir)
+        dirDisplay.nor().scl(sqrt(space.w.toDouble()).toFloat()).scl(0.8f)
         if (dir != null) {
             for (i in 2..4) {
-                val w = (space.w / (i + 1)) * 2f
-                val x = (space.x + (space.w - w) / 2f) - (dir.x / 7f) * i
-                val y = (space.y + (space.w - w) / 2f) - (dir.y / 7f) * i
+                val w = (space.w / (i + 3)) * 3f
+                val x = (space.x + (space.w - w) / 2f) - dirDisplay.x * i
+                val y = (space.y + (space.w - w) / 2f) - dirDisplay.y * i
                 FirstScreen.batch.draw(draw.color, x, y, w)
             }
         }

@@ -99,7 +99,7 @@ class FirstScreen : Screen {
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
-        val subscription = world.aspectSubscriptionManager.get(Aspect.all(Aspects.Enemy.comps))
+        val subscription = world.aspectSubscriptionManager.get(Aspect.all(Aspects.EnemySlug.comps))
                 .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
                     override fun inserted(entities: IntBag) {
                     }

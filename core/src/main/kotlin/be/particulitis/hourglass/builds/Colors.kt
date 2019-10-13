@@ -7,5 +7,6 @@ object Colors {
     val scoreFont = GPalette.PINK_SKIN
     val player = GPalette.ORANGE
     val enemy = GPalette.REDISH
+    val enemyBullets = GPalette.PINK
     val map = GPalette.DARK_BLUE
 }

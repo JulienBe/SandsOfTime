@@ -4,7 +4,7 @@ import be.particulitis.hourglass.comp.*
 
 enum class Aspects(val comps: List<Class<out Comp>>) {
 
-    Enemy(listOf(
+    EnemySlug(listOf(
             CompIsPlayer::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
@@ -15,6 +15,15 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompDir::class.java,
             CompTargetSeek::class.java,
             CompTargetFollow::class.java)),
+    EnemyShoot(listOf(
+            CompIsPlayer::class.java,
+            CompSpace::class.java,
+            CompDraw::class.java,
+            CompCollide::class.java,
+            CompAction::class.java,
+            CompHp::class.java,
+            CompEnemy::class.java,
+            CompShooter::class.java)),
     Player(listOf(
             CompIsPlayer::class.java,
             CompSpace::class.java,

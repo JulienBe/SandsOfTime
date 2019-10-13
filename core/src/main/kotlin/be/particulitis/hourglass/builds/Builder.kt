@@ -1,12 +1,12 @@
 package be.particulitis.hourglass.builds
 
-import be.particulitis.hourglass.comp.*
 import com.artemis.ArchetypeBuilder
 
 object Builder {
     val player = createBuilder(Aspects.Player)
     val bullet = createBuilder(Aspects.Bullet)
-    val enemy= createBuilder(Aspects.Enemy)
+    val enemySlug = createBuilder(Aspects.EnemySlug)
+    val enemyShoot = createBuilder(Aspects.EnemyShoot)
     val score = createBuilder(Aspects.Score)
 
     private fun createBuilder(aspects: Aspects): ArchetypeBuilder {

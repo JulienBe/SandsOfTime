@@ -2,7 +2,10 @@ package be.particulitis.hourglass.comp
 
 import be.particulitis.hourglass.builds.Builder
 import be.particulitis.hourglass.builds.Setup
+import com.artemis.ArchetypeBuilder
+import com.artemis.World
 import com.badlogic.gdx.math.Vector2
+import kotlin.reflect.KFunction5
 
 class CompShooter : Comp() {
 
@@ -10,7 +13,7 @@ class CompShooter : Comp() {
         private set
     var keyToCheck = 0
         private set
-    var bullet = Pair(Builder.bullet, Setup::bullet)
+    var bullet = Pair(Builder.bullet, Setup::playerBullet)
         private set
     var offsetX = 0f
         private set
@@ -19,10 +22,12 @@ class CompShooter : Comp() {
     var firerate = .15f
         private set
     var nextShoot = 0f
-    val iDir = Vector2(1f, 0f)
+    val dir = Vector2(1f, 0f)
+    var shouldShood = { true }
+    var shootingFunc = {}
 
-    var dir: (myPosX: Float, myPosY: Float) -> Vector2 = { x, y ->
-        iDir.set(x, y)
+    fun setBullet(build: ArchetypeBuilder, setup: KFunction5<@ParameterName(name = "id") Int, @ParameterName(name = "world") World, @ParameterName(name = "posX") Float, @ParameterName(name = "posY") Float, @ParameterName(name = "dir") Vector2, Unit>) {
+        bullet = Pair(build, setup)
     }
 
     fun setOffset(x: Float, y: Float) {
@@ -35,7 +40,12 @@ class CompShooter : Comp() {
         keyCheck = true
     }
 
-    fun setShootingDir(shootingFunction: (x: Float, y: Float) -> Vector2) {
-       this.dir = shootingFunction
+    fun setFirerate(firerate: Float) {
+        this.firerate = firerate
     }
+
+}
+
+enum class ShootingTypes {
+
 }

@@ -53,8 +53,8 @@ object Setup {
         player.getComponent(CompDraw::class.java).color = Colors.player
     }
 
-    fun enemy(id: Int, world: World) {
-        dim(id, world, GRand.float(0f, GResolution.areaDim - enemyDim), GRand.float(0f, GResolution.areaDim - enemyDim), enemyDim, enemyDim)
+    fun enemy(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
+        dim(id, world, GRand.floatExcludingPlease(0f, GResolution.areaDim - enemyDim, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - enemyDim, exclusionStartY, exclusionStopY), enemyDim, enemyDim)
         val enemy = world.getEntity(id)
         val collide = enemy.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemy)

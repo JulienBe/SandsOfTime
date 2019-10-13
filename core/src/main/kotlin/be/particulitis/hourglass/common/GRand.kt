@@ -24,6 +24,15 @@ object GRand: Random() {
         return (nextGaussian() * i).toInt()
     }
 
+    fun floatExcludingPlease(min: Float, max: Float, exclusionStart: Float, exclusionStop: Float): Float {
+        var f = float(min, max)
+        var cpt = 0
+        while (f in exclusionStart..exclusionStop || cpt++ > 150) {
+            f = float(min, max)
+        }
+        return f
+    }
+
     fun float(min: Float, max: Float): Float {
         return min + (nextFloat() * (max - min))
     }

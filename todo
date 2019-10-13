@@ -1,0 +1,12 @@
+func:
+    in loop:
+        see where enemies are going
+        difficulty curve
+        ~~control enemies spawn~~
+    menus
+
+spice:
+    sound
+    explosion particles
+    lights
+    border effect

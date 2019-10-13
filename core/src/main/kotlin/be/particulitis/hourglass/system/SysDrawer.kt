@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen
+import be.particulitis.hourglass.comp.CompDir
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
@@ -13,9 +14,21 @@ import com.badlogic.gdx.graphics.Color
 class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::class.java)) {
     private lateinit var mSpace: ComponentMapper<CompSpace>
     private lateinit var mDraw: ComponentMapper<CompDraw>
+    private lateinit var mDir: ComponentMapper<CompDir>
 
     override fun process(entityId: Int) {
-        FirstScreen.batch.draw(mSpace[entityId], mDraw[entityId])
+        val draw = mDraw[entityId]
+        val space = mSpace[entityId]
+        FirstScreen.batch.draw(space, draw)
+        val dir = mDir[entityId]
+        if (dir != null) {
+            for (i in 2..4) {
+                val w = (space.w / (i + 1)) * 2f
+                val x = (space.x + (space.w - w) / 2f) - (dir.x / 7f) * i
+                val y = (space.y + (space.w - w) / 2f) - (dir.y / 7f) * i
+                FirstScreen.batch.draw(draw.color, x, y, w)
+            }
+        }
     }
 
 }

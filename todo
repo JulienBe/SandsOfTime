@@ -2,10 +2,11 @@ func:
     in loop:
         different enemies
         different weapons
-        see where enemies are going
+        ~~see where enemies are going~~
         ~~difficulty curve~~
         ~~control enemies spawn~~
         ~~fix map and score display~~
+        prevent no move strategy => shooting enemies
     menus
 
 spice:
@@ -13,3 +14,4 @@ spice:
     explosion particles
     lights
     border effect
+    get different drawing styles per enemies ?

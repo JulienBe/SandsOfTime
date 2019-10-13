@@ -4,6 +4,7 @@ import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.builds.Builder
 import be.particulitis.hourglass.builds.Setup
 import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
@@ -17,7 +18,7 @@ class SysSpawner : BaseSystem() {
 
     override fun processSystem() {
         val enemies = world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))
-        if (enemies.entities.size() < min) {
+        if (enemies.entities.size() < min + (GTime.playerTime / 2f)) {
             val enemyEntityId = FirstScreen.world.create(Builder.enemy.build(FirstScreen.world))
             val playerPos = mSpace[world.getSystem(TagManager::class.java).getEntity(Setup.playerTag)]
             Setup.enemy(enemyEntityId, FirstScreen.world, playerPos.centerX - exclusionRange, playerPos.centerX + exclusionRange, playerPos.centerY - exclusionRange, playerPos.centerY + exclusionRange)

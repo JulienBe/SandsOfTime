@@ -1,8 +1,11 @@
 func:
     in loop:
+        different enemies
+        different weapons
         see where enemies are going
-        difficulty curve
+        ~~difficulty curve~~
         ~~control enemies spawn~~
+        fix map and score display
     menus
 
 spice:

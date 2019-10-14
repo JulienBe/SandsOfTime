@@ -44,6 +44,16 @@ class CompShooter : Comp() {
         this.firerate = firerate
     }
 
+
+    override fun reset() {
+        super.reset()
+        keyCheck = false
+        keyToCheck = 0
+        offsetX = 0f
+        offsetY = 0f
+        firerate = .15f
+        nextShoot = 0f
+    }
 }
 
 enum class ShootingTypes {

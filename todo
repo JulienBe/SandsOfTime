@@ -10,6 +10,9 @@ func:
         ~~prevent no move strategy => shooting enemies~~
         ~~sort drawing layers~~
     menus
+    ~~reset scores and everything on death~~
+    show hp player
+    don't have enemies that die on you increase score
 
 spice:
     sound

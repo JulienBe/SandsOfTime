@@ -1,12 +1,12 @@
 package be.particulitis.hourglass
 
-import be.particulitis.hourglass.builds.Aspects
 import be.particulitis.hourglass.builds.Builder
 import be.particulitis.hourglass.builds.Setup
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import com.artemis.Aspect
@@ -98,14 +98,17 @@ class FirstScreen : Screen {
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
-        val subscription = world.aspectSubscriptionManager.get(Aspect.all(Aspects.EnemySlug.comps))
-                .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
-                    override fun inserted(entities: IntBag) {
-                    }
-                    override fun removed(entities: IntBag) {
-                        score += entities.size()
-                    }
-                })
+
+        init {
+            world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))
+                    .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
+                        override fun inserted(entities: IntBag) {
+                        }
+                        override fun removed(entities: IntBag) {
+                            score++
+                        }
+                    })
+        }
 
     }
 }

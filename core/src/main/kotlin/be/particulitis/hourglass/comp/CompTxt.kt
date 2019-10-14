@@ -12,15 +12,19 @@ class CompTxt : Comp() {
 
     fun set(txt: String) {
         if (txt != text) {
-            text = txt
-            pixels.clear()
-            txt.forEachIndexed { index, c -> pixels.addAll(FontPixel.get(index, c)!!) }
+            changeText(txt)
         }
+    }
+
+    private fun changeText(txt: String) {
+        text = txt
+        pixels.clear()
+        txt.forEachIndexed { index, c -> pixels.addAll(FontPixel.get(index, c)!!) }
     }
 
     override fun reset() {
         super.reset()
-        text = ""
+        changeText("")
     }
 
 }

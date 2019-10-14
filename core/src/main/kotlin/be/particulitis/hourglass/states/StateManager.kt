@@ -1,6 +1,13 @@
 package be.particulitis.hourglass.states
 
+import be.particulitis.hourglass.FirstScreen
+import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.comp.Comp
+import be.particulitis.hourglass.comp.CompHp
+import be.particulitis.hourglass.entities
+import com.artemis.Aspect
 import com.artemis.World
+import kotlin.reflect.KClass
 
 object StateManager {
 
@@ -31,7 +38,20 @@ object StateManager {
 
     fun playerDead(world: World) {
         currentState = StateSystems.PLAYER_DEAD
+
+        GTime.reset()
+        deleteAll(world, CompHp::class)
+        FirstScreen.score = -1
+
         changedState(world)
+    }
+
+    fun deleteAll(world: World, comp: KClass<out Comp>): Int {
+        val entities = world.entities(Aspect.all(comp.java))
+        for (i in 0 until entities.size()) {
+            world.delete(entities[i])
+        }
+        return entities.size()
     }
 
 }

@@ -86,7 +86,6 @@ class FirstScreen : Screen {
                 .with(SysCollider())
                 .with(SysDamage())
                 .with(SysClampPos())
-                .with(SysMap())
 
                 .with(SysDrawer())
                 .with(SysUiDisplay())

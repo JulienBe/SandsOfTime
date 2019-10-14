@@ -70,6 +70,7 @@ object Setup {
         val enemy = baseEnemy(id, world, exclusionStartX, exclusionStopX, exclusionStartY, exclusionStopY)
         val space = enemy.getComponent(CompSpace::class.java)
         val shoot = enemy.getComponent(CompShooter::class.java)
+        enemy.getComponent(CompDraw::class.java).color = Colors.enemyShoots
         shoot.setOffset((enemyDim - bulletDim) / 2f, (enemyDim - bulletDim) / 2f)
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, Setup::enemyBullet)
@@ -108,7 +109,7 @@ object Setup {
 
     fun enemyBullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
         dim(id, world, posX, posY, bulletDim, bulletDim)
-        dir.scl(30f)
+        dir.scl(22f)
         val bullet = world.getEntity(id)
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompDir::class.java).setSpeedAcceleration(100f, 100f)
@@ -117,14 +118,14 @@ object Setup {
         val collide = bullet.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemyBullet)
         collide.addCollidingWith(Ids.player)
-        bullet.getComponent(CompTtl::class.java).remaining = 7f
+        bullet.getComponent(CompTtl::class.java).remaining = 9f
         bullet.getComponent(CompDraw::class.java).color = Colors.enemyBullets
         bullet.getComponent(CompDraw::class.java).drawingStyle = DrawStyle.DIR_TRAIL
     }
 
     fun playerBullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
         dim(id, world, posX, posY, bulletDim, bulletDim)
-        dir.scl(120f)
+        dir.scl(160f)
         val bullet = world.getEntity(id)
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompIsPlayer::class.java).setPlayer(true)

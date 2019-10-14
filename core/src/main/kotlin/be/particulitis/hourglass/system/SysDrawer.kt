@@ -6,31 +6,51 @@ import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.DrawStyle.*
 import com.artemis.Aspect
+import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
-import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.sqrt
 
 @Wire(failOnNull = false)
-class SysDrawer : IteratingSystem(Aspect.all(CompSpace::class.java, CompDraw::class.java)) {
+class SysDrawer : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompDraw::class.java)) {
+
     private lateinit var mSpace: ComponentMapper<CompSpace>
     private lateinit var mDraw: ComponentMapper<CompDraw>
     private lateinit var mDir: ComponentMapper<CompDir>
 
-    override fun process(entityId: Int) {
+    private val listEntitiesIds = mutableListOf<Int>()
+
+    // TODO: in place sort
+    override fun processSystem() {
+        val entities = entityIds
+        listEntitiesIds.clear()
+        for (i in 0 until entities.size()) {
+            listEntitiesIds.add(entities[i])
+        }
+        listEntitiesIds
+                .sortedBy {
+                    mDraw[it].layer
+                }
+                .forEach {
+                    process(it)
+                }
+    }
+
+    fun process(entityId: Int) {
         val draw = mDraw[entityId]
         val space = mSpace[entityId]
         FirstScreen.batch.draw(space, draw)
         when (draw.drawingStyle) {
             DIR_TRAIL -> drawTrail(entityId, draw, space)
-            NONE -> {}
+            NONE -> {
+            }
         }
 
     }
 
 
-    val dirDisplay = Vector2()
+    private val dirDisplay = Vector2()
     private fun drawTrail(entityId: Int, draw: CompDraw, space: CompSpace) {
         val dir = mDir[entityId]
         dirDisplay.set(dir.dir)

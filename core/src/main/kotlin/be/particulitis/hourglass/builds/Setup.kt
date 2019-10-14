@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.artemis.managers.TagManager
 import com.badlogic.gdx.Gdx
-import kotlin.reflect.KFunction5
 
 object Setup {
 
@@ -20,6 +19,11 @@ object Setup {
     // tag manager is null for some reason, waiting on a response https://gitter.im/junkdog/artemis-odb. We'll see
     const val playerTag = "PLAYER"
     const val playerSpeed = 150f
+
+    const val playerLayer = 10
+    const val playerBulletLayer = 9
+    const val enemyBulletLayer = 2
+    const val enemyLayer = 1
 
     fun score(id: Int, world: World) {
         val space = world.getEntity(id).getComponent(CompSpace::class.java)
@@ -64,6 +68,7 @@ object Setup {
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
         player.getComponent(CompDraw::class.java).color = Colors.player
+        player.getComponent(CompDraw::class.java).layer = playerLayer
     }
 
     fun enemyShoot(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
@@ -104,6 +109,7 @@ object Setup {
         collide.addCollidingWith(Ids.player, Ids.playerBullet)
         enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
         enemy.getComponent(CompDraw::class.java).color = Colors.enemy
+        enemy.getComponent(CompDraw::class.java).layer = enemyLayer
         return enemy
     }
 
@@ -121,6 +127,7 @@ object Setup {
         bullet.getComponent(CompTtl::class.java).remaining = 9f
         bullet.getComponent(CompDraw::class.java).color = Colors.enemyBullets
         bullet.getComponent(CompDraw::class.java).drawingStyle = DrawStyle.DIR_TRAIL
+        bullet.getComponent(CompDraw::class.java).layer = enemyBulletLayer
     }
 
     fun playerBullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
@@ -135,6 +142,7 @@ object Setup {
         collide.addCollidingWith(Ids.enemy)
         bullet.getComponent(CompTtl::class.java).remaining = 1f
         bullet.getComponent(CompDraw::class.java).color = Colors.playerBullets
+        bullet.getComponent(CompDraw::class.java).layer = playerBulletLayer
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {

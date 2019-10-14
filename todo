@@ -8,6 +8,7 @@ func:
         ~~fix map and score display~~
         ~~have enemies not turning when they are frozen~~
         ~~prevent no move strategy => shooting enemies~~
+        ~~sort drawing layers~~
     menus
 
 spice:

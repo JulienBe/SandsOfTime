@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.Debug
 import be.particulitis.hourglass.common.GAngleCollision
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.comp.CompCollide
@@ -9,7 +8,6 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.utils.IntBag
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2

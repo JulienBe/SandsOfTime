@@ -15,7 +15,7 @@ func:
     don't have enemies that die on you increase score
 
 spice:
-    sound
+    ~~sound~~
     explosion particles
     lights
     border effect

@@ -98,6 +98,7 @@ class FirstScreen : Screen {
                 .build()
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
+        val boombox = Boombox(world)
 
         init {
             world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))

@@ -7,7 +7,6 @@ import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.systems.IteratingSystem
-import com.badlogic.gdx.Gdx
 
 class SysShooter : IteratingSystem(Aspect.all(CompShooter::class.java, CompSpace::class.java)) {
 

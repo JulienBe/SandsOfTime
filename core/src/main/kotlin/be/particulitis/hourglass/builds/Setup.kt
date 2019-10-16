@@ -82,7 +82,7 @@ object Setup {
         shoot.shootingFunc = {
             val id = world.create(shoot.bullet.first.build(world))
             val playerSpace = world.getSystem(TagManager::class.java).getEntity(playerTag).getComponent(CompSpace::class.java)
-            shoot.dir.set(playerSpace.centerX - space.x, playerSpace.centerY - space.y)
+            shoot.dir.set(playerSpace.centerX - (space.x + enemyDim / 2f), playerSpace.centerY - (space.y + enemyDim / 2f))
             shoot.dir.nor()
             shoot.bullet.second.invoke(id, world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,

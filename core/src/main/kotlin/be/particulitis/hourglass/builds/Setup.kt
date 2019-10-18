@@ -35,6 +35,7 @@ object Setup {
         world.getSystem(TagManager::class.java).register(playerTag, playerEntityId)
 
         val playerControl = player.getComponent(CompControl::class.java)
+        val draw = player.getComponent(CompDraw::class.java)
         playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
         playerControl.addAction(listOf(Input.Keys.Z, Input.Keys.W,      Input.Keys.UP),     GAction.UP)
@@ -67,15 +68,19 @@ object Setup {
 
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
-        player.getComponent(CompDraw::class.java).color = Colors.player
-        player.getComponent(CompDraw::class.java).layer = playerLayer
+        draw.color = Colors.player
+        draw.layer = playerLayer
+        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
     }
 
     fun enemyShoot(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
         val enemy = baseEnemy(id, world, exclusionStartX, exclusionStopX, exclusionStartY, exclusionStopY)
         val space = enemy.getComponent(CompSpace::class.java)
         val shoot = enemy.getComponent(CompShooter::class.java)
-        enemy.getComponent(CompDraw::class.java).color = Colors.enemyShoots
+        val draw = enemy.getComponent(CompDraw::class.java)
+        draw.color = Colors.enemyShoots
+        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+
         shoot.setOffset((enemyDim - bulletDim) / 2f, (enemyDim - bulletDim) / 2f)
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, Setup::enemyBullet)
@@ -93,12 +98,18 @@ object Setup {
 
     fun enemySlug(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
         val enemy = baseEnemy(id, world, exclusionStartX, exclusionStopX, exclusionStartY, exclusionStopY)
+        val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
+        val space = enemy.getComponent(CompSpace::class.java)
+        val draw = enemy.getComponent(CompDraw::class.java)
+        val dir = enemy.getComponent(CompDir::class.java)
 
         enemy.getComponent(CompTargetSeek::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
-        val player = world.getSystem(TagManager::class.java).getEntity(playerTag)
         enemy.getComponent(CompTargetFollow::class.java).set(player.getComponent(CompSpace::class.java))
         enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 0.3f)
-        enemy.getComponent(CompDraw::class.java).drawingStyle = DrawStyle.DIR_TRAIL
+        draw.drawingStyle = { batch ->
+            DrawMethods.basic(space, draw, batch)
+            DrawMethods.drawTrail(draw, space, dir, batch)
+        }
     }
 
     private fun baseEnemy(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float): Entity {
@@ -117,32 +128,38 @@ object Setup {
         dim(id, world, posX, posY, bulletDim, bulletDim)
         dir.scl(22f)
         val bullet = world.getEntity(id)
+        val space = bullet.getComponent(CompSpace::class.java)
+        val draw = bullet.getComponent(CompDraw::class.java)
+        val collide = bullet.getComponent(CompCollide::class.java)
+
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompDir::class.java).setSpeedAcceleration(100f, 100f)
         bullet.getComponent(CompIsPlayer::class.java).setPlayer(false)
         bullet.getComponent(CompHp::class.java).setHp(1)
-        val collide = bullet.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemyBullet)
         collide.addCollidingWith(Ids.player)
         bullet.getComponent(CompTtl::class.java).remaining = 9f
-        bullet.getComponent(CompDraw::class.java).color = Colors.enemyBullets
-        bullet.getComponent(CompDraw::class.java).drawingStyle = DrawStyle.DIR_TRAIL
-        bullet.getComponent(CompDraw::class.java).layer = enemyBulletLayer
+        draw.color = Colors.enemyBullets
+        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+        draw.layer = enemyBulletLayer
     }
 
     fun playerBullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
         dim(id, world, posX, posY, bulletDim, bulletDim)
         dir.scl(160f)
         val bullet = world.getEntity(id)
+        val collide = bullet.getComponent(CompCollide::class.java)
+        val space = bullet.getComponent(CompSpace::class.java)
+        val draw = bullet.getComponent(CompDraw::class.java)
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompIsPlayer::class.java).setPlayer(true)
         bullet.getComponent(CompHp::class.java).setHp(100000)
-        val collide = bullet.getComponent(CompCollide::class.java)
         collide.setIds(Ids.playerBullet)
         collide.addCollidingWith(Ids.enemy)
         bullet.getComponent(CompTtl::class.java).remaining = 1f
-        bullet.getComponent(CompDraw::class.java).color = Colors.playerBullets
-        bullet.getComponent(CompDraw::class.java).layer = playerBulletLayer
+        draw.color = Colors.playerBullets
+        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+        draw.layer = playerBulletLayer
     }
 
     private fun dim(id: Int, world: World, x: Float, y: Float, w: Float, h: Float) {

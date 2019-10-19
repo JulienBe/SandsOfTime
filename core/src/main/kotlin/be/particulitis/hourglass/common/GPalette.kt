@@ -22,13 +22,20 @@ enum class GPalette(val r: Float, val g: Float, val b: Float) {
     PINK_SKIN(1f, 0.8f, 0.667f);
 
     val basic = Color(r, g, b, 1f)
-    val light = Color(basic).mul(Color(1.3f, 1.5f, 1.5f, 1f))
-    val dark = Color(basic).mul(Color(0.7f, 0.5f, 0.5f, 1f))
-    val darkest = Color(basic).mul(Color(0.5f, 0.3f, 0.3f, 1f))
+    val light = Color(r * 1.1f, g * 1.2f, b* 1.2f, 1f)
+    val dark = Color( r * 0.9f, g * 0.8f, b * 0.8f, 1f)
+    val darkest = Color(r * 0.8f, g * 0.7f, b * 0.7f, 1f)
     val basicf = basic.toFloatBits()
     val lightf = light.toFloatBits()
     val darkf = dark.toFloatBits()
     val darkestf = darkest.toFloatBits()
     val scale = floatArrayOf(lightf, basicf, darkf, darkestf)
+
+    init {
+        println("light $lightf")
+        println("basic $basicf")
+        println("dark  $darkf")
+        println(" ")
+    }
 
 }

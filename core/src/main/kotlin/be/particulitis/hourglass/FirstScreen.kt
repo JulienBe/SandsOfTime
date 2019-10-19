@@ -1,7 +1,7 @@
 package be.particulitis.hourglass
 
-import be.particulitis.hourglass.builds.Builder
-import be.particulitis.hourglass.builds.Setup
+import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GResolution

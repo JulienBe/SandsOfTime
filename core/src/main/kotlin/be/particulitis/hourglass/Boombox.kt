@@ -1,6 +1,6 @@
 package be.particulitis.hourglass
 
-import be.particulitis.hourglass.builds.Aspects
+import be.particulitis.hourglass.gamedata.Aspects
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.comp.CompIsPlayer
 import com.artemis.Aspect

@@ -1,4 +1,4 @@
-package be.particulitis.hourglass.builds
+package be.particulitis.hourglass.gamedata
 
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.*
@@ -14,9 +14,6 @@ object Setup {
 
     const val bulletDim = 2f
     const val enemyDim = 10f
-    const val playerDim = 5f
-    const val playerHDim = playerDim / 2f
-    // tag manager is null for some reason, waiting on a response https://gitter.im/junkdog/artemis-odb. We'll see
     const val playerTag = "PLAYER"
     const val playerSpeed = 150f
 
@@ -42,11 +39,11 @@ object Setup {
         playerControl.addAction(listOf(Input.Keys.S, Input.Keys.DOWN),                      GAction.DOWN)
 
         player.getComponent(CompHp::class.java).setHp(10)
-        dim(playerEntityId, world, GResolution.areaHDim - playerHDim, GResolution.areaHDim - playerHDim, playerDim, playerDim)
+        dim(playerEntityId, world, GResolution.areaHDim - Dim.player.half, GResolution.areaHDim - Dim.player.half, Dim.player.w, Dim.player.w)
 
         val space = player.getComponent(CompSpace::class.java)
         val shoot = player.getComponent(CompShooter::class.java)
-        shoot.setOffset((playerDim - bulletDim) / 2f, (playerDim - bulletDim) / 2f)
+        shoot.setOffset((Dim.player.w - bulletDim) / 2f, (Dim.player.w - bulletDim) / 2f)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
             !shoot.keyCheck || (shoot.keyCheck && Gdx.input.justTouched())
@@ -70,7 +67,10 @@ object Setup {
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
         draw.color = Colors.player
         draw.layer = playerLayer
-        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+        draw.drawingStyle = {batch ->
+            DrawMethods.drawPlayer(space, draw, Anims.squareNoDir, 2, batch)
+            draw.cpt = (Gdx.graphics.frameId / 10).toInt()
+        }
     }
 
     fun enemyShoot(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
@@ -85,11 +85,11 @@ object Setup {
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, Setup::enemyBullet)
         shoot.shootingFunc = {
-            val id = world.create(shoot.bullet.first.build(world))
+            val bulletId = world.create(shoot.bullet.first.build(world))
             val playerSpace = world.getSystem(TagManager::class.java).getEntity(playerTag).getComponent(CompSpace::class.java)
             shoot.dir.set(playerSpace.centerX - (space.x + enemyDim / 2f), playerSpace.centerY - (space.y + enemyDim / 2f))
             shoot.dir.nor()
-            shoot.bullet.second.invoke(id, world,
+            shoot.bullet.second.invoke(bulletId, world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,
                     shoot.dir)
         }

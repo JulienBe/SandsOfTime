@@ -1,8 +1,8 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen
-import be.particulitis.hourglass.builds.Builder
-import be.particulitis.hourglass.builds.Setup
+import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.common.GTime

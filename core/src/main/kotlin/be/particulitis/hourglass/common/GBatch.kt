@@ -23,7 +23,7 @@ class GBatch(private val img: ImgMan) : SpriteBatch(8191) {
         val y = (GResolution.baseY + y).roundToInt().toFloat()
         val w = w.roundToInt().toFloat()
 
-        val m_fbo = FrameBuffer(Pixmap.Format.RGB565, GResolution.areaDim as Int, GResolution.areaDim as Int, false)
+        val m_fbo = FrameBuffer(Pixmap.Format.RGB565, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
         val m_fboRegion = TextureRegion(m_fbo.colorBufferTexture)
         m_fboRegion.flip(false, true)
         m_fbo.begin()
@@ -44,6 +44,11 @@ class GBatch(private val img: ImgMan) : SpriteBatch(8191) {
         val y = (GResolution.baseY + y).roundToInt().toFloat()
         val w = w.roundToInt().toFloat()
         draw(img.square, x, y, w, w)
+    }
+
+    fun draw(color: Float, x: Float, y: Float, w: Float) {
+        packedColor = color
+        draw(img.square, (GResolution.baseX + x).roundToInt().toFloat(), (GResolution.baseY + y).roundToInt().toFloat(), w.roundToInt().toFloat(), w.roundToInt().toFloat())
     }
 
 }

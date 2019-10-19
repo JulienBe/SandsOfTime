@@ -1,13 +1,12 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.builds.Setup
+import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.states.StateManager
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.managers.TagManager
 import com.artemis.systems.IteratingSystem
-import com.badlogic.gdx.Gdx
 
 class SysDead : IteratingSystem(Aspect.all(CompHp::class.java)) {
 

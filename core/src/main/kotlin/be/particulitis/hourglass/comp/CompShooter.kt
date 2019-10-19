@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.comp
 
-import be.particulitis.hourglass.builds.Builder
-import be.particulitis.hourglass.builds.Setup
+import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.gamedata.Setup
 import com.artemis.ArchetypeBuilder
 import com.artemis.World
 import com.badlogic.gdx.math.Vector2

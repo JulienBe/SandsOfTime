@@ -1,4 +1,4 @@
-package be.particulitis.hourglass.builds
+package be.particulitis.hourglass.gamedata
 
 import com.artemis.ArchetypeBuilder
 

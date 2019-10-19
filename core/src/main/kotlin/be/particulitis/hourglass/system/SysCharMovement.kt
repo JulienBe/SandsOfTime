@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.common.GAction
+import be.particulitis.hourglass.common.GDir
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompAction
 import be.particulitis.hourglass.comp.CompCharMovement
@@ -29,6 +30,7 @@ class SysCharMovement : IteratingSystem(Aspect.all(CompAction::class.java, CompC
                 GAction.DOWN    -> mvt.vec.y -= 1f
              }
         }
+        mvt.dir = GDir.get(mvt.vec)
         mvt.vec.nor().scl(mvt.speed)
         dim.move(mvt.vec.x, mvt.vec.y, GTime.playerDelta)
     }

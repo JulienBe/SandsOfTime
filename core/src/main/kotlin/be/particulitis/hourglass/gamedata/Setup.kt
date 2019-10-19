@@ -32,6 +32,10 @@ object Setup {
 
         val playerControl = player.getComponent(CompControl::class.java)
         val draw = player.getComponent(CompDraw::class.java)
+        val space = player.getComponent(CompSpace::class.java)
+        val shoot = player.getComponent(CompShooter::class.java)
+        val mvt = player.getComponent(CompCharMovement::class.java)
+
         playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
         playerControl.addAction(listOf(Input.Keys.Z, Input.Keys.W,      Input.Keys.UP),     GAction.UP)
@@ -40,8 +44,6 @@ object Setup {
         player.getComponent(CompHp::class.java).setHp(10)
         dim(playerEntityId, world, GResolution.areaHDim - Dim.Player.half, GResolution.areaHDim - Dim.Player.half, Dim.Player.w, Dim.Player.w)
 
-        val space = player.getComponent(CompSpace::class.java)
-        val shoot = player.getComponent(CompShooter::class.java)
         shoot.setOffset((Dim.Player.w - bulletDim) / 2f, (Dim.Player.w - bulletDim) / 2f)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
@@ -64,11 +66,22 @@ object Setup {
 
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
+        val anims = mapOf(
+                GDir.None to Anims.SquareNoDir,
+                GDir.Right to Anims.SquareRight,
+                GDir.DownRight to Anims.SquareDownRight,
+                GDir.Down to Anims.SquareDown,
+                GDir.DownLeft to Anims.SquareDownLeft,
+                GDir.Left to Anims.SquareLeft,
+                GDir.UpLeft to Anims.SquareUpLeft,
+                GDir.Up to Anims.SquareUp,
+                GDir.UpRight to Anims.SquareUpRight
+        )
         draw.color = Colors.player
         draw.layer = playerLayer
         draw.drawingStyle = {batch ->
-            DrawMethods.draw33anim(space, draw, Anims.squareNoDir, 2, Dim.Player, batch)
-            draw.cpt = (GTime.playerTime * 10f).toInt()
+            DrawMethods.draw33anim(space, draw, anims[mvt.dir]!!, 2, Dim.Player, batch)
+            draw.cpt = (GTime.enemyTime * 10f).toInt()
         }
     }
 
@@ -79,7 +92,7 @@ object Setup {
         val draw = enemy.getComponent(CompDraw::class.java)
         draw.color = Colors.enemyShoots
         draw.drawingStyle = {batch ->
-            DrawMethods.draw33anim(space, draw, Anims.squareNoDir, 2, Dim.Enemy, batch)
+            DrawMethods.draw33anim(space, draw, Anims.SquareNoDir, 2, Dim.Enemy, batch)
             draw.cpt = (GTime.enemyTime * 10f).toInt()
         }
 

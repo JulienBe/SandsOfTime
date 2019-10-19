@@ -28,15 +28,14 @@ object DrawMethods {
     /**
      * expecting a 3*3 frame
      */
-    fun drawPlayer(space: CompSpace, draw: CompDraw, anim: Anims, baseColor: Int, batch: GBatch) {
+    fun draw33anim(space: CompSpace, draw: CompDraw, anim: Anims, baseColor: Int, dim: Dim, batch: GBatch) {
         val frame = anim.frames[draw.cpt % anim.size]
         frame.forEachIndexed { index, color ->
-            println("color = ${MathUtils.clamp(baseColor + color, 0, 3)}")
             batch.draw(
                     draw.color.scale[MathUtils.clamp(baseColor + color, 0, 3)],
-                    space.x + Dim.player.third * (index % 3),
-                    space.y + Dim.player.third * (index / 3),
-                    Dim.player.third
+                    space.x + dim.third * (index % 3),
+                    space.y + dim.third * (index / 3),
+                    dim.third
             )
         }
     }

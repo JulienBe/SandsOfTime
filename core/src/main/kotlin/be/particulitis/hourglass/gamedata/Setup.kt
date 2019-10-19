@@ -13,7 +13,6 @@ import com.badlogic.gdx.Gdx
 object Setup {
 
     const val bulletDim = 2f
-    const val enemyDim = 10f
     const val playerTag = "PLAYER"
     const val playerSpeed = 150f
 
@@ -39,11 +38,11 @@ object Setup {
         playerControl.addAction(listOf(Input.Keys.S, Input.Keys.DOWN),                      GAction.DOWN)
 
         player.getComponent(CompHp::class.java).setHp(10)
-        dim(playerEntityId, world, GResolution.areaHDim - Dim.player.half, GResolution.areaHDim - Dim.player.half, Dim.player.w, Dim.player.w)
+        dim(playerEntityId, world, GResolution.areaHDim - Dim.Player.half, GResolution.areaHDim - Dim.Player.half, Dim.Player.w, Dim.Player.w)
 
         val space = player.getComponent(CompSpace::class.java)
         val shoot = player.getComponent(CompShooter::class.java)
-        shoot.setOffset((Dim.player.w - bulletDim) / 2f, (Dim.player.w - bulletDim) / 2f)
+        shoot.setOffset((Dim.Player.w - bulletDim) / 2f, (Dim.Player.w - bulletDim) / 2f)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
             !shoot.keyCheck || (shoot.keyCheck && Gdx.input.justTouched())
@@ -68,8 +67,8 @@ object Setup {
         draw.color = Colors.player
         draw.layer = playerLayer
         draw.drawingStyle = {batch ->
-            DrawMethods.drawPlayer(space, draw, Anims.squareNoDir, 2, batch)
-            draw.cpt = (Gdx.graphics.frameId / 10).toInt()
+            DrawMethods.draw33anim(space, draw, Anims.squareNoDir, 2, Dim.Player, batch)
+            draw.cpt = (GTime.playerTime * 10f).toInt()
         }
     }
 
@@ -79,15 +78,18 @@ object Setup {
         val shoot = enemy.getComponent(CompShooter::class.java)
         val draw = enemy.getComponent(CompDraw::class.java)
         draw.color = Colors.enemyShoots
-        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+        draw.drawingStyle = {batch ->
+            DrawMethods.draw33anim(space, draw, Anims.squareNoDir, 2, Dim.Enemy, batch)
+            draw.cpt = (GTime.enemyTime * 10f).toInt()
+        }
 
-        shoot.setOffset((enemyDim - bulletDim) / 2f, (enemyDim - bulletDim) / 2f)
+        shoot.setOffset(Dim.Enemy.half - (bulletDim / 2f), Dim.Enemy.half - (bulletDim / 2f))
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, Setup::enemyBullet)
         shoot.shootingFunc = {
             val bulletId = world.create(shoot.bullet.first.build(world))
             val playerSpace = world.getSystem(TagManager::class.java).getEntity(playerTag).getComponent(CompSpace::class.java)
-            shoot.dir.set(playerSpace.centerX - (space.x + enemyDim / 2f), playerSpace.centerY - (space.y + enemyDim / 2f))
+            shoot.dir.set(playerSpace.centerX - (space.x + Dim.Enemy.half), playerSpace.centerY - (space.y + Dim.Enemy.half))
             shoot.dir.nor()
             shoot.bullet.second.invoke(bulletId, world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,
@@ -113,7 +115,7 @@ object Setup {
     }
 
     private fun baseEnemy(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float): Entity {
-        dim(id, world, GRand.floatExcludingPlease(0f, GResolution.areaDim - enemyDim, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - enemyDim, exclusionStartY, exclusionStopY), enemyDim, enemyDim)
+        dim(id, world, GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartY, exclusionStopY), Dim.Enemy.w, Dim.Enemy.w)
         val enemy = world.getEntity(id)
         val collide = enemy.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemy)

@@ -1,6 +1,6 @@
 package be.particulitis.hourglass
 
-import be.particulitis.hourglass.gamedata.Colors
+import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
 

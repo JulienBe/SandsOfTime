@@ -1,9 +1,42 @@
-package be.particulitis.hourglass.gamedata
+package be.particulitis.hourglass.gamedata.graphics
 
 import be.particulitis.hourglass.common.GHelper
 
-enum class Anims(val frames: List<IntArray>) {
+enum class Anims33(val frames: List<IntArray>) {
 
+    ShootFromRight(arrayListOf(intArrayOf(
+                    +0, +0, +0,
+                    +0, +0, -2,
+                    +0, +0, +0
+            ), intArrayOf(
+                    +0, +0, +0,
+                    +0, -2, -1,
+                    +0, +0, +0
+            ), intArrayOf(
+                    +0, +0, +0,
+                    -2, -1, +0,
+                    +0, +0, +0
+            ), intArrayOf(
+                    +0, +0, +0,
+                    -1, +0, +0,
+                    +0, +0, +0
+            ), intArrayOf(
+                    +0, +0, +0,
+                    +0, +0, +0,
+                    +0, +0, +0
+            ), intArrayOf(
+                    +0, +0, +0,
+                    +0, +0, +0,
+                    +0, +0, +0
+            )
+    )),
+    ShootFromDownRight(GHelper.rotate45(ShootFromRight)),
+    ShootFromDown(GHelper.rotate45(ShootFromDownRight)),
+    ShootFromDownLeft(GHelper.rotate45(ShootFromDown)),
+    ShootFromLeft(GHelper.rotate45(ShootFromDownLeft)),
+    ShootFromUpLeft(GHelper.rotate45(ShootFromLeft)),
+    ShootFromUp(GHelper.rotate45(ShootFromUpLeft)),
+    ShootFromUpRight(GHelper.rotate45(ShootFromUp)),
     SquareNoDir(arrayListOf(intArrayOf(
                     +0, +0, +0,
                     +0, +0, +0,

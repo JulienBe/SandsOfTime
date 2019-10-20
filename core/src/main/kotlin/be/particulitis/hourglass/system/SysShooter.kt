@@ -15,10 +15,12 @@ class SysShooter : IteratingSystem(Aspect.all(CompShooter::class.java, CompSpace
 
     override fun process(entityId: Int) {
         val shoot = mShoot[entityId]
+        shoot.justShot = false
 
         if (shoot.nextShoot < GTime.myTime(mIsPlayer.has(entityId)) && shoot.shouldShood.invoke()) {
             shoot.shootingFunc.invoke()
             shoot.nextShoot = GTime.myTime(mIsPlayer.has(entityId)) + shoot.firerate
+            shoot.justShot = true
         }
     }
 }

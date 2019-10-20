@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.common
 
-import be.particulitis.hourglass.gamedata.Anims
+import be.particulitis.hourglass.gamedata.graphics.Anims33
 import com.badlogic.gdx.Gdx
 
 object GHelper {
@@ -19,7 +19,7 @@ object GHelper {
     val x get() = percentX * GResolution.areaDim
     val y get() = percentY * GResolution.areaDim
 
-    fun mirrorAnimHorizontal(anim: Anims): List<IntArray> {
+    fun mirrorAnimHorizontal(anim: Anims33): List<IntArray> {
         return anim.frames.map { ints ->
             intArrayOf(
                     ints[2], ints[1], ints[0],
@@ -29,7 +29,7 @@ object GHelper {
         }.toCollection(arrayListOf())
     }
 
-    fun mirrorAnimVertical(anim: Anims): List<IntArray> {
+    fun mirrorAnimVertical(anim: Anims33): List<IntArray> {
         return anim.frames.map { ints ->
             intArrayOf(
                     ints[6], ints[7], ints[8],
@@ -40,7 +40,7 @@ object GHelper {
     }
 
 
-    fun rotate90(anim: Anims): List<IntArray> {
+    fun rotate90(anim: Anims33): List<IntArray> {
         return anim.frames.map { ints ->
             intArrayOf(
                     ints[6], ints[3], ints[0],
@@ -50,7 +50,17 @@ object GHelper {
         }.toCollection(arrayListOf())
     }
 
-    fun rotate270(anim: Anims): List<IntArray> {
+    fun rotate45(anim: Anims33): List<IntArray> {
+        return anim.frames.map { ints ->
+            intArrayOf(
+                    ints[3], ints[0], ints[1],
+                    ints[6], ints[4], ints[2],
+                    ints[7], ints[8], ints[5]
+            )
+        }.toCollection(arrayListOf())
+    }
+
+    fun rotate270(anim: Anims33): List<IntArray> {
         return anim.frames.map { ints ->
             intArrayOf(
                     ints[2], ints[5], ints[8],

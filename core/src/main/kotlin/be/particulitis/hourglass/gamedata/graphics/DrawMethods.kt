@@ -1,9 +1,10 @@
-package be.particulitis.hourglass.gamedata
+package be.particulitis.hourglass.gamedata.graphics
 
 import be.particulitis.hourglass.common.GBatch
 import be.particulitis.hourglass.comp.CompDir
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
+import be.particulitis.hourglass.gamedata.Dim
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.sqrt
@@ -28,8 +29,16 @@ object DrawMethods {
     /**
      * expecting a 3*3 frame
      */
-    fun draw33anim(space: CompSpace, draw: CompDraw, anim: Anims, baseColor: Int, dim: Dim, batch: GBatch) {
-        val frame = anim.frames[draw.cpt % anim.size]
+    fun draw33animLoop(space: CompSpace, draw: CompDraw, anim: Anims33, baseColor: Int, dim: Dim, batch: GBatch) {
+        drawFrame(anim.frames[draw.cpt % anim.size], batch, draw, baseColor, space, dim)
+    }
+    fun draw33animNoLoop(space: CompSpace, draw: CompDraw, anim: Anims33, baseColor: Int, dim: Dim, batch: GBatch) {
+        val cpt = MathUtils.clamp(draw.cpt, 0, anim.size - 1)
+        println("cpt $cpt")
+        drawFrame(anim.frames[MathUtils.clamp(draw.cpt, 0, anim.size - 1)], batch, draw, baseColor, space, dim)
+    }
+
+    private fun drawFrame(frame: IntArray, batch: GBatch, draw: CompDraw, baseColor: Int, space: CompSpace, dim: Dim) {
         frame.forEachIndexed { index, color ->
             batch.draw(
                     draw.color.scale[MathUtils.clamp(baseColor + color, 0, 3)],

@@ -3,6 +3,9 @@ package be.particulitis.hourglass.gamedata
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.comp.*
+import be.particulitis.hourglass.gamedata.graphics.Anims33
+import be.particulitis.hourglass.gamedata.graphics.Colors
+import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import com.artemis.Entity
 import com.artemis.World
 import com.badlogic.gdx.Input
@@ -21,6 +24,29 @@ object Setup {
     const val enemyBulletLayer = 2
     const val enemyLayer = 1
 
+    val dirAnims = mapOf(
+            GDir.None to Anims33.SquareNoDir,
+            GDir.Right to Anims33.SquareRight,
+            GDir.DownRight to Anims33.SquareDownRight,
+            GDir.Down to Anims33.SquareDown,
+            GDir.DownLeft to Anims33.SquareDownLeft,
+            GDir.Left to Anims33.SquareLeft,
+            GDir.UpLeft to Anims33.SquareUpLeft,
+            GDir.Up to Anims33.SquareUp,
+            GDir.UpRight to Anims33.SquareUpRight
+    )
+    val shootAnims = mapOf(
+            GDir.None to Anims33.SquareNoDir,
+            GDir.Right to Anims33.ShootFromRight,
+            GDir.DownRight to Anims33.ShootFromDownRight,
+            GDir.Down to Anims33.ShootFromDown,
+            GDir.DownLeft to Anims33.ShootFromDownLeft,
+            GDir.Left to Anims33.ShootFromLeft,
+            GDir.UpLeft to Anims33.ShootFromUpLeft,
+            GDir.Up to Anims33.ShootFromUp,
+            GDir.UpRight to Anims33.ShootFromUpRight
+    )
+
     fun score(id: Int, world: World) {
         val space = world.getEntity(id).getComponent(CompSpace::class.java)
         space.setPos(90f, 170f)
@@ -35,6 +61,7 @@ object Setup {
         val space = player.getComponent(CompSpace::class.java)
         val shoot = player.getComponent(CompShooter::class.java)
         val mvt = player.getComponent(CompCharMovement::class.java)
+        var anim = shootAnims[GDir.None]
 
         playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
@@ -53,9 +80,11 @@ object Setup {
             val id = world.create(shoot.bullet.first.build(world))
             shoot.dir.set(GHelper.x - space.x, GHelper.y - space.y)
             shoot.dir.nor()
+            anim = shootAnims[GDir.get(shoot.dir)]
             shoot.bullet.second.invoke(id, world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,
                     shoot.dir)
+            draw.cpt = 0
         }
         shoot.setBullet(Builder.bullet, Setup::playerBullet)
         shoot.setFirerate(.15f)
@@ -66,22 +95,16 @@ object Setup {
 
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
-        val anims = mapOf(
-                GDir.None to Anims.SquareNoDir,
-                GDir.Right to Anims.SquareRight,
-                GDir.DownRight to Anims.SquareDownRight,
-                GDir.Down to Anims.SquareDown,
-                GDir.DownLeft to Anims.SquareDownLeft,
-                GDir.Left to Anims.SquareLeft,
-                GDir.UpLeft to Anims.SquareUpLeft,
-                GDir.Up to Anims.SquareUp,
-                GDir.UpRight to Anims.SquareUpRight
-        )
+
         draw.color = Colors.player
         draw.layer = playerLayer
         draw.drawingStyle = {batch ->
-            DrawMethods.draw33anim(space, draw, anims[mvt.dir]!!, 2, Dim.Player, batch)
-            draw.cpt = (GTime.enemyTime * 10f).toInt()
+            DrawMethods.draw33animNoLoop(space, draw, anim!!, 2, Dim.Player, batch)
+            draw.accu += GTime.playerDelta * 10f
+            if (draw.accu >= 1f) {
+                draw.cpt++
+                draw.accu -= 1f
+            }
         }
     }
 
@@ -92,7 +115,7 @@ object Setup {
         val draw = enemy.getComponent(CompDraw::class.java)
         draw.color = Colors.enemyShoots
         draw.drawingStyle = {batch ->
-            DrawMethods.draw33anim(space, draw, Anims.SquareNoDir, 2, Dim.Enemy, batch)
+            DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
             draw.cpt = (GTime.enemyTime * 10f).toInt()
         }
 

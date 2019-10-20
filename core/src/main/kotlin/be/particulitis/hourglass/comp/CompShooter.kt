@@ -25,6 +25,7 @@ class CompShooter : Comp() {
     val dir = Vector2(1f, 0f)
     var shouldShood = { true }
     var shootingFunc = {}
+    var justShot = false
 
     fun setBullet(build: ArchetypeBuilder, setup: KFunction5<@ParameterName(name = "id") Int, @ParameterName(name = "world") World, @ParameterName(name = "posX") Float, @ParameterName(name = "posY") Float, @ParameterName(name = "dir") Vector2, Unit>) {
         bullet = Pair(build, setup)

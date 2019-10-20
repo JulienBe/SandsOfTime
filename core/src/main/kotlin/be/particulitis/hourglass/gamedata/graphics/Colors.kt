@@ -1,4 +1,4 @@
-package be.particulitis.hourglass.gamedata
+package be.particulitis.hourglass.gamedata.graphics
 
 import be.particulitis.hourglass.common.GPalette
 

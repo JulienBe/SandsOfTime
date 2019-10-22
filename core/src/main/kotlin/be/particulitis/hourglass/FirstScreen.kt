@@ -20,16 +20,23 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 
 /** First screen of the application. Displayed after the application is created.  */
 class FirstScreen : Screen {
 
+    val vertexShader = Gdx.files.internal("vertex.glsl").readString()
+    val fragmentShader = Gdx.files.internal("fragment.glsl").readString()
+    val shaderProgram = ShaderProgram(vertexShader,fragmentShader)
+
     override fun show() {
+        ShaderProgram.pedantic = false
         GTime.reset()
         Setup.player(world.create(Builder.player.build(world)), world)
         Setup.score(world.create(Builder.score.build(world)), world)
         Gdx.input.inputProcessor = GInput
         StateManager.endPause(world)
+        batch.shader = shaderProgram
     }
 
     override fun render(delta: Float) {

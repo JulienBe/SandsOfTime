@@ -33,8 +33,6 @@ object DrawMethods {
         drawFrame(anim.frames[draw.cpt % anim.size], batch, draw, baseColor, space, dim)
     }
     fun draw33animNoLoop(space: CompSpace, draw: CompDraw, anim: Anims33, baseColor: Int, dim: Dim, batch: GBatch) {
-        val cpt = MathUtils.clamp(draw.cpt, 0, anim.size - 1)
-        println("cpt $cpt")
         drawFrame(anim.frames[MathUtils.clamp(draw.cpt, 0, anim.size - 1)], batch, draw, baseColor, space, dim)
     }
 

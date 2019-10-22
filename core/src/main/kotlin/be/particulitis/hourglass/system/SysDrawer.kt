@@ -2,6 +2,7 @@ package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.FirstScreen.Companion.batch
+import be.particulitis.hourglass.common.GPalette
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.comp.CompDraw
 import com.artemis.Aspect
@@ -21,8 +22,8 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     private lateinit var mDraw: ComponentMapper<CompDraw>
 
     private val listEntitiesIds = mutableListOf<Int>()
-    private val fboShadow = FrameBuffer(Pixmap.Format.RGBA8888, GResolution.screenWidth.toInt(), GResolution.screenHeight.toInt(), false)
-    private val fboCurrent = FrameBuffer(Pixmap.Format.RGBA8888, GResolution.screenWidth.toInt(), GResolution.screenHeight.toInt(), false)
+    private val fboShadow = FrameBuffer(Pixmap.Format.RGBA8888, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
+    private val fboCurrent = FrameBuffer(Pixmap.Format.RGBA8888, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
 
     override fun processSystem() {
         batch.end()
@@ -39,6 +40,11 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
         val texture = drawFbo(fboCurrent)
+        for (i in 0..200) {
+            for (j in 0..200) {
+                FirstScreen.batch.draw(GPalette.BLUE, i.toFloat(), j.toFloat(), 1f)
+            }
+        }
         batch.end()
         fboShadow.end()
 
@@ -69,7 +75,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
                     mDraw[it].layer
                 }
                 .forEach {
-                    mDraw[it].drawingStyle.invoke(FirstScreen.batch)
+                    mDraw[it].drawingStyle.invoke(batch)
                 }
         batch.end()
     }

@@ -2,7 +2,6 @@ package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen.Companion.batch
 import be.particulitis.hourglass.FirstScreen.Companion.cam
-import be.particulitis.hourglass.FirstScreen.Companion.lightShader
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.comp.CompDraw
 import com.artemis.Aspect
@@ -27,9 +26,10 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     private val fboShadow = FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
     private val fboCurrent = FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
     private val fboLight = FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
+    private val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
+    private val mergeShader = GShader.createShader("shaders/merge/vertex.glsl", "shaders/merge/fragment.glsl")
 
     override fun processSystem() {
-
         if (Gdx.input.justTouched())
             GLight.create(GHelper.x, GHelper.y, GRand.nextFloat(), GRand.nextFloat(), GRand.nextFloat())
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
@@ -53,17 +53,22 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
             batch.draw(front, 0f, GResolution.screenHeight, GResolution.areaDim, -GResolution.screenHeight)
         }
 
+        batch.shader = mergeShader
         batch.begin()
         cam.setToOrtho(false, GResolution.screenWidth, GResolution.screenHeight)
         cam.update()
         batch.projectionMatrix = cam.combined
         Gdx.gl20.glEnable(GL20.GL_BLEND)
-        batch.color = Color.WHITE
+        mergeShader.setUniformi("u_lights", 1)
+        Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE1)
+        lightTexture.bind()
+        Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
+        front.bind()
         batch.setColor(0.5f, 0.5f, 0.5f, 0.1f)
         batch.draw(shadow, GResolution.baseX, 0f, GResolution.areaDim, GResolution.areaDim)
         batch.setColor(1f, 1f, 1f, 1f)
         batch.draw(front, GResolution.baseX, GResolution.screenHeight, GResolution.areaDim, -GResolution.screenHeight)
-        batch.draw(lightTexture, GResolution.baseX, GResolution.screenHeight, GResolution.areaDim, -GResolution.screenHeight)
+        batch.shader = null
     }
 
     private fun draw(camW: Float, camH: Float, clean: Boolean, buffer: FrameBuffer, drawFun: () -> Unit): Texture {

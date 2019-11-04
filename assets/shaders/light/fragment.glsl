@@ -26,5 +26,5 @@ void main() {
         total_b += level * u_light_color[i].b;
     }
 
-    gl_FragColor = vec4(total_r, total_g, total_b, min(sqrt(total_light), 0.75));
+    gl_FragColor = vec4(total_r, total_g, total_b, sqrt(total_light));
 }

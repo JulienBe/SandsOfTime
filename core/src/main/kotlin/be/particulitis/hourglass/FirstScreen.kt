@@ -17,7 +17,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.glutils.ShaderProgram
 
 /** First screen of the application. Displayed after the application is created.  */
 class FirstScreen : Screen {
@@ -97,7 +96,6 @@ class FirstScreen : Screen {
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
         val boombox = Boombox(world)
-        val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
 
         init {
             world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))

@@ -31,11 +31,4 @@ enum class GPalette(val r: Float, val g: Float, val b: Float) {
     val darkestf = darkest.toFloatBits()
     val scale = floatArrayOf(lightf, basicf, darkf, darkestf)
 
-    init {
-        println("light $lightf")
-        println("basic $basicf")
-        println("dark  $darkf")
-        println(" ")
-    }
-
 }

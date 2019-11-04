@@ -1,11 +1,8 @@
 package be.particulitis.hourglass
 
+import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Setup
-import be.particulitis.hourglass.common.GBatch
-import be.particulitis.hourglass.common.GInput
-import be.particulitis.hourglass.common.GResolution
-import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
@@ -25,18 +22,12 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram
 /** First screen of the application. Displayed after the application is created.  */
 class FirstScreen : Screen {
 
-    val vertexShader = Gdx.files.internal("vertex.glsl").readString()
-    val fragmentShader = Gdx.files.internal("fragment.glsl").readString()
-    val shaderProgram = ShaderProgram(vertexShader,fragmentShader)
-
     override fun show() {
-        ShaderProgram.pedantic = false
         GTime.reset()
         Setup.player(world.create(Builder.player.build(world)), world)
         Setup.score(world.create(Builder.score.build(world)), world)
         Gdx.input.inputProcessor = GInput
         StateManager.endPause(world)
-        batch.shader = shaderProgram
     }
 
     override fun render(delta: Float) {
@@ -106,6 +97,7 @@ class FirstScreen : Screen {
         val world = World(config)
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
         val boombox = Boombox(world)
+        val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
 
         init {
             world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))

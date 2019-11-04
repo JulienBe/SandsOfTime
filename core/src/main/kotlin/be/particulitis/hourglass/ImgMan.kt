@@ -14,7 +14,9 @@ class ImgMan {
         manager.load<Texture>(cubePath)
         manager.finishLoading()
         square = manager.get<Texture>(squarePath)
+        square.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
         cube = manager.get<Texture>(cubePath)
+        cube.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
     }
 
     companion object {

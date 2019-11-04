@@ -78,7 +78,7 @@ object Setup {
         }
         shoot.shootingFunc = {
             val id = world.create(shoot.bullet.first.build(world))
-            shoot.dir.set(GHelper.x - space.x, GHelper.y - space.y)
+            shoot.dir.set(GHelper.x - space.x, GResolution.areaDim - GHelper.y - space.y)
             shoot.dir.nor()
             anim = shootAnims[GDir.get(shoot.dir)]
             shoot.bullet.second.invoke(id, world,

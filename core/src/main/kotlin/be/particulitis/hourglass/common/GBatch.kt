@@ -4,7 +4,6 @@ import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import kotlin.math.roundToInt
 
 class GBatch(private val img: ImgMan) : SpriteBatch(8191) {
 
@@ -14,15 +13,12 @@ class GBatch(private val img: ImgMan) : SpriteBatch(8191) {
 
     fun draw(color: GPalette, x: Float, y: Float, w: Float) {
         packedColor = color.scale[1]
-        val x = (GResolution.baseX + x).roundToInt().toFloat()
-        val y = (GResolution.baseY + y).roundToInt().toFloat()
-        val w = w.roundToInt().toFloat()
         draw(img.square, x, y, w, w)
     }
 
     fun draw(color: Float, x: Float, y: Float, w: Float) {
         packedColor = color
-        draw(img.square, (GResolution.baseX + x).roundToInt().toFloat(), (GResolution.baseY + y).roundToInt().toFloat(), w.roundToInt().toFloat(), w.roundToInt().toFloat())
+        draw(img.square, x, y, w, w)
     }
 
 }

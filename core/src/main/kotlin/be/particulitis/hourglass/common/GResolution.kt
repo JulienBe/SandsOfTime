@@ -5,7 +5,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 object GResolution {
-    const val areaDim = 200f
+    const val areaDim = 256f
     const val areaHDim = areaDim / 2f
     var ratio = 0f
     var screenWidth = 0f

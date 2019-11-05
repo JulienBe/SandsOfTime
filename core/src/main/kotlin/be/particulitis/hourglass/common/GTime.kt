@@ -24,6 +24,6 @@ object GTime {
         return if (isPlayer)
             playerTime
         else
-            time
+            enemyTime
     }
 }

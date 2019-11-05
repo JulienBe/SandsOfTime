@@ -24,6 +24,7 @@ class SysTime : BaseSystem() {
         
         GTime.playerTime += GTime.playerDelta
         GTime.enemyTime += GTime.enemyDelta
+        GTime.time += GTime.delta
     }
 
     fun computeDeltas(playerPhase: Boolean): Float {

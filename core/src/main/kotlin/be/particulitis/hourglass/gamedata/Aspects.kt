@@ -33,7 +33,8 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompCharMovement::class.java,
             CompAction::class.java,
             CompHp::class.java,
-            CompShooter::class.java)),
+            CompShooter::class.java,
+            CompLight::class.java)),
     Bullet(listOf(
             CompIsPlayer::class.java,
             CompSpace::class.java,
@@ -41,7 +42,8 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompCollide::class.java,
             CompHp::class.java,
             CompDir::class.java,
-            CompTtl::class.java)),
+            CompTtl::class.java,
+            CompLight::class.java)),
     Score(listOf(
             CompSpace::class.java,
             CompTxt::class.java,

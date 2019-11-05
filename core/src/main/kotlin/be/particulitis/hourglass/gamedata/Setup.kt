@@ -62,6 +62,7 @@ object Setup {
         val shoot = player.getComponent(CompShooter::class.java)
         val mvt = player.getComponent(CompCharMovement::class.java)
         var anim = shootAnims[GDir.None]
+        val light = player.getComponent(CompLight::class.java)
 
         playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
@@ -78,7 +79,7 @@ object Setup {
         }
         shoot.shootingFunc = {
             val id = world.create(shoot.bullet.first.build(world))
-            shoot.dir.set(GHelper.x - space.x, GResolution.areaDim - GHelper.y - space.y)
+            shoot.dir.set(GHelper.x - space.x, GHelper.y - space.y)
             shoot.dir.nor()
             anim = shootAnims[GDir.get(shoot.dir)]
             shoot.bullet.second.invoke(id, world,
@@ -96,6 +97,7 @@ object Setup {
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
         player.getComponent(CompIsPlayer::class.java).setPlayer(true)
 
+        light.setLight(Colors.player, space.centerX, space.centerY, 1.8f)
         draw.color = Colors.player
         draw.layer = playerLayer
         draw.drawingStyle = {batch ->
@@ -169,6 +171,7 @@ object Setup {
         val space = bullet.getComponent(CompSpace::class.java)
         val draw = bullet.getComponent(CompDraw::class.java)
         val collide = bullet.getComponent(CompCollide::class.java)
+        val light = bullet.getComponent(CompLight::class.java)
 
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompDir::class.java).setSpeedAcceleration(100f, 100f)
@@ -177,6 +180,7 @@ object Setup {
         collide.setIds(Ids.enemyBullet)
         collide.addCollidingWith(Ids.player)
         bullet.getComponent(CompTtl::class.java).remaining = 9f
+        light.setLight(Colors.enemyBullets, posX, posY, 0.1f)
         draw.color = Colors.enemyBullets
         draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
         draw.layer = enemyBulletLayer
@@ -189,12 +193,14 @@ object Setup {
         val collide = bullet.getComponent(CompCollide::class.java)
         val space = bullet.getComponent(CompSpace::class.java)
         val draw = bullet.getComponent(CompDraw::class.java)
+        val light = bullet.getComponent(CompLight::class.java)
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompIsPlayer::class.java).setPlayer(true)
         bullet.getComponent(CompHp::class.java).setHp(100000)
         collide.setIds(Ids.playerBullet)
         collide.addCollidingWith(Ids.enemy)
         bullet.getComponent(CompTtl::class.java).remaining = 1f
+        light.setLight(Colors.playerBullets, posX, posY, 0.2f)
         draw.color = Colors.playerBullets
         draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
         draw.layer = playerBulletLayer

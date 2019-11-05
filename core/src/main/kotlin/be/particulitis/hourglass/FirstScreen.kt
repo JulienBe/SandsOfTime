@@ -4,6 +4,7 @@ import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.comp.CompEnemy
+import be.particulitis.hourglass.comp.CompLight
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import com.artemis.Aspect
@@ -84,6 +85,7 @@ class FirstScreen : Screen {
                 .with(SysDamage())
                 .with(SysClampPos())
 
+                .with(SysLightTrack())
                 .with(SysDrawer())
                 .with(SysUiDisplay())
 
@@ -100,10 +102,20 @@ class FirstScreen : Screen {
         init {
             world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))
                     .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
-                        override fun inserted(entities: IntBag) {
-                        }
+                        override fun inserted(entities: IntBag) { }
                         override fun removed(entities: IntBag) {
                             score++
+                        }
+                    })
+            world.aspectSubscriptionManager.get(Aspect.all(CompLight::class.java))
+                    .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
+                        val mLight = world.getMapper(CompLight::class.java)
+                        override fun inserted(entities: IntBag?) { }
+                        override fun removed(entities: IntBag) {
+                            val ids: IntArray = entities.data
+                            for (it in entities.size() - 1 downTo 0) {
+                                mLight[ids[it]].clear()
+                            }
                         }
                     })
         }

@@ -30,11 +30,6 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     private val mergeShader = GShader.createShader("shaders/merge/vertex.glsl", "shaders/merge/fragment.glsl")
 
     override fun processSystem() {
-        if (Gdx.input.justTouched())
-            GLight.create(GHelper.x, GHelper.y, GRand.nextFloat(), GRand.nextFloat(), GRand.nextFloat())
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            GLight.clear()
-
         batch.end()
 
         batch.shader = lightShader
@@ -65,14 +60,14 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
         front.bind()
         batch.setColor(0.5f, 0.5f, 0.5f, 0.1f)
-        batch.draw(shadow, GResolution.baseX, 0f, GResolution.areaDim, GResolution.areaDim)
+        batch.draw(shadow, GResolution.baseX, GResolution.screenHeight, GResolution.areaDim, -GResolution.screenHeight)
         batch.setColor(1f, 1f, 1f, 1f)
         batch.draw(front, GResolution.baseX, GResolution.screenHeight, GResolution.areaDim, -GResolution.screenHeight)
         batch.shader = null
     }
 
     private fun draw(camW: Float, camH: Float, clean: Boolean, buffer: FrameBuffer, drawFun: () -> Unit): Texture {
-        cam.setToOrtho(true, camW, camH)
+        cam.setToOrtho(false, camW, camH)
         cam.update()
         batch.projectionMatrix = cam.combined
         buffer.begin()
@@ -90,9 +85,11 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     }
 
     private fun setLights(lightShader: ShaderProgram) {
+        println("lights : ${GLight.numberOfLights()}")
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
-        lightShader.setUniform2fv("u_light_pos", GLight.xy, 0, GLight.numberOfLights() * 2)
-        lightShader.setUniform3fv("u_light_color", GLight.rgb, 0, GLight.numberOfLights() * 3)
+        lightShader.setUniform1fv("u_light_intensity", GLight.intensity.values.toFloatArray(), 0, GLight.intensity.size)
+        lightShader.setUniform2fv("u_light_pos", GLight.xy.values.toFloatArray(), 0, GLight.xy.size)
+        lightShader.setUniform3fv("u_light_color", GLight.rgb.values.toFloatArray(), 0, GLight.rgb.size)
     }
 
     // TODO: in place sort

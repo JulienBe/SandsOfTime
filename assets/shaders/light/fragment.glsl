@@ -7,8 +7,9 @@ precision mediump float;
 
 uniform sampler2D u_texture;
 
-uniform vec2 u_light_pos[40];
-uniform vec3 u_light_color[40];
+uniform vec2 u_light_pos[400];
+uniform vec3 u_light_color[400];
+uniform float u_light_intensity[400];
 uniform int u_light_count;
 
 void main() {
@@ -19,6 +20,7 @@ void main() {
     for (int i = 0; i < u_light_count; i++) {
         vec2 pos = (gl_FragCoord.xy - vec2(u_light_pos[i].x, u_light_pos[i].y)) / vec2(256.0, 256.0);
         float len = min(length(pos), 1.0);
+        len *= 1 / u_light_intensity[i];
         float level = 1.0 - ((step(0.45f, len) + step(0.15f, len) + step(0.05f, len)) / 3.0);
         total_light += level;
         total_r += level * u_light_color[i].r;

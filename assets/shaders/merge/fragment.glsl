@@ -14,6 +14,6 @@ uniform sampler2D u_lights;
 void main() {
     vec4 light = texture2D(u_lights, v_texCoords);
     vec4 game = texture2D(u_texture, v_texCoords);
-    vec4 color = vec4(((0.75 + light.rgb) * game.rgb), min(light.a, game.a));
+    vec4 color = vec4(((1 + light.rgb) * game.rgb), min(light.a, game.a));
     gl_FragColor = v_color * light * game;
 }

@@ -3,7 +3,7 @@ apply plugin: 'java'
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 mainClassName = 'be.particulitis.hourglass.lwjgl3.Lwjgl3Launcher'
-sourceCompatibility = 1.7
+sourceCompatibility = 1.11
 
 dependencies {
   api project(':core')

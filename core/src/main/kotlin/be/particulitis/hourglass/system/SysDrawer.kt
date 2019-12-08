@@ -85,7 +85,6 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     }
 
     private fun setLights(lightShader: ShaderProgram) {
-        println("lights : ${GLight.numberOfLights()}")
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
         lightShader.setUniform1fv("u_light_intensity", GLight.intensity.values.toFloatArray(), 0, GLight.intensity.size)
         lightShader.setUniform2fv("u_light_pos", GLight.xy.values.toFloatArray(), 0, GLight.xy.size)

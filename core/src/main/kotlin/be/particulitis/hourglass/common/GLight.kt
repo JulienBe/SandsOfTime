@@ -6,6 +6,12 @@ object GLight {
     val rgb = LinkedHashMap<Int, Float>()
     val intensity = LinkedHashMap<Int, Float>()
     var id = 0
+    fun x(id: Int) = xy[id * 2 + 0] ?: 5f
+    fun y(id: Int) = xy[id * 2 + 1] ?: 5f
+    fun r(id: Int) = rgb[id * 3 + 0] ?: 1f
+    fun g(id: Int) = rgb[id * 3 + 1] ?: 1f
+    fun b(id: Int) = rgb[id * 3 + 2] ?: 1f
+    fun intensity(id: Int) = intensity[id] ?: 1f
 
     fun create(x: Float, y: Float, r: Float, g: Float, b: Float, intensity: Float): Int {
         id++

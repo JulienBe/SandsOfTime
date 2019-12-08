@@ -1,3 +1,5 @@
+#version 120
+
 #ifdef GL_ES
 #define LOWP lowp
 precision mediump float;
@@ -5,8 +7,9 @@ precision mediump float;
 #define LOWP
 #endif
 
-uniform sampler2D u_texture;
+const vec2 resolution = vec2(256.0, 256.0);
 
+uniform sampler2D u_texture;
 uniform vec2 u_light_pos[400];
 uniform vec3 u_light_color[400];
 uniform float u_light_intensity[400];
@@ -18,7 +21,7 @@ void main() {
     float total_b = 0.0;
     float total_light = 0.0;
     for (int i = 0; i < u_light_count; i++) {
-        vec2 pos = (gl_FragCoord.xy - vec2(u_light_pos[i].x, u_light_pos[i].y)) / vec2(256.0, 256.0);
+        vec2 pos = (gl_FragCoord.xy - u_light_pos[i]) / resolution.xy;
         float len = min(length(pos), 1.0);
         len *= 1 / u_light_intensity[i];
         float level = 1.0 - ((step(0.45f, len) + step(0.15f, len) + step(0.05f, len)) / 3.0);
@@ -27,6 +30,5 @@ void main() {
         total_g += level * u_light_color[i].g;
         total_b += level * u_light_color[i].b;
     }
-
     gl_FragColor = vec4(total_r, total_g, total_b, sqrt(total_light));
 }

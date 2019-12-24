@@ -79,6 +79,7 @@ class FirstScreen : Screen {
                 .with(SysTargetSeek())
                 .with(SysDirMovement())
                 .with(SysShooter())
+                .with(SysParticle())
 
                 .with(SysTtl())
                 .with(SysCollider())

@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.comp
 
-import com.artemis.PooledComponent
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 

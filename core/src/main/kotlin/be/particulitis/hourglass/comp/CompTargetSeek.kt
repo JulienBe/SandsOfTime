@@ -1,7 +1,5 @@
 package be.particulitis.hourglass.comp
 
-import be.particulitis.hourglass.common.GAction
-import com.artemis.PooledComponent
 import com.badlogic.gdx.math.Vector2
 
 class CompTargetSeek : Comp() {

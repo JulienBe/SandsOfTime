@@ -5,7 +5,7 @@ import be.particulitis.hourglass.comp.*
 enum class Aspects(val comps: List<Class<out Comp>>) {
 
     EnemySlug(listOf(
-            CompIsPlayer::class.java,
+            CompLayer::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -14,18 +14,20 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompEnemy::class.java,
             CompDir::class.java,
             CompTargetSeek::class.java,
-            CompTargetFollow::class.java)),
+            CompTargetFollow::class.java,
+            CompParticleEmitter::class.java)),
     EnemyShoot(listOf(
-            CompIsPlayer::class.java,
+            CompLayer::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
             CompAction::class.java,
             CompHp::class.java,
             CompEnemy::class.java,
-            CompShooter::class.java)),
+            CompShooter::class.java,
+            CompParticleEmitter::class.java)),
     Player(listOf(
-            CompIsPlayer::class.java,
+            CompLayer::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -36,7 +38,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompShooter::class.java,
             CompLight::class.java)),
     Bullet(listOf(
-            CompIsPlayer::class.java,
+            CompLayer::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -48,5 +50,14 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompSpace::class.java,
             CompTxt::class.java,
             CompScore::class.java
+    )),
+    ExplosionParticle(listOf(
+            CompDraw::class.java,
+            CompSpace::class.java,
+            CompParticle::class.java,
+            CompLayer::class.java,
+            CompTtl::class.java,
+            CompDir::class.java,
+            CompLight::class.java
     ))
 }

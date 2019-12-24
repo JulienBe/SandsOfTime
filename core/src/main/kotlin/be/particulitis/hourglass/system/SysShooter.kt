@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.comp.CompIsPlayer
+import be.particulitis.hourglass.comp.CompLayer
 import be.particulitis.hourglass.comp.CompShooter
 import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
@@ -11,7 +11,7 @@ import com.artemis.systems.IteratingSystem
 class SysShooter : IteratingSystem(Aspect.all(CompShooter::class.java, CompSpace::class.java)) {
 
     private lateinit var mShoot: ComponentMapper<CompShooter>
-    private lateinit var mIsPlayer: ComponentMapper<CompIsPlayer>
+    private lateinit var mIsPlayer: ComponentMapper<CompLayer>
 
     override fun process(entityId: Int) {
         val shoot = mShoot[entityId]

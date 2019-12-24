@@ -24,17 +24,6 @@ object Setup {
     const val enemyBulletLayer = 2
     const val enemyLayer = 1
 
-    val dirAnims = mapOf(
-            GDir.None to Anims33.SquareNoDir,
-            GDir.Right to Anims33.SquareRight,
-            GDir.DownRight to Anims33.SquareDownRight,
-            GDir.Down to Anims33.SquareDown,
-            GDir.DownLeft to Anims33.SquareDownLeft,
-            GDir.Left to Anims33.SquareLeft,
-            GDir.UpLeft to Anims33.SquareUpLeft,
-            GDir.Up to Anims33.SquareUp,
-            GDir.UpRight to Anims33.SquareUpRight
-    )
     val shootAnims = mapOf(
             GDir.None to Anims33.SquareNoDir,
             GDir.Right to Anims33.ShootFromRight,
@@ -52,6 +41,36 @@ object Setup {
         space.setPos(90f, 170f)
     }
 
+    fun explosionParticle(id: Int, world: World, explosionCenterX: Float, explosionCenterY: Float, str: Float) {
+        val p = world.getEntity(id)
+        val draw = p.getComponent(CompDraw::class.java)
+        val space = p.getComponent(CompSpace::class.java)
+        val particle = p.getComponent(CompParticle::class.java)
+        val ttl = p.getComponent(CompTtl::class.java)
+        val dir = p.getComponent(CompDir::class.java)
+        val light = p.getComponent(CompLight::class.java)
+        val layer = p.getComponent(CompLayer::class.java)
+
+        layer.setLayer(Layers.Other)
+
+        space.setPos(explosionCenterX + GRand.gauss(1f), explosionCenterY + GRand.gauss(1f))
+
+        val w = GRand.absGauss(1f)
+        space.setDim(w, w)
+
+        ttl.remaining = GRand.absGauss(.5f)
+
+        dir.add(GRand.gauss(str), GRand.gauss(str))
+
+        particle.update = {
+            dir.mul(.97f)
+        }
+
+        draw.drawingStyle = { batch ->
+            DrawMethods.basic(space, draw, batch)
+        }
+    }
+
     fun player(playerEntityId: Int, world: World) {
         val player = world.getEntity(playerEntityId)
         world.getSystem(TagManager::class.java).register(playerTag, playerEntityId)
@@ -60,7 +79,6 @@ object Setup {
         val draw = player.getComponent(CompDraw::class.java)
         val space = player.getComponent(CompSpace::class.java)
         val shoot = player.getComponent(CompShooter::class.java)
-        val mvt = player.getComponent(CompCharMovement::class.java)
         var anim = shootAnims[GDir.None]
         val light = player.getComponent(CompLight::class.java)
 
@@ -95,7 +113,7 @@ object Setup {
         collide.addCollidingWith(Ids.enemy, Ids.enemyBullet)
 
         player.getComponent(CompCharMovement::class.java).speed = playerSpeed
-        player.getComponent(CompIsPlayer::class.java).setPlayer(true)
+        player.getComponent(CompLayer::class.java).setLayer(Layers.Player)
 
         light.setLight(Colors.player, space.centerX, space.centerY, 1.8f)
         draw.color = Colors.player
@@ -115,6 +133,8 @@ object Setup {
         val space = enemy.getComponent(CompSpace::class.java)
         val shoot = enemy.getComponent(CompShooter::class.java)
         val draw = enemy.getComponent(CompDraw::class.java)
+        val particleEmitter = enemy.getComponent(CompParticleEmitter::class.java)
+
         draw.color = Colors.enemyShoots
         draw.drawingStyle = {batch ->
             DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
@@ -134,6 +154,11 @@ object Setup {
                     shoot.dir)
         }
         shoot.setFirerate(2f)
+
+        particleEmitter.emit = {
+            for (i in 0..8)
+                explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 18f)
+        }
     }
 
     fun enemySlug(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
@@ -142,6 +167,7 @@ object Setup {
         val space = enemy.getComponent(CompSpace::class.java)
         val draw = enemy.getComponent(CompDraw::class.java)
         val dir = enemy.getComponent(CompDir::class.java)
+        val particleEmitter = enemy.getComponent(CompParticleEmitter::class.java)
 
         enemy.getComponent(CompTargetSeek::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
         enemy.getComponent(CompTargetFollow::class.java).set(player.getComponent(CompSpace::class.java))
@@ -149,6 +175,11 @@ object Setup {
         draw.drawingStyle = { batch ->
             DrawMethods.basic(space, draw, batch)
             DrawMethods.drawTrail(draw, space, dir, batch)
+        }
+
+        particleEmitter.emit = {
+            for (i in 0..20)
+                explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 28f)
         }
     }
 
@@ -158,7 +189,7 @@ object Setup {
         val collide = enemy.getComponent(CompCollide::class.java)
         collide.setIds(Ids.enemy)
         collide.addCollidingWith(Ids.player, Ids.playerBullet)
-        enemy.getComponent(CompIsPlayer::class.java).setPlayer(false)
+        enemy.getComponent(CompLayer::class.java).setLayer(Layers.Enemy)
         enemy.getComponent(CompDraw::class.java).color = Colors.enemy
         enemy.getComponent(CompDraw::class.java).layer = enemyLayer
         return enemy
@@ -175,7 +206,7 @@ object Setup {
 
         bullet.getComponent(CompDir::class.java).set(dir)
         bullet.getComponent(CompDir::class.java).setSpeedAcceleration(100f, 100f)
-        bullet.getComponent(CompIsPlayer::class.java).setPlayer(false)
+        bullet.getComponent(CompLayer::class.java).setLayer(Layers.Enemy)
         bullet.getComponent(CompHp::class.java).setHp(1)
         collide.setIds(Ids.enemyBullet)
         collide.addCollidingWith(Ids.player)
@@ -195,7 +226,7 @@ object Setup {
         val draw = bullet.getComponent(CompDraw::class.java)
         val light = bullet.getComponent(CompLight::class.java)
         bullet.getComponent(CompDir::class.java).set(dir)
-        bullet.getComponent(CompIsPlayer::class.java).setPlayer(true)
+        bullet.getComponent(CompLayer::class.java).setLayer(Layers.Player)
         bullet.getComponent(CompHp::class.java).setHp(100000)
         collide.setIds(Ids.playerBullet)
         collide.addCollidingWith(Ids.enemy)

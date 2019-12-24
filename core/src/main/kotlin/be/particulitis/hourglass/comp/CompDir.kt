@@ -19,11 +19,19 @@ class CompDir : Comp() {
     }
 
     fun set(dir: Vector2) {
-        this.dir.set(dir)
+        set(dir.x, dir.y)
+    }
+
+    fun set(x: Float, y: Float) {
+        this.dir.set(x, y)
     }
 
     fun add(x: Float, y: Float) {
         dir.add(x, y)
+    }
+
+    fun mul(mul: Float) {
+        dir.scl(mul)
     }
 
     // TODO: enrich vec2 to avoid going over max speed

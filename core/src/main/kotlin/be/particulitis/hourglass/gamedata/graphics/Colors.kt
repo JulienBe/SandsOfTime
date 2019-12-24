@@ -9,5 +9,6 @@ object Colors {
     val enemy = GPalette.REDISH
     val enemyBullets = GPalette.PINK
     val enemyShoots = GPalette.DARK_PINK
+    val explosion = GPalette.PINK_SKIN
     val map = GPalette.DARK_BLUE
 }

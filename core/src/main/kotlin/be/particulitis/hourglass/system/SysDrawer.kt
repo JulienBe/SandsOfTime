@@ -2,14 +2,15 @@ package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen.Companion.batch
 import be.particulitis.hourglass.FirstScreen.Companion.cam
-import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.GLight
+import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.GShader
 import be.particulitis.hourglass.comp.CompDraw
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap

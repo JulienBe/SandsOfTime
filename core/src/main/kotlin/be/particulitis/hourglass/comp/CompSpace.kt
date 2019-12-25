@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.comp
 
+import be.particulitis.hourglass.gamedata.Dim
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
@@ -24,6 +25,10 @@ class CompSpace : Comp() {
     override fun reset() {
         pos.x = 0f
         pos.y = 0f
+    }
+
+    fun setDim(dim: Dim) {
+        setDim(dim.w, dim.w)
     }
 
     fun setDim(w: Float, h: Float) {

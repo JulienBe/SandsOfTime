@@ -2,12 +2,13 @@ package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.gamedata.Builder
-import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompSpace
+import be.particulitis.hourglass.gamedata.Data
+import be.particulitis.hourglass.gamedata.setups.SEnemy
 import com.artemis.*
 import com.artemis.managers.TagManager
 import kotlin.reflect.KFunction6
@@ -19,11 +20,11 @@ class SysSpawner : BaseSystem() {
     override fun processSystem() {
         val enemies = world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))
         if (enemies.entities.size() < min + (GTime.playerTime / 2f)) {
-            val playerPos = mSpace[world.getSystem(TagManager::class.java).getEntity(Setup.playerTag)]
+            val playerPos = mSpace[world.getSystem(TagManager::class.java).getEntity(Data.playerTag)]
             if (GRand.nextBoolean())
-                addEnemy(Builder.enemySlug, playerPos, Setup::enemySlug)
+                addEnemy(Builder.enemySlug, playerPos, SEnemy::enemySlug)
             else
-                addEnemy(Builder.enemyShoot, playerPos, Setup::enemyShoot)
+                addEnemy(Builder.enemyShoot, playerPos, SEnemy::enemyShoot)
         }
     }
 

@@ -2,9 +2,10 @@ package be.particulitis.hourglass
 
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.gamedata.Builder
-import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompLight
+import be.particulitis.hourglass.gamedata.setups.SPlayer
+import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import com.artemis.Aspect
@@ -24,8 +25,8 @@ class FirstScreen : Screen {
 
     override fun show() {
         GTime.reset()
-        Setup.player(world.create(Builder.player.build(world)), world)
-        Setup.score(world.create(Builder.score.build(world)), world)
+        SPlayer.player(world.create(Builder.player.build(world)), world)
+        SUi.score(world.create(Builder.score.build(world)), world)
         Gdx.input.inputProcessor = GInput
         StateManager.endPause(world)
     }

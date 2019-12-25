@@ -1,8 +1,8 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.gamedata.Setup
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.comp.CompParticleEmitter
+import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.states.StateManager
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
@@ -19,7 +19,7 @@ class SysDead : IteratingSystem(Aspect.all(CompHp::class.java)) {
 
         if (hp.hp <= 0) {
             world.delete(entityId)
-            if (world.getSystem(TagManager::class.java).getTag(entityId) == Setup.playerTag)
+            if (world.getSystem(TagManager::class.java).getTag(entityId) == Data.playerTag)
                 StateManager.playerDead(world)
             if (mEmitter.has(entityId))
                 mEmitter[entityId].emit.invoke()

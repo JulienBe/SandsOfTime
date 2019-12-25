@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.comp
 
 import be.particulitis.hourglass.gamedata.Builder
-import be.particulitis.hourglass.gamedata.Setup
+import be.particulitis.hourglass.gamedata.setups.SBullet
 import com.artemis.ArchetypeBuilder
 import com.artemis.World
 import com.badlogic.gdx.math.Vector2
@@ -13,7 +13,7 @@ class CompShooter : Comp() {
         private set
     var keyToCheck = 0
         private set
-    var bullet = Pair(Builder.bullet, Setup::playerBullet)
+    var bullet = Pair(Builder.bullet, SBullet::playerBullet)
         private set
     var offsetX = 0f
         private set
@@ -55,8 +55,4 @@ class CompShooter : Comp() {
         firerate = .15f
         nextShoot = 0f
     }
-}
-
-enum class ShootingTypes {
-
 }

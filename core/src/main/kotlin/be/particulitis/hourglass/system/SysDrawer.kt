@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.FirstScreen.Companion.batch
-import be.particulitis.hourglass.FirstScreen.Companion.cam
+import be.particulitis.hourglass.common.GGraphics.Companion.batch
+import be.particulitis.hourglass.common.GGraphics.Companion.cam
 import be.particulitis.hourglass.common.GLight
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.common.GShader

@@ -1,10 +1,17 @@
-package be.particulitis.hourglass
+package be.particulitis.hourglass.font
 
+import be.particulitis.hourglass.common.GGraphics
+import be.particulitis.hourglass.common.GPalette
+import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
 
 class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
+
+    var x = (charWidth * fontWidth) / 4f
+    var y = (charHeight * fontWidth) / 4f
+    var palette = Colors.scoreFont
 
     fun act(delta: Float) {
         x -= (x - desiredX) * delta * 4
@@ -12,13 +19,12 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     }
 
     fun draw(space: CompSpace) {
-        FirstScreen.batch.draw(Colors.scoreFont, space.x + x, space.y + y, fontWidth)
+        draw(space.x, space.y)
     }
 
-    var x = (charWidth * fontWidth) / 4f
-        private set
-    var y = (charHeight * fontWidth) / 4f
-        private set
+    fun draw(offsetX: Float, offsetY: Float) {
+        GGraphics.batch.draw(palette.scale[1], x + offsetX, y + offsetY, fontWidth)
+    }
 
     companion object {
 
@@ -41,6 +47,22 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
                         }
                 )
 
+        fun get(index: Int, c: Char, offsetX: Float, offsetY: Float): FontChar {
+            val char = get(index, c)?.let { FontChar(it) }!!
+            char.pixels.forEach { p ->
+                p.desiredX += offsetX
+                p.desiredY += offsetY
+                if (GRand.bool()) {
+                    p.x = p.desiredX + GRand.gauss(70f)
+                    p.y = p.desiredY + GRand.gauss(1f)
+                } else {
+                    p.x = p.desiredX + GRand.gauss(1f)
+                    p.y = p.desiredY + GRand.gauss(70f)
+                }
+            }
+            return char
+        }
+
         fun get(index: Int, c: Char): List<FontPixel>? {
             return instantiate[c]?.map {
                 FontPixel(index * charWidth + it.xF * fontWidth, it.yF * fontWidth)
@@ -49,8 +71,6 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     }
 
 }
-
-data class FontCharTemplate(val nbPixels: Int, val seq: CharSequence)
 
 enum class Offsets() {
     ZERO,

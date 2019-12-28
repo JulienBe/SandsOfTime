@@ -1,9 +1,12 @@
-package be.particulitis.hourglass
+package be.particulitis.hourglass.screens
 
-import be.particulitis.hourglass.common.*
-import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.Boombox
+import be.particulitis.hourglass.common.GGraphics
+import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompLight
+import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
@@ -16,12 +19,9 @@ import com.artemis.managers.TagManager
 import com.artemis.utils.IntBag
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
 
 /** First screen of the application. Displayed after the application is created.  */
-class FirstScreen : Screen {
+class FirstScreen : AbstractScreen() {
 
     override fun show() {
         GTime.reset()
@@ -32,45 +32,19 @@ class FirstScreen : Screen {
     }
 
     override fun render(delta: Float) {
-        cls()
-        cam.update()
-        batch.projectionMatrix = cam.combined
-        GInput.newFrame()
-        world.setDelta(delta)
-        batch.begin()
-        world.process()
-        batch.end()
+        GGraphics.render {
+            GInput.newFrame()
+            world.setDelta(delta)
+            world.process()
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.P))
             StateManager.invertPause(world)
     }
 
-    private fun cls() {
-        Gdx.graphics.gL20.glClearColor(0f, 0f, 0f, 0f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
-    }
-
-    override fun resize(width: Int, height: Int) {
-        GResolution.compute()
-        cam.viewportWidth = GResolution.screenWidth
-        cam.viewportHeight = GResolution.screenHeight
-        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0f)
-    }
-
-    override fun pause() {
-    }
-
-    override fun resume() {
-    }
-
-    override fun hide() {
-    }
-
-    override fun dispose() {
-    }
-
     companion object {
         var score = 0
-        val batch = GBatch(ImgMan())
+
         val config = WorldConfigurationBuilder()
                 .with(TagManager())
                 .with(SysTime())
@@ -98,7 +72,6 @@ class FirstScreen : Screen {
                 .with(SysStartGame())
                 .build()
         val world = World(config)
-        val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
         val boombox = Boombox(world)
 
         init {

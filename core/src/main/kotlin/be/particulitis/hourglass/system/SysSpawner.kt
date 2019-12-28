@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GResolution
@@ -9,6 +8,7 @@ import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.setups.SEnemy
+import be.particulitis.hourglass.screens.FirstScreen
 import com.artemis.*
 import com.artemis.managers.TagManager
 import kotlin.reflect.KFunction6

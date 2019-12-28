@@ -1,14 +1,12 @@
-package be.particulitis.hourglass
+package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.font.FontPixel
-import be.particulitis.hourglass.screens.TitleScreen
 import com.badlogic.gdx.Game
 
 class Hourglass : Game() {
     override fun create() {
         // initialize it soon
         FontPixel
-        //setScreen(FirstScreen())
-        setScreen(TitleScreen())
+        setScreen(FirstScreen())
     }
 }

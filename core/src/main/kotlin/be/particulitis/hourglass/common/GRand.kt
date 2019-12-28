@@ -48,4 +48,6 @@ object GRand: Random() {
     fun absGauss(i: Int): Int {
         return Math.abs(gauss(i))
     }
+
+    fun bool() = nextBoolean()
 }

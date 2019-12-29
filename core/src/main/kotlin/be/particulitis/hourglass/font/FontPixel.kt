@@ -1,7 +1,6 @@
 package be.particulitis.hourglass.font
 
 import be.particulitis.hourglass.common.GGraphics
-import be.particulitis.hourglass.common.GPalette
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.comp.CompSpace
@@ -32,7 +31,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
         val charWidth = 4 * fontWidth
         val charHeight = 5 * fontWidth
 
-        val instantiate: Map<Char, List<Offsets>> = Gdx.files.internal("fonts")
+        private val instantiate: Map<Char, List<Offsets>> = Gdx.files.internal("fonts")
                 .readString()
                 .split("---")
                 .map { it.filter { char -> char.category != CharCategory.CONTROL} }
@@ -63,10 +62,20 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             return char
         }
 
-        fun get(index: Int, c: Char): List<FontPixel>? {
-            return instantiate[c]?.map {
-                FontPixel(index * charWidth + it.xF * fontWidth, it.yF * fontWidth)
-            }
+        fun get(index: Int, c: Char, width: Int = 2): List<FontPixel>? {
+            return instantiate[c]?.mapIndexed { i, offset ->
+                val pixel = mutableListOf<FontPixel>()
+                // add extra pixels
+                for (x in 0 until width) {
+                    for (y in 0 until width) {
+                        pixel.add(FontPixel(
+                                (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth),
+                                ((offset.yF * width) + y) * fontWidth
+                                ))
+                    }
+                }
+                pixel
+            }!!.flatten()
         }
     }
 

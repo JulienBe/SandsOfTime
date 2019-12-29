@@ -1,5 +1,6 @@
-package be.particulitis.hourglass.comp
+package be.particulitis.hourglass.comp.ui
 
+import be.particulitis.hourglass.comp.Comp
 import be.particulitis.hourglass.font.FontPixel
 import ktx.collections.GdxArray
 import ktx.collections.addAll

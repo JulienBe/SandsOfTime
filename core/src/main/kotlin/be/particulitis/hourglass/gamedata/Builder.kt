@@ -9,6 +9,7 @@ object Builder {
     val enemyShoot = createBuilder(Aspects.EnemyShoot)
     val score = createBuilder(Aspects.Score)
     val explosionParticle = createBuilder(Aspects.ExplosionParticle)
+    val prettyDisplay = createBuilder(Aspects.PrettyDisplay)
 
     private fun createBuilder(aspects: Aspects): ArchetypeBuilder {
         val builder = ArchetypeBuilder()

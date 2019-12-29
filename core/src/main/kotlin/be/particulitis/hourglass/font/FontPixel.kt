@@ -47,7 +47,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
                 )
 
         fun get(index: Int, c: Char, offsetX: Float, offsetY: Float): FontChar {
-            val char = get(index, c)?.let { FontChar(it) }!!
+            val char = FontChar(get(index, c))
             char.pixels.forEach { p ->
                 p.desiredX += offsetX
                 p.desiredY += offsetY
@@ -62,7 +62,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             return char
         }
 
-        fun get(index: Int, c: Char, width: Int = 2): List<FontPixel>? {
+        fun get(index: Int, c: Char, width: Int = 2): List<FontPixel> {
             return instantiate[c]?.mapIndexed { i, offset ->
                 val pixel = mutableListOf<FontPixel>()
                 // add extra pixels

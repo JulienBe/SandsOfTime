@@ -1,10 +1,10 @@
 package be.particulitis.hourglass.states
 
-import be.particulitis.hourglass.FirstScreen
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.Comp
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.entities
+import be.particulitis.hourglass.screens.FirstScreen
 import com.artemis.Aspect
 import com.artemis.World
 import kotlin.reflect.KClass

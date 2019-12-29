@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.comp.CompScore
-import be.particulitis.hourglass.comp.CompTxt
+import be.particulitis.hourglass.comp.ui.CompTxt
 import be.particulitis.hourglass.screens.FirstScreen
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem

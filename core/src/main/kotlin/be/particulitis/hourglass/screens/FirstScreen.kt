@@ -11,6 +11,7 @@ import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
+import be.particulitis.hourglass.system.ui.SysUiDisplay
 import com.artemis.Aspect
 import com.artemis.EntitySubscription
 import com.artemis.World
@@ -32,9 +33,9 @@ class FirstScreen : AbstractScreen() {
     }
 
     override fun render(delta: Float) {
+        world.setDelta(delta)
         GGraphics.render {
             GInput.newFrame()
-            world.setDelta(delta)
             world.process()
         }
 

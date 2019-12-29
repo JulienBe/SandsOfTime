@@ -43,7 +43,7 @@ object SEnemy {
         shoot.setFirerate(2f)
 
         particleEmitter.emit = {
-            for (i in 0..8)
+            for (i in 0..20)
                 SParticles.explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 18f)
         }
     }
@@ -65,7 +65,7 @@ object SEnemy {
         }
 
         particleEmitter.emit = {
-            for (i in 0..20)
+            for (i in 0..40)
                 SParticles.explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 28f)
         }
     }

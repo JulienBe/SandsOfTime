@@ -5,11 +5,13 @@ import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
+import ktx.collections.GdxArray
+import kotlin.math.roundToInt
 
 class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
 
-    var x = (charWidth * fontWidth) / 4f
-    var y = (charHeight * fontWidth) / 4f
+    var x = desiredX + GRand.gauss(5)
+    var y = desiredY + GRand.gauss(5)
     var palette = Colors.scoreFont
 
     fun act(delta: Float) {
@@ -22,7 +24,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     }
 
     fun draw(offsetX: Float, offsetY: Float) {
-        GGraphics.batch.draw(palette.scale[1], x + offsetX, y + offsetY, fontWidth)
+        GGraphics.batch.draw(palette.scale[1], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
     }
 
     companion object {
@@ -34,7 +36,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
         private val instantiate: Map<Char, List<Offsets>> = Gdx.files.internal("fonts")
                 .readString()
                 .split("---")
-                .map { it.filter { char -> char.category != CharCategory.CONTROL} }
+                .map { it.filter { char -> char.category != CharCategory.CONTROL } }
                 // so far it looks like : $111110011111010, %101001010100101, *101010111010101, +000010111010000, ...
                 .associateBy(
                         { it[0] },
@@ -62,16 +64,20 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             return char
         }
 
-        fun get(index: Int, c: Char, width: Int = 2): List<FontPixel> {
+        fun get(index: Int, c: Char, width: Int = 1, existingPool: GdxArray<FontPixel> = GdxArray()): List<FontPixel> {
             return instantiate[c]?.mapIndexed { i, offset ->
                 val pixel = mutableListOf<FontPixel>()
-                // add extra pixels
                 for (x in 0 until width) {
                     for (y in 0 until width) {
-                        pixel.add(FontPixel(
-                                (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth),
-                                ((offset.yF * width) + y) * fontWidth
-                                ))
+                        val x = (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth)
+                        val y = ((offset.yF * width) + y) * fontWidth
+                        val p: FontPixel = if (existingPool.isEmpty)
+                            FontPixel(x, y)
+                        else
+                            existingPool.pop()
+                        p.desiredX = x
+                        p.desiredY = y
+                        pixel.add(p)
                     }
                 }
                 pixel

@@ -11,7 +11,6 @@ import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
 
 @Wire(failOnNull = false)
@@ -27,17 +26,21 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         if (Gdx.input.justTouched()) {
             val xTouch = (GResolution.baseX + GHelper.x) - space.x
             val yTouch = (GResolution.baseY + GHelper.y) - space.y
-            ui.anims.add(FontAnim(ui.pixels.sortedBy { Vector2.dst(xTouch, yTouch, it.x, it.y) }.toMutableList(), xTouch, yTouch))
+            ui.anims.add(FontAnim(ui.pixels.sortedBy { Vector2.dst(xTouch, yTouch, it.x, it.y) }.toMutableList()))
         }
-        ui.time += GTime.delta
-        ui.currentIndex = (ui.time * 30).toInt()
+        ui.time += GTime.delta * (ui.pixels.size / 2f)
+        ui.currentIndex = ui.time.toInt()
         ui.pixels.filterIndexed { index, pixel ->
             index < ui.currentIndex
         }.forEach { pixel ->
-            pixel.act(Gdx.graphics.deltaTime)
+            pixel.act(GTime.delta)
             pixel.draw(space.x, space.y)
         }
         ui.anims.removeIf { it.act() }
+        if (ui.time > 140f && ui.w != 2) {
+            ui.time = ui.pixels.size.toFloat()
+            ui.setText(ui.txt, 2)
+        }
     }
 
 }

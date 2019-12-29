@@ -19,8 +19,11 @@ class FontPrettyDisplay(text: String, var x: Float, var y: Float) {
             pixels.sortedBy { Vector2.dst(fromX, fromY, it.x, it.y) }
 
     fun draw(batch: Batch) {
-        if (Gdx.input.justTouched())
-            anims.add(FontAnim(getListFrom(GResolution.baseX + GHelper.x, GResolution.baseY + GHelper.y).toMutableList()))
+        if (Gdx.input.justTouched()) {
+            val xTouch = GResolution.baseX + GHelper.x
+            val yTouch = GResolution.baseY + GHelper.y
+            anims.add(FontAnim(getListFrom(xTouch, yTouch).toMutableList(), xTouch, yTouch))
+        }
         time += Gdx.graphics.deltaTime
         currentIndex = (time * 30).toInt()
         pixels.filterIndexed { index, pixel ->

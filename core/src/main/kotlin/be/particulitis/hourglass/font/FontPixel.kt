@@ -2,6 +2,7 @@ package be.particulitis.hourglass.font
 
 import be.particulitis.hourglass.common.GGraphics
 import be.particulitis.hourglass.common.GRand
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
@@ -12,13 +13,19 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
 
     var x = desiredX + GRand.gauss(5)
     var y = desiredY + GRand.gauss(5)
+    var oldX = x
+    var oldY = y
     var palette = Colors.scoreFont
     var couldBeRemoved = false
     var scale = 1
 
     fun act(delta: Float) {
-        x -= (x - desiredX) * delta * 4
-        y -= (y - desiredY) * delta * 4
+        oldX = x
+        oldY = y
+        if (GTime.time.roundToInt() % 2 == 0)
+            x -= (x - desiredX) * delta * 6
+        else
+            y -= (y - desiredY) * delta * 6
     }
 
     fun draw(space: CompSpace) {
@@ -26,6 +33,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     }
 
     fun draw(offsetX: Float, offsetY: Float) {
+        GGraphics.batch.draw(palette.scale[scale], (oldX + offsetX).roundToInt().toFloat(), (oldY + offsetY).roundToInt().toFloat(), fontWidth)
         GGraphics.batch.draw(palette.scale[scale], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
     }
 

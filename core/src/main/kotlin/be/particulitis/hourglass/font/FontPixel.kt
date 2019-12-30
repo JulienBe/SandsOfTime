@@ -13,6 +13,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     var x = desiredX + GRand.gauss(5)
     var y = desiredY + GRand.gauss(5)
     var palette = Colors.scoreFont
+    var couldBeRemoved = false
 
     fun act(delta: Float) {
         x -= (x - desiredX) * delta * 4
@@ -29,11 +30,10 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
 
     companion object {
 
-        val fontWidth = 2f
-        val charWidth = 4 * fontWidth
-        val charHeight = 5 * fontWidth
+        const val fontWidth = 2f
+        const val charWidth = 4 * fontWidth
 
-        private val instantiate: Map<Char, List<Offsets>> = Gdx.files.internal("fonts")
+        private val instantiate: Map<Char, List<Pair<Int, Offsets>>> = Gdx.files.internal("fonts")
                 .readString()
                 .split("---")
                 .map { it.filter { char -> char.category != CharCategory.CONTROL } }
@@ -43,8 +43,8 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
                         { charDef -> charDef
                                     .subSequence(1, charDef.length)
                                     .mapIndexed { index, c -> if (c == '1') index else -1 }
-                                    .filter { it != -1 }
-                                    .map { Offsets.values()[it] }
+                                    //.filter { it != -1 }
+                                    .map { Pair(it, if (it != -1) Offsets.values()[it] else Offsets.ZERO) }
                         }
                 )
 
@@ -65,29 +65,65 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
         }
 
         fun get(index: Int, c: Char, width: Int = 1, existingPool: GdxArray<FontPixel> = GdxArray()): List<FontPixel> {
-            return instantiate[c]?.mapIndexed { i, offset ->
+            val list = instantiate[c] ?: error("Char $c isn't present")
+            return list.mapIndexed { i, pair ->
                 val pixel = mutableListOf<FontPixel>()
-                for (x in 0 until width) {
-                    for (y in 0 until width) {
-                        val x = (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth)
-                        val y = ((offset.yF * width) + y) * fontWidth
-                        val p: FontPixel = if (existingPool.isEmpty)
-                            FontPixel(x, y)
-                        else
-                            existingPool.pop()
-                        p.desiredX = x
-                        p.desiredY = y
-                        pixel.add(p)
+                // keeping -1 around so it's easier to reason about where the pixel is in the car
+                if (pair.first != -1) {
+                    val hasTop = isPresent(list, i - 3)
+                    val hasBottom = isPresent(list, i + 3)
+                    val hasLeft = isPresent(list, i - 1)
+                    val hasRight = isPresent(list, i + 1)
+                    val hasBottomLeft = isPresent(list, i + 2)
+                    val hasBottomRight = isPresent(list, i + 4)
+                    val hasTopLeft = isPresent(list, i - 4)
+                    val hasTopRight = isPresent(list, i - 2)
+                    val offset = pair.second
+                    for (x in 0 until width) {
+                        for (y in 0 until width) {
+                            val p = initFontPixel(index, width, offset, x, y, existingPool)
+                            pixel.add(p)
+                            p.couldBeRemoved = false
+                            when ((x * width) + y) {
+                                // bottom left
+                                0 -> if (!hasBottom && !hasLeft && !hasBottomLeft && !hasTopLeft && hasTop)
+                                    p.couldBeRemoved = true
+                                // top left
+                                width - 1 -> if (!hasTop && !hasLeft && !hasTopLeft && !hasBottomLeft)
+                                    p.couldBeRemoved = true
+                                // bottom right
+                                width -> if (!hasBottom && !hasRight && !hasBottomRight && !hasBottomLeft && hasLeft && hasTop)
+                                    p.couldBeRemoved = true
+                                // top right
+                                (width * width) - 1 -> if (!hasRight && hasLeft && !hasTop && !hasTopRight)
+                                    p.couldBeRemoved = true
+                            }
+                        }
                     }
                 }
                 pixel
-            }!!.flatten()
+            }.filter { it.isNotEmpty() }.flatten()
+        }
+
+        private fun isPresent(list: List<Pair<Int, Offsets>>, i: Int): Boolean {
+            return i >= 0 && i < list.size && list[i].first != -1
+        }
+
+        private fun initFontPixel(index: Int, width: Int, offset: Offsets, x: Int, y: Int, existingPool: GdxArray<FontPixel>): FontPixel {
+            val desiredX = (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth)
+            val desiredY = ((offset.yF * width) + y) * fontWidth
+            val p: FontPixel = if (existingPool.isEmpty)
+                FontPixel(desiredX, desiredY)
+            else
+                existingPool.pop()
+            p.desiredX = desiredX
+            p.desiredY = desiredY
+            return p
         }
     }
-
 }
 
-enum class Offsets() {
+enum class Offsets {
     ZERO,
     ONE,
     TWO,

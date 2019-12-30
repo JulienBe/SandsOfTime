@@ -6,6 +6,7 @@ import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.font.FontAnim
+import be.particulitis.hourglass.font.Offsets
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
@@ -40,6 +41,11 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         if (ui.time > 140f && ui.w != 2) {
             ui.time = ui.pixels.size.toFloat()
             ui.setText(ui.txt, 2)
+        }
+        if (ui.time > 250f) {
+            val candidate = ui.pixels.random()
+            if (candidate.couldBeRemoved)
+                ui.pixels.removeValue(candidate, true)
         }
     }
 

@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.system.ui
 
 import be.particulitis.hourglass.common.GHelper
+import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
@@ -47,11 +48,27 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
             ui.currentIndex = ui.pixels.size
             ui.changePhase(ui.phase + 1)
         }
-        if (ui.time > 15f) {
-            val candidate = ui.pixels.random()
-            if (candidate.couldBeRemoved)
-                ui.pixels.removeValue(candidate, true)
-        }
+        if (ui.time > 15f)
+            chopPixels(ui)
+        if (GRand.nextInt(180) == 0 && ui.currentIndex > ui.pixels.size)
+            swapPixel(ui)
+    }
+
+    private fun swapPixel(ui: CompPrettyUi) {
+        val one = ui.pixels.random()
+        val two = ui.pixels.random()
+        val oneFutureX = two.desiredX
+        val oneFutureY = two.desiredY
+        two.desiredX = one.desiredX
+        two.desiredY = one.desiredY
+        one.desiredX = oneFutureX
+        one.desiredY = oneFutureY
+    }
+
+    private fun chopPixels(ui: CompPrettyUi) {
+        val candidate = ui.pixels.random()
+        if (candidate.couldBeRemoved)
+            ui.pixels.removeValue(candidate, true)
     }
 
 }

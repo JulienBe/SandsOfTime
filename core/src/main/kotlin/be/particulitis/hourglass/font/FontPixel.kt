@@ -14,6 +14,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     var y = desiredY + GRand.gauss(5)
     var palette = Colors.scoreFont
     var couldBeRemoved = false
+    var scale = 1
 
     fun act(delta: Float) {
         x -= (x - desiredX) * delta * 4
@@ -25,7 +26,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     }
 
     fun draw(offsetX: Float, offsetY: Float) {
-        GGraphics.batch.draw(palette.scale[1], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
+        GGraphics.batch.draw(palette.scale[scale], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
     }
 
     companion object {

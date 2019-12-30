@@ -13,6 +13,6 @@ object SUi {
         val space = world.getEntity(id).getComponent(CompSpace::class.java)
         val ui = world.getEntity(id).getComponent(CompPrettyUi::class.java)
         space.setPos(x, y)
-        ui.setText(text)
+        ui.setText(text, 1)
     }
 }

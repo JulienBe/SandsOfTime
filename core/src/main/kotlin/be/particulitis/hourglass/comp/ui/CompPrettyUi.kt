@@ -16,11 +16,17 @@ class CompPrettyUi : Comp() {
     internal var time = .1f
     internal var anims = arrayListOf<FontAnim>()
     internal var txt = ""
-    internal var w = 1
+    internal var phase = 0
+    internal var phases = arrayOf(
+            Phase(1, 10f),
+            Phase(2, 20f),
+            Phase(3, 99999999999999999f)
+    )
+    internal val currentPhase: Phase
+        get() { return phases[phase] }
 
-    fun setText(txt: String, w: Int = 1) {
+    fun setText(txt: String, w: Int) {
         this.txt = txt
-        this.w = w
         val sort = pixels.isEmpty
         pixels.addAll(txt.mapIndexed { index, c -> FontPixel.get(index, c, w, pixels) }.flatten())
         if (sort)
@@ -28,6 +34,16 @@ class CompPrettyUi : Comp() {
                 (Vector2.dst2(pixel.x, pixel.y, GResolution.screenWidth / 2f, GResolution.screenHeight / 2f) -
                         Vector2.dst2(pixel2.x, pixel2.y, GResolution.screenWidth / 2f, GResolution.screenHeight / 2f)).roundToInt()
             }
+        for (i in 1 until w)
+            pixels.forEach {
+                it.desiredX -= FontPixel.charWidth * 4
+            }
     }
 
+    fun changePhase(phase: Int) {
+        this.phase = phase
+        setText(txt, phases[phase].w)
+    }
+
+    data class Phase(val w: Int, val endTime: Float)
 }

@@ -4,7 +4,6 @@ import be.particulitis.hourglass.common.GGraphics
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.gamedata.graphics.Colors
-import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
 import ktx.collections.GdxArray
 import kotlin.math.roundToInt
@@ -28,12 +27,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             y -= (y - desiredY) * delta * 6
     }
 
-    fun draw(space: CompSpace) {
-        draw(space.x, space.y)
-    }
-
-    fun draw(offsetX: Float, offsetY: Float) {
-        GGraphics.batch.draw(palette.scale[scale], (oldX + offsetX).roundToInt().toFloat(), (oldY + offsetY).roundToInt().toFloat(), fontWidth)
+    fun draw(offsetX: Float, offsetY: Float, scale: Int) {
         GGraphics.batch.draw(palette.scale[scale], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
     }
 

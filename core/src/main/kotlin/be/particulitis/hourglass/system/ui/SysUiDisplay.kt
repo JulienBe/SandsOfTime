@@ -19,7 +19,7 @@ class SysUiDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, CompTxt::
         val txt = mTxt[entityId]
         txt.pixels.forEach {
             it.act(GTime.delta)
-            it.draw(space)
+            it.draw(space.x, space.y, 1)
         }
     }
 

@@ -1,21 +1,17 @@
 package be.particulitis.hourglass.system.ui
 
-import be.particulitis.hourglass.common.GHelper
-import be.particulitis.hourglass.common.GRand
-import be.particulitis.hourglass.common.GResolution
-import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.font.FontAnim
+import be.particulitis.hourglass.font.FontPixel
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
+import kotlin.math.*
 
 @Wire(failOnNull = false)
 class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, CompPrettyUi::class.java)) {
@@ -33,25 +29,36 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
             ui.anims.add(FontAnim(ui.pixels.sortedBy { Vector2.dst(xTouch, yTouch, it.x, it.y) }.toMutableList()))
         }
         ui.time += GTime.delta
-        ui.currentIndex++
-        ui.pixels.filterIndexed { index, pixel ->
-            index < ui.currentIndex
-        }.forEach { pixel ->
+        ui.currentIndex = (ui.time * ui.pixels.size / 5f).roundToInt()
+        onEachPixel(ui) { pixel: FontPixel ->
+            pixel.draw(space.x + 1f, space.y + 1f, max(pixel.scale, 2))
+        }
+        onEachPixel(ui) { pixel: FontPixel ->
             pixel.act(GTime.delta)
-            pixel.draw(space.x, space.y)
+            pixel.draw(space.x, space.y, 0)
             pixel.scale = abs((
                     ((sin(pixel.x) * cos(pixel.y)) * cos(ui.time / 3f) * 5).toInt()
                     ) % 4)
         }
+
         ui.anims.removeIf { it.act() }
         if (ui.time > ui.currentPhase.endTime) {
             ui.currentIndex = ui.pixels.size
+            ui.time = 2f
             ui.changePhase(ui.phase + 1)
         }
         if (ui.time > 15f)
             chopPixels(ui)
-        if (GRand.nextInt(180) == 0 && ui.currentIndex > ui.pixels.size)
+        if (GRand.nextInt(300) == 0 && ui.currentIndex > ui.pixels.size)
             swapPixel(ui)
+    }
+
+    private fun onEachPixel(ui: CompPrettyUi, inside: (pixel: FontPixel) -> Unit) {
+        ui.pixels.filterIndexed { index, _ ->
+            index < ui.currentIndex
+        }.forEach {
+            inside.invoke(it)
+        }
     }
 
     private fun swapPixel(ui: CompPrettyUi) {
@@ -63,6 +70,8 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         two.desiredY = one.desiredY
         one.desiredX = oneFutureX
         one.desiredY = oneFutureY
+        one.palette = one.palette.next()
+        two.palette = two.palette.next()
     }
 
     private fun chopPixels(ui: CompPrettyUi) {

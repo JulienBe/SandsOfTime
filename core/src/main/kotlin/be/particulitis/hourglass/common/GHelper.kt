@@ -19,6 +19,10 @@ object GHelper {
     val x get() = percentX * GResolution.areaDim
     val y get() = percentY * GResolution.areaDim
 
+    fun isClicked(x: Float, y: Float, width: Float, height: Float): Boolean {
+        return x <= this.x && x + width >= this.x && y <= this.y && y + height >= this.y
+    }
+
     fun mirrorAnimHorizontal(anim: Anims33): List<IntArray> {
         return anim.frames.map { ints ->
             intArrayOf(

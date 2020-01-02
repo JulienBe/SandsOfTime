@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.gamedata
 
 import be.particulitis.hourglass.comp.*
+import be.particulitis.hourglass.comp.ui.CompButton
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.comp.ui.CompTxt
 
@@ -56,6 +57,10 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
     PrettyDisplay(listOf(
             CompSpace::class.java,
             CompPrettyUi::class.java
+    )),
+    Button(listOf(
+            CompSpace::class.java,
+            CompButton::class.java
     )),
     ExplosionParticle(listOf(
             CompDraw::class.java,

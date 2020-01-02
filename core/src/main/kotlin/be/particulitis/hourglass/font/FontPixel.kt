@@ -52,6 +52,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
 
         const val fontWidth = 2f
         const val charWidth = 4 * fontWidth
+        const val charHeight = 5 * fontWidth
 
         private val instantiate: Map<Char, List<Pair<Int, Offsets>>> = Gdx.files.internal("fonts")
                 .readString()
@@ -140,6 +141,14 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             p.desiredX = desiredX
             p.desiredY = desiredY
             return p
+        }
+
+        fun width(text: String, w: Int): Float {
+            return text.length * w * charWidth
+        }
+
+        fun height(w: Int): Float {
+            return charHeight * w
         }
     }
 }

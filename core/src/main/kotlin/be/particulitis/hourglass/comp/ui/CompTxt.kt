@@ -5,7 +5,7 @@ import be.particulitis.hourglass.font.FontPixel
 import ktx.collections.GdxArray
 import ktx.collections.addAll
 
-class CompTxt : Comp() {
+open class CompTxt : Comp() {
 
     var text: String = ""
         private set

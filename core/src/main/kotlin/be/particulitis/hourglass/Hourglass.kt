@@ -9,6 +9,6 @@ class Hourglass : Game() {
         // initialize it soon
         FontPixel
         //setScreen(FirstScreen())
-        setScreen(TitleScreen())
+        setScreen(TitleScreen(this))
     }
 }

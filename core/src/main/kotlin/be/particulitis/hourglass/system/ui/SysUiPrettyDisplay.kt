@@ -31,6 +31,7 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         ui.time += GTime.delta
         ui.currentIndex = (ui.time * ui.pixels.size / 5f).roundToInt()
         onEachPixel(ui) { pixel: FontPixel ->
+            pixel.draw(space.x, space.y, max(pixel.scale, 2), FontPixel.fontWidth + 1f)
             pixel.act(GTime.delta)
             pixel.draw(space.x, space.y, max(pixel.scale, 2), FontPixel.fontWidth + 1f)
         }

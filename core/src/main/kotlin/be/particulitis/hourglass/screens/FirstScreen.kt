@@ -18,11 +18,12 @@ import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.artemis.managers.TagManager
 import com.artemis.utils.IntBag
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
 /** First screen of the application. Displayed after the application is created.  */
-class FirstScreen : AbstractScreen() {
+class FirstScreen(game: Game) : AbstractScreen(game) {
 
     override fun show() {
         GTime.reset()

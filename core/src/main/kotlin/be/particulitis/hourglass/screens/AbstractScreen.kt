@@ -2,9 +2,10 @@ package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.common.GGraphics
 import be.particulitis.hourglass.common.GResolution
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.ScreenAdapter
 
-abstract class AbstractScreen : ScreenAdapter() {
+abstract class AbstractScreen(val game: Game) : ScreenAdapter() {
 
     override fun resize(width: Int, height: Int) {
         GResolution.compute()

@@ -31,14 +31,15 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         ui.time += GTime.delta
         ui.currentIndex = (ui.time * ui.pixels.size / 5f).roundToInt()
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.draw(space.x + 1f, space.y + 1f, max(pixel.scale, 2))
+            pixel.act(GTime.delta)
+            pixel.draw(space.x, space.y, max(pixel.scale, 2), FontPixel.fontWidth + 1f)
         }
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.act(GTime.delta)
             pixel.draw(space.x, space.y, 0)
             pixel.scale = abs((
                     ((sin(pixel.x) * cos(pixel.y)) * cos(ui.time / 3f) * 5).toInt()
                     ) % 4)
+            pixel.boost = false
         }
 
         ui.anims.removeIf { it.act() }
@@ -66,12 +67,8 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         val two = ui.pixels.random()
         val oneFutureX = two.desiredX
         val oneFutureY = two.desiredY
-        two.desiredX = one.desiredX
-        two.desiredY = one.desiredY
-        one.desiredX = oneFutureX
-        one.desiredY = oneFutureY
-        one.palette = one.palette.next()
-        two.palette = two.palette.next()
+        two.move(one.desiredX, one.desiredY)
+        one.move(oneFutureX, oneFutureY)
     }
 
     private fun chopPixels(ui: CompPrettyUi) {

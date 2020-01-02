@@ -1,11 +1,10 @@
 package be.particulitis.hourglass.font
 
-import be.particulitis.hourglass.common.GGraphics
-import be.particulitis.hourglass.common.GRand
-import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import com.badlogic.gdx.Gdx
 import ktx.collections.GdxArray
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
@@ -17,6 +16,8 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     var palette = Colors.scoreFont
     var couldBeRemoved = false
     var scale = 1
+    var snapped = false
+    var boost = false
 
     fun act(delta: Float) {
         oldX = x
@@ -25,10 +26,26 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             x -= (x - desiredX) * delta * 6
         else
             y -= (y - desiredY) * delta * 6
+        if (!snapped && abs(x - desiredX) + abs(y - desiredY) < 0.1f) {
+            snapped = true
+            boost = true
+        }
     }
 
-    fun draw(offsetX: Float, offsetY: Float, scale: Int) {
-        GGraphics.batch.draw(palette.scale[scale], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
+    fun draw(offsetX: Float, offsetY: Float, scale: Int, width: Float = fontWidth) {
+        if (boost) {
+            GSounds.pixelSnap.play(0.5f, 1 + ((x / GResolution.screenWidth) / 2f), 1f)
+            GGraphics.batch.draw(GPalette.rand().scale[0], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), width)
+        } else {
+            GGraphics.batch.draw(palette.scale[scale], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), width)
+        }
+    }
+
+    fun move(futureX: Float, futureY: Float) {
+        desiredX = futureX
+        desiredY = futureY
+        snapped = false
+        boost = false
     }
 
     companion object {
@@ -86,6 +103,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
                         for (y in 0 until width) {
                             val p = initFontPixel(index, width, offset, x, y, existingPool)
                             pixel.add(p)
+                            p.snapped = false
                             p.couldBeRemoved = false
                             when ((x * width) + y) {
                                 // bottom left

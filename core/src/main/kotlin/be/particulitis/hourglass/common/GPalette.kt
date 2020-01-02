@@ -23,8 +23,8 @@ enum class GPalette(val r: Float, val g: Float, val b: Float) {
 
     val basic = Color(r, g, b, 1f)
     val light = Color(r * 1.1f, g * 1.2f, b* 1.2f, 1f)
-    val dark = Color( r * 0.9f, g * 0.8f, b * 0.8f, 1f)
-    val darkest = Color(r * 0.8f, g * 0.7f, b * 0.7f, 1f)
+    val dark = Color( r * 0.8f, g * 0.7f, b * 0.7f, 1f)
+    val darkest = Color(r * 0.7f, g * 0.6f, b * 0.6f, 1f)
     val basicf = basic.toFloatBits()
     val lightf = light.toFloatBits()
     val darkf = dark.toFloatBits()

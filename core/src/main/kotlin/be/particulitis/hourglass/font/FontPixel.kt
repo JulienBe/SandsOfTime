@@ -4,8 +4,7 @@ import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import com.badlogic.gdx.Gdx
 import ktx.collections.GdxArray
-import kotlin.math.abs
-import kotlin.math.roundToInt
+import kotlin.math.*
 
 class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
 
@@ -18,14 +17,24 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     var scale = 1
     var snapped = false
     var boost = false
+    var dirX = 0f
+    var dirY = 0f
+    var speed = 1f
 
     fun act(delta: Float) {
-        oldX = x
-        oldY = y
-        if (GTime.time.roundToInt() % 2 == 0)
-            x -= (x - desiredX) * delta * 6
-        else
-            y -= (y - desiredY) * delta * 6
+        if ((GTime.time * 3f).roundToInt() % 2 == 0) {
+            oldX = x
+            dirX += (x - desiredX) / 2f
+            dirX *= 0.9f
+            x -= dirX * delta * speed
+            x -= (x - desiredX) * delta * 2 * speed
+        } else {
+            oldY = y
+            dirY += (y - desiredY) / 2f
+            dirY *= 0.9f
+            y -= dirY * delta * speed
+            y -= (y - desiredY) * delta * 2 * speed
+        }
         if (!snapped && abs(x - desiredX) + abs(y - desiredY) < 0.1f) {
             snapped = true
             boost = true

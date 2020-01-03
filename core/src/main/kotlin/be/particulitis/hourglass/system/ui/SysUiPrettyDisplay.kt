@@ -29,7 +29,7 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
             ui.anims.add(FontAnim(ui.pixels.sortedBy { Vector2.dst(xTouch, yTouch, it.x, it.y) }.toMutableList()))
         }
         ui.time += GTime.delta
-        ui.currentIndex = (ui.time * ui.pixels.size / 5f).roundToInt()
+        ui.currentIndex = ((ui.time * 5f) * ui.pixels.size / 12f).roundToInt()
         onEachPixel(ui) { pixel: FontPixel ->
             pixel.draw(space.x, space.y, max(pixel.scale, 2), FontPixel.fontWidth + 1f)
             pixel.act(GTime.delta)
@@ -46,7 +46,7 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         ui.anims.removeIf { it.act() }
         if (ui.time > ui.currentPhase.endTime) {
             ui.currentIndex = ui.pixels.size
-            ui.time = 2f
+            ui.time = 1f
             ui.changePhase(ui.phase + 1)
         }
         if (ui.time > 15f)

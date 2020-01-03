@@ -10,7 +10,7 @@ object SUi : Setup() {
         val space = world.getEntity(id).space()
         val ui = world.getEntity(id).prettyUi()
         space.setPos(x, y)
-        ui.setText(text, 1)
+        ui.changeText(text, 1, 1f)
     }
     fun button(id: Int, world: World, text: String, x: Float, y: Float, onClick: () -> Unit) {
         val space = world.getEntity(id).space()

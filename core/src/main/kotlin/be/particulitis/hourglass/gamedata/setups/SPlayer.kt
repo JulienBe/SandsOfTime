@@ -2,7 +2,6 @@ package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.*
-import be.particulitis.hourglass.comp.*
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
@@ -14,31 +13,28 @@ import com.artemis.managers.TagManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
-object SPlayer {
+object SPlayer : Setup() {
 
-    const val playerSpeed = 150f
-    const val playerLayer = 10
+    private const val playerSpeed = 150f
+    private const val playerLayer = 10
 
     fun player(playerEntityId: Int, world: World) {
         val player = world.getEntity(playerEntityId)
         world.getSystem(TagManager::class.java).register(Data.playerTag, playerEntityId)
 
-        val playerControl = player.getComponent(CompControl::class.java)
-        val draw = player.getComponent(CompDraw::class.java)
-        val space = player.getComponent(CompSpace::class.java)
-        val shoot = player.getComponent(CompShooter::class.java)
+        val draw = player.draw()
+        val space = player.space()
+        val shoot = player.shooter()
         var anim = Data.shootAnims[GDir.None]
-        val light = player.getComponent(CompLight::class.java)
 
-        playerControl.addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
-        playerControl.addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
-        playerControl.addAction(listOf(Input.Keys.Z, Input.Keys.W,      Input.Keys.UP),     GAction.UP)
-        playerControl.addAction(listOf(Input.Keys.S, Input.Keys.DOWN),                      GAction.DOWN)
+        player.control().addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
+        player.control().addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
+        player.control().addAction(listOf(Input.Keys.Z, Input.Keys.W,      Input.Keys.UP),     GAction.UP)
+        player.control().addAction(listOf(Input.Keys.S, Input.Keys.DOWN),                      GAction.DOWN)
 
-        player.getComponent(CompHp::class.java).setHp(10)
-        val dim = world.getEntity(playerEntityId).getComponent(CompSpace::class.java)
-        dim.setDim(Dim.Player.w, Dim.Player.w)
-        dim.setPos(GResolution.areaHDim - Dim.Player.half, GResolution.areaHDim - Dim.Player.half)
+        player.hp().setHp(10)
+        player.space().setDim(Dim.Player.w, Dim.Player.w)
+        player.space().setPos(GResolution.areaHDim - Dim.Player.half, GResolution.areaHDim - Dim.Player.half)
         shoot.setOffset(Dim.Player.half - Dim.Bullet.half, Dim.Player.half - Dim.Bullet.half)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
@@ -57,14 +53,13 @@ object SPlayer {
         shoot.setBullet(Builder.bullet, SBullet::playerBullet)
         shoot.setFirerate(.15f)
 
-        val collide = player.getComponent(CompCollide::class.java)
-        collide.setIds(Ids.player)
-        collide.addCollidingWith(Ids.enemy, Ids.enemyBullet)
+        player.collide().setIds(Ids.player)
+        player.collide().addCollidingWith(Ids.enemy, Ids.enemyBullet)
 
-        player.getComponent(CompCharMovement::class.java).speed = playerSpeed
-        player.getComponent(CompLayer::class.java).setLayer(Layers.Player)
+        player.charMvt().speed = playerSpeed
+        player.layer().setLayer(Layers.Player)
 
-        light.setLight(Colors.player, space.centerX, space.centerY, 1.8f)
+        player.light().setLight(Colors.player, space.centerX, space.centerY, 1.8f)
         draw.color = Colors.player
         draw.layer = playerLayer
         draw.drawingStyle = {batch ->

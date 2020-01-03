@@ -9,7 +9,8 @@ func:
         ~~have enemies not turning when they are frozen~~
         ~~prevent no move strategy => shooting enemies~~
         ~~sort drawing layers~~
-    menus
+    menus:
+        ~~title screen v1~~
     ~~reset scores and everything on death~~
     show hp player
     don't have enemies that die on you increase score
@@ -21,4 +22,3 @@ spice:
     border effect
     ~~get different drawing styles~~
     ~~build map texture~~
-

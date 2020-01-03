@@ -13,14 +13,13 @@ import com.artemis.Entity
 import com.artemis.World
 import com.artemis.managers.TagManager
 
-object SEnemy {
+object SEnemy : Setup() {
 
     fun enemyShoot(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
         val enemy = baseEnemy(id, world, exclusionStartX, exclusionStopX, exclusionStartY, exclusionStopY)
-        val space = enemy.getComponent(CompSpace::class.java)
-        val shoot = enemy.getComponent(CompShooter::class.java)
-        val draw = enemy.getComponent(CompDraw::class.java)
-        val particleEmitter = enemy.getComponent(CompParticleEmitter::class.java)
+        val space = enemy.space()
+        val shoot = enemy.shooter()
+        val draw = enemy.draw()
 
         draw.color = Colors.enemyShoots
         draw.drawingStyle = {batch ->
@@ -33,7 +32,7 @@ object SEnemy {
         shoot.setBullet(Builder.bullet, SBullet::enemyBullet)
         shoot.shootingFunc = {
             val bulletId = world.create(shoot.bullet.first.build(world))
-            val playerSpace = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).getComponent(CompSpace::class.java)
+            val playerSpace = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).space()
             shoot.dir.set(playerSpace.centerX - (space.x + Dim.Enemy.half), playerSpace.centerY - (space.y + Dim.Enemy.half))
             shoot.dir.nor()
             shoot.bullet.second.invoke(bulletId, world,
@@ -42,7 +41,7 @@ object SEnemy {
         }
         shoot.setFirerate(2f)
 
-        particleEmitter.emit = {
+        enemy.emitter().emit = {
             for (i in 0..20)
                 SParticles.explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 18f)
         }
@@ -51,36 +50,33 @@ object SEnemy {
     fun enemySlug(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float) {
         val enemy = baseEnemy(id, world, exclusionStartX, exclusionStopX, exclusionStartY, exclusionStopY)
         val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag)
-        val space = enemy.getComponent(CompSpace::class.java)
-        val draw = enemy.getComponent(CompDraw::class.java)
-        val dir = enemy.getComponent(CompDir::class.java)
-        val particleEmitter = enemy.getComponent(CompParticleEmitter::class.java)
+        val space = enemy.space()
+        val draw = enemy.draw()
+        val dir = enemy.dir()
 
-        enemy.getComponent(CompTargetSeek::class.java).target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
-        enemy.getComponent(CompTargetFollow::class.java).set(player.getComponent(CompSpace::class.java))
-        enemy.getComponent(CompDir::class.java).setSpeedAcceleration(20f, 0.3f)
+        enemy.targetSeek().target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
+        enemy.targetFollow().set(player.space())
+        enemy.dir().setSpeedAcceleration(20f, 0.3f)
         draw.drawingStyle = { batch ->
             DrawMethods.basic(space, draw, batch)
             DrawMethods.drawTrail(draw, space, dir, batch)
         }
 
-        particleEmitter.emit = {
+        enemy.emitter().emit = {
             for (i in 0..40)
                 SParticles.explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 28f)
         }
     }
 
     private fun baseEnemy(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float): Entity {
-        val dim = world.getEntity(id).getComponent(CompSpace::class.java)
-        dim.setDim(Dim.Enemy.w, Dim.Enemy.w)
-        dim.setPos(GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartY, exclusionStopY))
         val enemy = world.getEntity(id)
-        val collide = enemy.getComponent(CompCollide::class.java)
-        collide.setIds(Ids.enemy)
-        collide.addCollidingWith(Ids.player, Ids.playerBullet)
-        enemy.getComponent(CompLayer::class.java).setLayer(Layers.Enemy)
-        enemy.getComponent(CompDraw::class.java).color = Colors.enemy
-        enemy.getComponent(CompDraw::class.java).layer = Data.enemyLayer
+        enemy.space().setDim(Dim.Enemy.w, Dim.Enemy.w)
+        enemy.space().setPos(GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartY, exclusionStopY))
+        enemy.collide().setIds(Ids.enemy)
+        enemy.collide().addCollidingWith(Ids.player, Ids.playerBullet)
+        enemy.layer().setLayer(Layers.Enemy)
+        enemy.draw().color = Colors.enemy
+        enemy.draw().layer = Data.enemyLayer
         return enemy
     }
 

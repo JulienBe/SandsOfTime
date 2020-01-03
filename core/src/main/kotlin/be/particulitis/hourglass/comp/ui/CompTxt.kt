@@ -20,7 +20,7 @@ open class CompTxt : Comp() {
     private fun changeText(txt: String) {
         text = txt
         pixels.clear()
-        txt.forEachIndexed { index, c -> pixels.addAll(FontPixel.get(index, c)!!) }
+        txt.forEachIndexed { index, c -> pixels.addAll(FontPixel.get(index, c)) }
     }
 
     override fun reset() {

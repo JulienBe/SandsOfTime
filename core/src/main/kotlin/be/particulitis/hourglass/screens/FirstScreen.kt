@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.Boombox
-import be.particulitis.hourglass.common.GGraphics
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy

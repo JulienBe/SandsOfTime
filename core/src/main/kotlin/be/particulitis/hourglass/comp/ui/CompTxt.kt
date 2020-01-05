@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.comp.ui
 
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.Comp
 import be.particulitis.hourglass.font.FontPixel
 import com.badlogic.gdx.math.Vector2

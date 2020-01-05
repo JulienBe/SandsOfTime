@@ -2,7 +2,7 @@ package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.common.GRand
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompSpace

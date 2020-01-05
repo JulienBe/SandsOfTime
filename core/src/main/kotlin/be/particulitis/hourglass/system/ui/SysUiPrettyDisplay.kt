@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.system.ui
 
 import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.font.FontAnim
@@ -31,15 +32,12 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         ui.time += GTime.delta
         ui.currentIndex = ((ui.time * 5f) * ui.pixels.size / 12f).roundToInt()
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.draw(space.x, space.y, max(pixel.scale, 2), FontPixel.fontWidth + 1f)
+            pixel.drawBackground(space.x, space.y)
             pixel.act(GTime.delta)
-            pixel.draw(space.x, space.y, max(pixel.scale, 2), FontPixel.fontWidth + 1f)
+            pixel.drawBackground(space.x, space.y)
         }
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.draw(space.x, space.y, 0)
-            pixel.scale = abs((
-                    ((sin(pixel.x) * cos(pixel.y)) * cos(ui.time / 3f) * 5).toInt()
-                    ) % 4)
+            pixel.drawForeground(space.x, space.y)
             pixel.boost = false
         }
 

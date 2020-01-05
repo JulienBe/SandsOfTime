@@ -1,4 +1,4 @@
-package be.particulitis.hourglass.common
+package be.particulitis.hourglass.common.drawing
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.GdxRuntimeException

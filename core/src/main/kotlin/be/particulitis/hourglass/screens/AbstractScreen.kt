@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.screens
 
-import be.particulitis.hourglass.common.GGraphics
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GResolution
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.ScreenAdapter
 

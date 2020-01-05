@@ -1,6 +1,9 @@
 package be.particulitis.hourglass.font
 
 import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GPalette
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import com.badlogic.gdx.Gdx
 import ktx.collections.GdxArray
@@ -12,7 +15,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     var y = desiredY + GRand.gauss(5)
     var oldX = x
     var oldY = y
-    var palette = Colors.scoreFont
+    var shade = Colors.scoreFont
     var couldBeRemoved = false
     var scale = 1
     var snapped = false
@@ -41,12 +44,16 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
         }
     }
 
-    fun draw(offsetX: Float, offsetY: Float, scale: Int, width: Float = fontWidth) {
+    fun drawBackground(offsetX: Float, offsetY: Float) {
+        GGraphics.batch.draw(shade.low, (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth + 1)
+    }
+
+    fun drawForeground(offsetX: Float, offsetY: Float) {
         if (boost) {
             GSounds.pixelSnap.play(0.5f, 1 + ((x / GResolution.screenWidth) / 2f), 1f)
-            GGraphics.batch.draw(GPalette.rand().scale[0], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), width)
+            GGraphics.batch.draw(GPalette.rand().f, (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
         } else {
-            GGraphics.batch.draw(palette.scale[scale], (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), width)
+            GGraphics.batch.draw(shade.high, (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
         }
     }
 

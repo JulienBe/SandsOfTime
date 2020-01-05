@@ -2,6 +2,7 @@ package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
@@ -63,7 +64,8 @@ object SPlayer : Setup() {
         draw.color = Colors.player
         draw.layer = playerLayer
         draw.drawingStyle = {batch ->
-            DrawMethods.draw33animNoLoop(space, draw, anim!!, 2, Dim.Player, batch)
+            //DrawMethods.draw33animNoLoop(space, draw, anim!!, 2, Dim.Player, batch)
+            DrawMethods.basic(space, draw, batch)
             draw.accu += GTime.playerDelta * 10f
             if (draw.accu >= 1f) {
                 draw.cpt++

@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.comp
 
-import be.particulitis.hourglass.common.GLight
-import be.particulitis.hourglass.common.GPalette
+import be.particulitis.hourglass.common.drawing.GLight
+import be.particulitis.hourglass.common.drawing.GPalette
 
 class CompLight : Comp() {
 

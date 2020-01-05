@@ -1,4 +1,4 @@
-package be.particulitis.hourglass.common
+package be.particulitis.hourglass.common.drawing
 
 import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.comp.CompDraw
@@ -15,7 +15,7 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
     }
 
     fun draw(color: GPalette, x: Float, y: Float, w: Float) {
-        packedColor = color.scale[1]
+        packedColor = color.f
         draw(img.square, x, y, w, w)
     }
 

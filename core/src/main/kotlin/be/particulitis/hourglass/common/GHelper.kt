@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.common
 
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.graphics.Anims33
 import com.badlogic.gdx.Gdx
 

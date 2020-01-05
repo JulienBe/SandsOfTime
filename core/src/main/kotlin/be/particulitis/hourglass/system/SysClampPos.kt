@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.ComponentMapper

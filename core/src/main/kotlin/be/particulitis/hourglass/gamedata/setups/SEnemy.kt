@@ -2,9 +2,8 @@ package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GRand
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.comp.*
 import be.particulitis.hourglass.gamedata.*
 import be.particulitis.hourglass.gamedata.graphics.Anims33
 import be.particulitis.hourglass.gamedata.graphics.Colors
@@ -23,7 +22,8 @@ object SEnemy : Setup() {
 
         draw.color = Colors.enemyShoots
         draw.drawingStyle = {batch ->
-            DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
+            DrawMethods.basic(space, draw, batch)
+            //DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
             draw.cpt = (GTime.enemyTime * 10f).toInt()
         }
 

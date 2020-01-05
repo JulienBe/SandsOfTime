@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.system.ui
 
 import be.particulitis.hourglass.common.GHelper
-import be.particulitis.hourglass.common.GResolution
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompButton
@@ -25,7 +25,7 @@ class SysUiDisplay : IteratingSystem(Aspect.all(CompSpace::class.java).one(CompT
         val txt = if (mButton.has(entityId)) mButton[entityId] else mTxt[entityId]
         txt.pixels.forEach {
             it.act(GTime.delta)
-            it.draw(GResolution.baseX + space.x, GResolution.baseY + space.y, 1)
+            it.drawForeground(GResolution.baseX + space.x, GResolution.baseY + space.y)
             it.boost = false
         }
         if (Gdx.input.justTouched() &&

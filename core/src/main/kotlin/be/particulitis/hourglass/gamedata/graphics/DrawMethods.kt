@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.gamedata.graphics
 
-import be.particulitis.hourglass.common.GGraphics
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.comp.CompDir
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
@@ -29,13 +29,16 @@ object DrawMethods {
     /**
      * expecting a 3*3 frame
      */
+    /**
     fun draw33animLoop(space: CompSpace, draw: CompDraw, anim: Anims33, baseColor: Int, dim: Dim, batch: GGraphics) {
         drawFrame(anim.frames[draw.cpt % anim.size], batch, draw, baseColor, space, dim)
     }
     fun draw33animNoLoop(space: CompSpace, draw: CompDraw, anim: Anims33, baseColor: Int, dim: Dim, batch: GGraphics) {
         drawFrame(anim.frames[MathUtils.clamp(draw.cpt, 0, anim.size - 1)], batch, draw, baseColor, space, dim)
     }
+    */
 
+    /**
     private fun drawFrame(frame: IntArray, batch: GGraphics, draw: CompDraw, baseColor: Int, space: CompSpace, dim: Dim) {
         frame.forEachIndexed { index, color ->
             batch.draw(
@@ -46,4 +49,5 @@ object DrawMethods {
             )
         }
     }
+    */
 }

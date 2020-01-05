@@ -1,10 +1,10 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.common.GGraphics.Companion.batch
-import be.particulitis.hourglass.common.GGraphics.Companion.cam
-import be.particulitis.hourglass.common.GLight
-import be.particulitis.hourglass.common.GResolution
-import be.particulitis.hourglass.common.GShader
+import be.particulitis.hourglass.common.drawing.GGraphics.Companion.batch
+import be.particulitis.hourglass.common.drawing.GGraphics.Companion.cam
+import be.particulitis.hourglass.common.drawing.GLight
+import be.particulitis.hourglass.common.drawing.GResolution
+import be.particulitis.hourglass.common.drawing.GShader
 import be.particulitis.hourglass.comp.CompDraw
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem

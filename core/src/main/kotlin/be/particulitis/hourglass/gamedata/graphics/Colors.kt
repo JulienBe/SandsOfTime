@@ -1,10 +1,11 @@
 package be.particulitis.hourglass.gamedata.graphics
 
-import be.particulitis.hourglass.common.GPalette
+import be.particulitis.hourglass.common.drawing.GPalette
+import be.particulitis.hourglass.common.drawing.GShade
 
 object Colors {
     val playerBullets = GPalette.YELLOW
-    val scoreFont = GPalette.PINK_SKIN
+    val scoreFont = GShade.PINK_SKIN
     val player = GPalette.ORANGE
     val enemy = GPalette.REDISH
     val enemyBullets = GPalette.PINK

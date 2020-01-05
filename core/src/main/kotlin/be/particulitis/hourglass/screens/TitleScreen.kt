@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.screens
 
-import be.particulitis.hourglass.common.GGraphics
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.system.*

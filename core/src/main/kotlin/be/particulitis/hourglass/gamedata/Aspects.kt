@@ -62,6 +62,10 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompSpace::class.java,
             CompButton::class.java
     )),
+    Wall(listOf(
+            CompSpace::class.java,
+            CompDraw::class.java
+    )),
     ExplosionParticle(listOf(
             CompDraw::class.java,
             CompSpace::class.java,

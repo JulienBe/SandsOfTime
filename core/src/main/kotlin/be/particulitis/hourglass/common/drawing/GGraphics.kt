@@ -4,9 +4,11 @@ import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
 
@@ -24,6 +26,16 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         draw(img.square, x, y, w, w)
     }
 
+    fun draw(color: Float, x: Int, y: Int, w: Int) {
+        packedColor = color
+        draw(img.square, x.toFloat(), y.toFloat(), w.toFloat(), w.toFloat())
+    }
+
+    fun drawWhite(texture: TextureRegion, x: Float, y: Float) {
+        packedColor = Color.WHITE_FLOAT_BITS
+        draw(texture, x, y)
+    }
+
     companion object {
 
         fun render(function: () -> Unit) {
@@ -36,8 +48,13 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
             batch.end()
         }
 
-        val batch = GGraphics(ImgMan())
+        val batch: GGraphics
+        val imgMan = ImgMan()
         val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
+
+        init {
+            batch =  GGraphics(imgMan)
+        }
     }
 
 }

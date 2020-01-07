@@ -3,10 +3,14 @@ package be.particulitis.hourglass.gamedata.setups
 import be.particulitis.hourglass.comp.*
 import be.particulitis.hourglass.comp.ui.CompButton
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
+import com.artemis.ArchetypeBuilder
 import com.artemis.Entity
+import com.artemis.World
 
 open class Setup {
-
+    fun World.create(arch: ArchetypeBuilder): Entity {
+        return getEntity(create(arch.build(this)))
+    }
     fun Entity.space(): CompSpace {
         return getComponent(CompSpace::class.java)
     }

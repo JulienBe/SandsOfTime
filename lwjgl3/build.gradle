@@ -5,6 +5,18 @@ sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 mainClassName = 'be.particulitis.hourglass.lwjgl3.Lwjgl3Launcher'
 sourceCompatibility = 1.11
 
+// texture packer stuff
+project.ext.texturePacker = [ "assets/textures/input/", "assets/textures/texture1", "atlas" ]
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+task texturePacker {
+  doLast {
+    if (project.ext.has('texturePacker')) {
+      logger.info "Calling TexturePacker: "+texturePacker
+      TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+    }
+  }
+}
+
 dependencies {
   api project(':core')
   api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"

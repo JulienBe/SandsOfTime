@@ -5,7 +5,6 @@ import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.gamedata.*
-import be.particulitis.hourglass.gamedata.graphics.Anims33
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import com.artemis.Entity
@@ -21,7 +20,7 @@ object SEnemy : Setup() {
         val draw = enemy.draw()
 
         draw.color = Colors.enemyShoots
-        draw.drawingStyle = {batch ->
+        draw.drawingStyle = {batch, tr ->
             DrawMethods.basic(space, draw, batch)
             //DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
             draw.cpt = (GTime.enemyTime * 10f).toInt()
@@ -31,11 +30,10 @@ object SEnemy : Setup() {
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, SBullet::enemyBullet)
         shoot.shootingFunc = {
-            val bulletId = world.create(shoot.bullet.first.build(world))
             val playerSpace = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).space()
             shoot.dir.set(playerSpace.centerX - (space.x + Dim.Enemy.half), playerSpace.centerY - (space.y + Dim.Enemy.half))
             shoot.dir.nor()
-            shoot.bullet.second.invoke(bulletId, world,
+            shoot.bullet.second.invoke(world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,
                     shoot.dir)
         }
@@ -43,7 +41,7 @@ object SEnemy : Setup() {
 
         enemy.emitter().emit = {
             for (i in 0..20)
-                SParticles.explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 18f)
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 18f)
         }
     }
 
@@ -57,14 +55,14 @@ object SEnemy : Setup() {
         enemy.targetSeek().target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
         enemy.targetFollow().set(player.space())
         enemy.dir().setSpeedAcceleration(20f, 0.3f)
-        draw.drawingStyle = { batch ->
+        draw.drawingStyle = { batch, tr ->
             DrawMethods.basic(space, draw, batch)
             DrawMethods.drawTrail(draw, space, dir, batch)
         }
 
         enemy.emitter().emit = {
             for (i in 0..40)
-                SParticles.explosionParticle(world.create(Builder.explosionParticle.build(world)), world, space.centerX, space.centerY, 28f)
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 28f)
         }
     }
 

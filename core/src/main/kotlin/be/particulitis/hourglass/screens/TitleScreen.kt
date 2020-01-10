@@ -24,7 +24,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             .with(SysUiDisplay())
             .build()
     val world = World(config)
-    private val pointerLight = GLight.create(GResolution.screenWidth / 2f, GResolution.screenHeight / 2f, GPalette.WHITEISH, .8f)
+    private val pointerLight = GLight.create(GResolution.screenWidth / 2f, GResolution.screenHeight / 2f, GPalette.WHITEISH, 0.5f)
 
     override fun show() {
         SUi.prettyDisplay(world, "Hourglass", 180f, 200f)

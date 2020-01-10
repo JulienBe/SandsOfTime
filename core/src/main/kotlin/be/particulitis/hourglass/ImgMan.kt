@@ -24,6 +24,13 @@ class ImgMan {
         return t
     }
 
+    fun tr(name: String): TextureRegion {
+        return regions[name]
+    }
+    fun nor(name: String): TextureRegion {
+        return regions[name + "_normal"]
+    }
+
     init {
         manager.load<TextureAtlas>(atlasPath)
         manager.finishLoading()
@@ -42,6 +49,8 @@ class ImgMan {
         const val cubePath = "img/square3d.png"
         const val palettePath = "img/palette.png"
         const val atlasPath = "textures/texture1/atlas.atlas"
+        const val font_pixel = "font_pixel"
+        const val wall = "wall"
         val manager = AssetManager()
     }
 }

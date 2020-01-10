@@ -15,8 +15,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import kotlin.reflect.KMutableProperty1
 
 @Wire(failOnNull = false)
 class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
@@ -25,6 +27,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
     private val listEntitiesIds = mutableListOf<Int>()
     private val fboCurrent = FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
+    private val fboNormal = FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
     private val fboLight = FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
     private val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
 
@@ -32,11 +35,18 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         batch.end()
         batch.shader = null
         val front = draw(GResolution.areaDim, GResolution.areaDim, true, fboCurrent) {
-            actualDraw()
+            actualDraw(CompDraw::texture)
+        }
+        val normal = draw(GResolution.areaDim, GResolution.areaDim, true, fboNormal) {
+            actualDraw(CompDraw::normal)
         }
         batch.shader = lightShader
         val withLight = draw(GResolution.areaDim, GResolution.areaDim, true, fboLight) {
             setLights(lightShader)
+
+            Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE2)
+            normal.bind()
+            lightShader.setUniformi("u_normal", 2)
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE1)
             GGraphics.imgMan.palette.bind()
@@ -82,11 +92,10 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
         lightShader.setUniform1fv("u_light_intensity", GLight.intensity.values.toFloatArray(), 0, GLight.intensity.size)
         lightShader.setUniform2fv("u_light_pos", GLight.xy.values.toFloatArray(), 0, GLight.xy.size)
-        lightShader.setUniform3fv("u_light_color", GLight.rgb.values.toFloatArray(), 0, GLight.rgb.size)
     }
 
     // TODO: in place sort
-    private fun actualDraw() {
+    private fun actualDraw(getTexture: KMutableProperty1<CompDraw, TextureRegion>) {
         val entities = entityIds
         listEntitiesIds.clear()
         for (i in 0 until entities.size()) {
@@ -97,7 +106,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
                     mDraw[it].layer
                 }
                 .forEach {
-                    mDraw[it].drawingStyle.invoke(batch)
+                    mDraw[it].drawingStyle.invoke(batch, getTexture.invoke(mDraw[it]))
                 }
     }
 

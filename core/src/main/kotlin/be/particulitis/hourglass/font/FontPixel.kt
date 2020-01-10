@@ -122,6 +122,8 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
                             pixel.add(p)
                             p.snapped = false
                             p.couldBeRemoved = false
+                            if (hasBottom && hasLeft && hasRight && hasTop && GRand.nextInt(100) == 0)
+                                p.couldBeRemoved
                             when ((x * width) + y) {
                                 // bottom left
                                 0 -> if (!hasBottom && !hasLeft && !hasBottomLeft && !hasTopLeft && hasTop)

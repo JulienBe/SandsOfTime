@@ -11,10 +11,12 @@ object SProps : Setup() {
                 val wall = world.create(Builder.wall)
                 val space = wall.space()
                 val draw = wall.draw()
-                draw.texture = GGraphics.imgMan.walls.random()
+                val tr = GGraphics.imgMan.walls.random()
+                draw.texture = tr
+                draw.normal = GGraphics.imgMan.nor(tr.toString())
                 space.setPos(offsetX + x * draw.texture.regionWidth, offsetY + y * draw.texture.regionHeight)
                 draw.drawingStyle = {
-                    it.drawWhite(draw.texture, space.x, space.y)
+                    batch, tr -> batch.drawWhite(tr, space.x, space.y)
                 }
             }
     }

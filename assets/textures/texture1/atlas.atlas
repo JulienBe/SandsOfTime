@@ -1,27 +1,62 @@
 
 atlas.png
-size: 64,32
+size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-palette
+font_pixel
   rotate: false
-  xy: 38, 2
-  size: 6, 16
-  orig: 6, 16
+  xy: 172, 54
+  size: 3, 3
+  orig: 3, 3
+  offset: 0, 0
+  index: -1
+font_pixel_normal
+  rotate: false
+  xy: 2, 2
+  size: 3, 3
+  orig: 3, 3
   offset: 0, 0
   index: -1
 wall1
   rotate: false
-  xy: 2, 2
-  size: 16, 16
-  orig: 16, 16
+  xy: 2, 25
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall1_normal
+  rotate: false
+  xy: 70, 25
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 wall2
   rotate: false
-  xy: 20, 2
+  xy: 36, 25
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall2_normal
+  rotate: false
+  xy: 104, 25
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall_crack
+  rotate: false
+  xy: 2, 7
   size: 16, 16
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall_normal
+  rotate: false
+  xy: 138, 25
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1

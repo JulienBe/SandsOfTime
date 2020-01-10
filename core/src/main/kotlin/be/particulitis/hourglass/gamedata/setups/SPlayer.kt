@@ -19,14 +19,13 @@ object SPlayer : Setup() {
     private const val playerSpeed = 150f
     private const val playerLayer = 10
 
-    fun player(playerEntityId: Int, world: World) {
-        val player = world.getEntity(playerEntityId)
-        world.getSystem(TagManager::class.java).register(Data.playerTag, playerEntityId)
+    fun player(world: World) {
+        val player = world.create(Builder.player)
+        world.getSystem(TagManager::class.java).register(Data.playerTag, player.id)
 
         val draw = player.draw()
         val space = player.space()
         val shoot = player.shooter()
-        var anim = Data.shootAnims[GDir.None]
 
         player.control().addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         player.control().addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
@@ -42,11 +41,9 @@ object SPlayer : Setup() {
             !shoot.keyCheck || (shoot.keyCheck && Gdx.input.justTouched())
         }
         shoot.shootingFunc = {
-            val id = world.create(shoot.bullet.first.build(world))
             shoot.dir.set(GHelper.x - space.x, GHelper.y - space.y)
             shoot.dir.nor()
-            anim = Data.shootAnims[GDir.get(shoot.dir)]
-            shoot.bullet.second.invoke(id, world,
+            shoot.bullet.second.invoke(world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,
                     shoot.dir)
             draw.cpt = 0
@@ -63,7 +60,7 @@ object SPlayer : Setup() {
         player.light().setLight(Colors.player, space.centerX, space.centerY, 1.8f)
         draw.color = Colors.player
         draw.layer = playerLayer
-        draw.drawingStyle = {batch ->
+        draw.drawingStyle = { batch, tr ->
             //DrawMethods.draw33animNoLoop(space, draw, anim!!, 2, Dim.Player, batch)
             DrawMethods.basic(space, draw, batch)
             draw.accu += GTime.playerDelta * 10f

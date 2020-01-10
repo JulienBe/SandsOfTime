@@ -6,15 +6,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 class CompDraw : Comp() {
     lateinit var texture: TextureRegion
+    lateinit var normal: TextureRegion
     var color = Colors.explosion
-    var drawingStyle = { _: GGraphics -> }
+    var drawingStyle = { _: GGraphics, tr: TextureRegion -> }
     var layer = 0
     var cpt = 0
     var accu = 0f
 
     override fun reset() {
         super.reset()
-        drawingStyle = {}
+        drawingStyle = {batch, tr -> }
         cpt = 0
     }
 }

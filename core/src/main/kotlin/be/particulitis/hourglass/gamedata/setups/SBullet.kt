@@ -1,7 +1,7 @@
 package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
-import be.particulitis.hourglass.comp.*
+import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.Layers
@@ -12,8 +12,8 @@ import com.badlogic.gdx.math.Vector2
 
 object SBullet : Setup() {
 
-    fun enemyBullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
-        val bullet = world.getEntity(id)
+    fun enemyBullet(world: World, posX: Float, posY: Float, dir: Vector2) {
+        val bullet = world.create(Builder.bullet)
         bullet.space().setDim(Dim.Bullet)
         bullet.space().setPos(posX, posY)
         dir.scl(22f)
@@ -29,12 +29,12 @@ object SBullet : Setup() {
         bullet.ttl().remaining = 9f
         bullet.light().setLight(Colors.enemyBullets, posX, posY, 0.1f)
         draw.color = Colors.enemyBullets
-        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+        draw.drawingStyle = {batch, tr -> DrawMethods.basic(space, draw, batch)}
         draw.layer = Data.enemyBulletLayer
     }
 
-    fun playerBullet(id: Int, world: World, posX: Float, posY: Float, dir: Vector2) {
-        val bullet = world.getEntity(id)
+    fun playerBullet(world: World, posX: Float, posY: Float, dir: Vector2) {
+        val bullet = world.create(Builder.bullet)
         bullet.space().setDim(Dim.Bullet)
         bullet.space().setPos(posX, posY)
         dir.scl(160f)
@@ -48,7 +48,7 @@ object SBullet : Setup() {
         bullet.ttl().remaining = 1f
         bullet.light().setLight(Colors.playerBullets, posX, posY, 0.2f)
         draw.color = Colors.playerBullets
-        draw.drawingStyle = {batch -> DrawMethods.basic(space, draw, batch)}
+        draw.drawingStyle = {batch, tr -> DrawMethods.basic(space, draw, batch)}
         draw.layer = Data.playerBulletLayer
     }
 

@@ -12,7 +12,7 @@ varying vec2 v_texCoords;
 
 const vec2 resolution = vec2(256.0, 256.0);
 const float light_default_z = 1.0;
-const vec3 falloff = vec3(0.4, 3.0, 20.0);
+const vec3 falloff = vec3(0.2, 12.0, 40.0);
 
 uniform sampler2D u_texture;
 uniform sampler2D u_palette;
@@ -51,4 +51,5 @@ void main() {
 
     vec4 awesome_paletted_color = texture2D(u_palette, vec2(1.0 - total_light, palette_index / 15.0));
     gl_FragColor = vec4(awesome_paletted_color.rgb, 1.0);
+    //gl_FragColor = vec4(normal.rgb, 1.0);
 }

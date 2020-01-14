@@ -10,10 +10,10 @@ object SUi : Setup() {
     fun prettyDisplay(world: World, text: String, x: Float, y: Float) {
         val e = world.create(Builder.prettyDisplay)
         val space = e.space()
-        val ui = e.prettyUi()
         space.setPos(x, y)
-        ui.changeText(text, 1, 1f)
+        e.prettyUi().changeText(text, 1, 1f)
     }
+
     fun button(world: World, text: String, x: Float, y: Float, onClick: () -> Unit) {
         val e = world.create(Builder.button)
         val space = e.space()

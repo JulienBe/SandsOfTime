@@ -8,14 +8,16 @@ class CompDraw : Comp() {
     lateinit var texture: TextureRegion
     lateinit var normal: TextureRegion
     var color = Colors.explosion
-    var drawingStyle = { _: GGraphics, tr: TextureRegion -> }
+    var drawFront = { _: GGraphics -> }
+    var drawNormal = { _: GGraphics -> }
     var layer = 0
     var cpt = 0
     var accu = 0f
 
     override fun reset() {
         super.reset()
-        drawingStyle = {batch, tr -> }
+        drawFront = { }
+        drawNormal = { }
         cpt = 0
     }
 }

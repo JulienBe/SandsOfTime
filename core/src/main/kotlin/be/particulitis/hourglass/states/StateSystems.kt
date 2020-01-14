@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.states
 
 import be.particulitis.hourglass.system.*
+import be.particulitis.hourglass.system.graphics.SysDrawer
 import com.artemis.BaseSystem
 
 enum class StateSystems(vararg val systems: Pair<Class<out BaseSystem>, Boolean>) {

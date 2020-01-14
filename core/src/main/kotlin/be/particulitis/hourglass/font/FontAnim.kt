@@ -10,10 +10,6 @@ class FontAnim(var wave: MutableList<FontPixel>) {
     private var time = 0f
     private var shade = GShade.randFont()
 
-    init {
-        println("$shade")
-    }
-
     fun act(): Boolean {
         val toProcess = wave.subList(0, if (wave.size > 4) (wave.size / 8f).roundToInt() else 1)
         toProcess.forEach {

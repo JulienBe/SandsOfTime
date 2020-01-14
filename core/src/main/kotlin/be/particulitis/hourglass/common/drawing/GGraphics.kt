@@ -17,7 +17,7 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
     }
 
     fun draw(color: GPalette, x: Float, y: Float, w: Float) {
-        packedColor = color.f
+        //packedColor = color.f
         draw(img.square, x, y, w, w)
     }
 
@@ -46,6 +46,14 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
             batch.begin()
             function.invoke()
             batch.end()
+        }
+
+        fun nor(s: String): TextureRegion {
+            return imgMan.nor(s)
+        }
+        fun tr(s: String): TextureRegion {
+            println("get $s")
+            return imgMan.tr(s)
         }
 
         val batch: GGraphics

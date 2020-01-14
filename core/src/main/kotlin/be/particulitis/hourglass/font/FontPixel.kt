@@ -2,14 +2,16 @@ package be.particulitis.hourglass.font
 
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GPalette
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import ktx.collections.GdxArray
 import kotlin.math.*
 
-class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
+class FontPixel private constructor(var desiredX: Float, var desiredY: Float, var tr: TextureRegion) {
 
     var x = desiredX + GRand.gauss(5)
     var y = desiredY + GRand.gauss(5)
@@ -23,6 +25,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
     var dirX = 0f
     var dirY = 0f
     var speed = 1f
+    var lightId = -1
 
     fun act(delta: Float) {
         if ((GTime.time * 3f).roundToInt() % 2 == 0) {
@@ -41,19 +44,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
         if (!snapped && abs(x - desiredX) + abs(y - desiredY) < 0.1f) {
             snapped = true
             boost = true
-        }
-    }
-
-    fun drawBackground(offsetX: Float, offsetY: Float) {
-        GGraphics.batch.draw(shade.low, (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth + 1)
-    }
-
-    fun drawForeground(offsetX: Float, offsetY: Float) {
-        if (boost) {
             GSounds.pixelSnap.play(0.5f, 1 + ((x / GResolution.screenWidth) / 2f), 1f)
-            GGraphics.batch.draw(GPalette.rand().f, (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
-        } else {
-            GGraphics.batch.draw(shade.high, (x + offsetX).roundToInt().toFloat(), (y + offsetY).roundToInt().toFloat(), fontWidth)
         }
     }
 
@@ -64,9 +55,14 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
         boost = false
     }
 
+    fun initLight() {
+        if (lightId == -1)
+            lightId = GLight.create(x, y, GPalette.WHITEISH, .01f)
+    }
+
     companion object {
 
-        const val fontWidth = 2f
+        const val fontWidth = 3f
         const val charWidth = 4 * fontWidth
         const val charHeight = 5 * fontWidth
 
@@ -107,37 +103,57 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
                 val pixel = mutableListOf<FontPixel>()
                 // keeping -1 around so it's easier to reason about where the pixel is in the car
                 if (pair.first != -1) {
-                    val hasTop = isPresent(list, i - 3)
-                    val hasBottom = isPresent(list, i + 3)
-                    val hasLeft = isPresent(list, i - 1)
-                    val hasRight = isPresent(list, i + 1)
-                    val hasBottomLeft = isPresent(list, i + 2)
-                    val hasBottomRight = isPresent(list, i + 4)
-                    val hasTopLeft = isPresent(list, i - 4)
-                    val hasTopRight = isPresent(list, i - 2)
+                            // left side
+                    val _0 = if (i % 3 == 0) false else isPresent(list, i - 4)
+                    val _1 = isPresent(list, i - 3)
+                            // right side
+                    val _2 = if (i % 3 == 2) false else isPresent(list, i - 2)
+
+                    val _3 = if (i % 3 == 0) false else isPresent(list, i - 1)
+                    val _5 = if (i % 3 == 2) false else isPresent(list, i + 1)
+
+                    val _6 = if (i % 3 == 0) false else isPresent(list, i + 2)
+                    val _7 = isPresent(list, i + 3)
+                    val _8 = isPresent(list, i + 4)
+
                     val offset = pair.second
                     for (x in 0 until width) {
                         for (y in 0 until width) {
-                            val p = initFontPixel(index, width, offset, x, y, existingPool)
+                            val p = initFontPixel(index, width, offset, x, y, existingPool, getTr(
+                                    _0, _1, _2,
+                                    _3,     _5,
+                                    _6, _7, _8))
                             pixel.add(p)
                             p.snapped = false
                             p.couldBeRemoved = false
-                            if (hasBottom && hasLeft && hasRight && hasTop && GRand.nextInt(100) == 0)
+                            if (_7 && _3 && _5 && _1 && GRand.nextInt(100) == 0)
                                 p.couldBeRemoved
                             when ((x * width) + y) {
                                 // bottom left
-                                0 -> if (!hasBottom && !hasLeft && !hasBottomLeft && !hasTopLeft && hasTop)
+                                0 -> if (!_7 && !_3 && !_6 && !_0 && _1)
                                     p.couldBeRemoved = true
                                 // top left
-                                width - 1 -> if (!hasTop && !hasLeft && !hasTopLeft && !hasBottomLeft)
+                                width - 1 -> if (!_1 && !_3 && !_0 && !_6)
                                     p.couldBeRemoved = true
                                 // bottom right
-                                width -> if (!hasBottom && !hasRight && !hasBottomRight && !hasBottomLeft && hasLeft && hasTop)
+                                width -> if (!_7 && !_5 && !_8 && !_6 && _3 && _1)
                                     p.couldBeRemoved = true
                                 // top right
-                                (width * width) - 1 -> if (!hasRight && hasLeft && !hasTop && !hasTopRight)
+                                (width * width) - 1 -> if (!_5 && _3 && !_1 && !_2)
                                     p.couldBeRemoved = true
                             }
+                            // 2 2 2
+                            // 4   4
+                            // 3 6 3
+                            // 2   2
+                            /**
+                             *  000
+                                111
+                                101
+                                111
+                                101
+                             */
+
                         }
                     }
                 }
@@ -145,19 +161,43 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float) {
             }.filter { it.isNotEmpty() }.flatten()
         }
 
+        private fun getTr(_0: Boolean, _1: Boolean, _2: Boolean, _3: Boolean, _5: Boolean, _6: Boolean, _7: Boolean, _8: Boolean): TextureRegion {
+            println(" ")
+            println(" ")
+            println("\nGetting ================ ===============  ")
+            println("Getting ================ ===============  ")
+            println("Getting \n$_0\t $_1\t $_2 \n$_3 \t\t $_5\n$_6\t $_7\t $_8")
+            println(" ")
+            var name = ""
+//            name +=    if (_0) "0" else ""
+            name +=    if (_1) "1" else ""
+//            name +=    if (_2) "2" else ""
+            name +=    if (_3) "3" else ""
+            name +=            "4"
+            name +=    if (_5) "5" else ""
+//            name +=    if (_6) "6" else ""
+            name +=    if (_7) "7" else ""
+//            name +=    if (_8) "8" else ""
+            return if (name.length > 4)
+                GGraphics.tr("font_pixel_4_not_frame")
+            else
+                GGraphics.tr("font_pixel_${name}_not_frame")
+        }
+
         private fun isPresent(list: List<Pair<Int, Offsets>>, i: Int): Boolean {
             return i >= 0 && i < list.size && list[i].first != -1
         }
 
-        private fun initFontPixel(index: Int, width: Int, offset: Offsets, x: Int, y: Int, existingPool: GdxArray<FontPixel>): FontPixel {
+        private fun initFontPixel(index: Int, width: Int, offset: Offsets, x: Int, y: Int, existingPool: GdxArray<FontPixel>, tr: TextureRegion): FontPixel {
             val desiredX = (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth)
             val desiredY = ((offset.yF * width) + y) * fontWidth
             val p: FontPixel = if (existingPool.isEmpty)
-                FontPixel(desiredX, desiredY)
+                FontPixel(desiredX, desiredY, tr)
             else
                 existingPool.pop()
             p.desiredX = desiredX
             p.desiredY = desiredY
+            p.tr = tr
             return p
         }
 

@@ -4,6 +4,7 @@ import be.particulitis.hourglass.Boombox
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompLight
 import be.particulitis.hourglass.gamedata.Builder
@@ -11,7 +12,8 @@ import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
-import be.particulitis.hourglass.system.ui.SysUiDisplay
+import be.particulitis.hourglass.system.graphics.SysDrawer
+import be.particulitis.hourglass.system.graphics.SysUiDisplay
 import com.artemis.Aspect
 import com.artemis.EntitySubscription
 import com.artemis.World
@@ -34,6 +36,7 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
     }
 
     override fun render(delta: Float) {
+        println("lights ${GLight.numberOfLights()}")
         world.setDelta(delta)
         GGraphics.render {
             GInput.newFrame()

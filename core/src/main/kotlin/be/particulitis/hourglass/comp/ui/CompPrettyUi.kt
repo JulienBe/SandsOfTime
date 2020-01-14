@@ -9,8 +9,8 @@ class CompPrettyUi : CompTxt() {
     internal var anims = arrayListOf<FontAnim>()
     internal var phase = 0
     internal var phases = arrayOf(
-            Phase(1, 10f),
-            Phase(2, 20f),
+            Phase(1, 40f),
+            Phase(2, 100f),
             Phase(3, 99999999999999999f)
     )
     internal val currentPhase: Phase

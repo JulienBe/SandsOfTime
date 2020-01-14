@@ -29,7 +29,7 @@ object SBullet : Setup() {
         bullet.ttl().remaining = 9f
         bullet.light().setLight(Colors.enemyBullets, posX, posY, 0.1f)
         draw.color = Colors.enemyBullets
-        draw.drawingStyle = {batch, tr -> DrawMethods.basic(space, draw, batch)}
+        draw.drawFront = { DrawMethods.basic(space, draw, it)}
         draw.layer = Data.enemyBulletLayer
     }
 
@@ -48,7 +48,7 @@ object SBullet : Setup() {
         bullet.ttl().remaining = 1f
         bullet.light().setLight(Colors.playerBullets, posX, posY, 0.2f)
         draw.color = Colors.playerBullets
-        draw.drawingStyle = {batch, tr -> DrawMethods.basic(space, draw, batch)}
+        draw.drawFront = { DrawMethods.basic(space, draw, it)}
         draw.layer = Data.playerBulletLayer
     }
 

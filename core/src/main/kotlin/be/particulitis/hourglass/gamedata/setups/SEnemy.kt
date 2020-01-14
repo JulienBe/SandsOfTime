@@ -20,8 +20,8 @@ object SEnemy : Setup() {
         val draw = enemy.draw()
 
         draw.color = Colors.enemyShoots
-        draw.drawingStyle = {batch, tr ->
-            DrawMethods.basic(space, draw, batch)
+        draw.drawFront = {
+            DrawMethods.basic(space, draw, it)
             //DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
             draw.cpt = (GTime.enemyTime * 10f).toInt()
         }
@@ -55,9 +55,9 @@ object SEnemy : Setup() {
         enemy.targetSeek().target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
         enemy.targetFollow().set(player.space())
         enemy.dir().setSpeedAcceleration(20f, 0.3f)
-        draw.drawingStyle = { batch, tr ->
-            DrawMethods.basic(space, draw, batch)
-            DrawMethods.drawTrail(draw, space, dir, batch)
+        draw.drawFront = {
+            DrawMethods.basic(space, draw, it)
+            DrawMethods.drawTrail(draw, space, dir, it)
         }
 
         enemy.emitter().emit = {

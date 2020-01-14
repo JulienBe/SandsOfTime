@@ -29,8 +29,8 @@ object SParticles : Setup() {
             dir.mul(.97f)
         }
 
-        draw.drawingStyle = { batch, tr ->
-            DrawMethods.basic(space, draw, batch)
+        draw.drawFront = {
+            DrawMethods.basic(space, draw, it)
         }
     }
 

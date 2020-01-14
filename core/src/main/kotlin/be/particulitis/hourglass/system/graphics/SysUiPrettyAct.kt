@@ -1,6 +1,7 @@
-package be.particulitis.hourglass.system.ui
+package be.particulitis.hourglass.system.graphics
 
 import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
@@ -15,7 +16,7 @@ import com.badlogic.gdx.math.Vector2
 import kotlin.math.*
 
 @Wire(failOnNull = false)
-class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, CompPrettyUi::class.java)) {
+class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPrettyUi::class.java)) {
 
     private lateinit var mSpace: ComponentMapper<CompSpace>
     private lateinit var mUi: ComponentMapper<CompPrettyUi>
@@ -32,13 +33,11 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
         ui.time += GTime.delta
         ui.currentIndex = ((ui.time * 5f) * ui.pixels.size / 12f).roundToInt()
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.drawBackground(space.x, space.y)
             pixel.act(GTime.delta)
-            pixel.drawBackground(space.x, space.y)
         }
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.drawForeground(space.x, space.y)
             pixel.boost = false
+            GLight.updatePos(pixel.lightId, pixel.x + space.x, pixel.y + space.y)
         }
 
         ui.anims.removeIf { it.act() }
@@ -51,6 +50,11 @@ class SysUiPrettyDisplay : IteratingSystem(Aspect.all(CompSpace::class.java, Com
             chopPixels(ui)
         if (GRand.nextInt(300) == 0 && ui.currentIndex > ui.pixels.size)
             swapPixel(ui)
+    }
+
+    private fun maybeAddLight(ui: CompPrettyUi) {
+        if (ui.pixels.filter { it.lightId != -1 }.count() < (ui.pixels.size / 10))
+            ui.pixels.random().initLight()
     }
 
     private fun onEachPixel(ui: CompPrettyUi, inside: (pixel: FontPixel) -> Unit) {

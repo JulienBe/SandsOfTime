@@ -51,6 +51,7 @@ class ImgMan {
         const val atlasPath = "textures/texture1/atlas.atlas"
         const val font_pixel = "font_pixel"
         const val wall = "wall"
+        const val dent = "dent"
         val manager = AssetManager()
     }
 }

@@ -31,7 +31,6 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
         GTime.reset()
         SPlayer.player(world)
         SUi.score(world.create(Builder.score.build(world)), world)
-        Gdx.input.inputProcessor = GInput
         StateManager.endPause(world)
     }
 

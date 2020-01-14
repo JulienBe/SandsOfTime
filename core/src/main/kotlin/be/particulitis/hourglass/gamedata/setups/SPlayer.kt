@@ -2,6 +2,7 @@ package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
@@ -57,17 +58,18 @@ object SPlayer : Setup() {
         player.charMvt().speed = playerSpeed
         player.layer().setLayer(Layers.Player)
 
-        player.light().setLight(Colors.player, space.centerX, space.centerY, 1.8f)
+        val light = player.light()
+        light.setLight(Colors.player, space.x + 1f, space.centerY - 1f, 0.2f)
         draw.color = Colors.player
         draw.layer = playerLayer
-        draw.drawingStyle = { batch, tr ->
-            //DrawMethods.draw33animNoLoop(space, draw, anim!!, 2, Dim.Player, batch)
-            DrawMethods.basic(space, draw, batch)
-            draw.accu += GTime.playerDelta * 10f
-            if (draw.accu >= 1f) {
-                draw.cpt++
-                draw.accu -= 1f
-            }
+        val trs = GGraphics.tr("link_shoot")
+        val nrs = GGraphics.nor("link_shoot")
+        draw.drawFront = { batch ->
+            light.updatePos(space.x + 2f, space.centerY + 1f)
+            batch.draw(trs, space.x, space.y)
+        }
+        draw.drawNormal = { batch ->
+            batch.draw(nrs, space.x, space.y)
         }
     }
 }

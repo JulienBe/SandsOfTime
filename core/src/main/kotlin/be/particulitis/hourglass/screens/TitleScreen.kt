@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.common.GHelper
+import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GPalette
@@ -8,8 +9,8 @@ import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
+import be.particulitis.hourglass.system.*
 import be.particulitis.hourglass.system.graphics.SysDrawer
-import be.particulitis.hourglass.system.SysTime
 import be.particulitis.hourglass.system.graphics.SysUiDisplay
 import be.particulitis.hourglass.system.graphics.SysUiPrettyAct
 import com.artemis.World
@@ -23,14 +24,20 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
     private val config = WorldConfigurationBuilder()
             .with(TagManager())
             .with(SysTime())
+            .with(SysControl())
+            .with(SysCharMovement())
+            .with(SysDirMovement())
+            .with(SysShooter())
             .with(SysDrawer())
             .with(SysUiPrettyAct())
             .with(SysUiDisplay())
+            .with(SysClearActions())
             .build()
     val world = World(config)
-    private val pointerLight = GLight.create(GResolution.screenWidth / 2f, GResolution.screenHeight / 2f, GPalette.WHITEISH, .5f)
+    private val pointerLight = GLight.create(GResolution.screenWidth / 2f, GResolution.screenHeight / 2f, GPalette.WHITEISH, .05f)
 
     override fun show() {
+        Gdx.input.inputProcessor = GInput
         SUi.prettyDisplay(world, "Hourglass", 20f, 150f)
 //        SUi.button(world, "Play!", 20f, 50f) {
 //            game.screen = FirstScreen(game)

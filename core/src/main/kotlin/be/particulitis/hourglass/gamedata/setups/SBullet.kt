@@ -46,9 +46,13 @@ object SBullet : Setup() {
         bullet.collide().setIds(Ids.playerBullet)
         bullet.collide().addCollidingWith(Ids.enemy)
         bullet.ttl().remaining = 1f
-        bullet.light().setLight(Colors.playerBullets, posX, posY, 0.2f)
+        val light = bullet.light()
+        light.setLight(Colors.playerBullets, posX, posY, 0.1f)
         draw.color = Colors.playerBullets
-        draw.drawFront = { DrawMethods.basic(space, draw, it)}
+        draw.drawFront = {
+            light.updatePos(space.centerX, space.centerY)
+            DrawMethods.basic(space, draw, it)
+        }
         draw.layer = Data.playerBulletLayer
     }
 

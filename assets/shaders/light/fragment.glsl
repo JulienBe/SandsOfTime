@@ -37,12 +37,13 @@ void main() {
         float df = max(dot(nor_normal, nor_delta), 0.0);
         float attenuation = 1.0 / (falloff.x + (falloff.y * len) + (falloff.z * len * len));
 
-        float l = df * u_light_intensity[i] * (1.0 - len) * attenuation;
+        float l = u_light_intensity[i] * (1.0 - len) * attenuation * df;
+
+        total_light += l;
         // doing the steps avoid having 'invisible' interactions betweens the lights
         total_light += step(0.79, l) + step(0.53, l) + step(0.354, l) + step(0.236, l) + step(0.157, l) + step(0.105, l) + step(0.07, l);
     }
-
-    total_light /= 7.0;
+    total_light /= 6.0;
 
     int color = int((color_text.r + color_text.g) * 255.0);
     int palette_index =
@@ -53,5 +54,5 @@ void main() {
 
     vec4 awesome_paletted_color = texture2D(u_palette, vec2(1.0 - total_light, palette_index / 15.0));
     gl_FragColor = vec4(awesome_paletted_color.rgb, 1.0);
-    //gl_FragColor = vec4(normal.rgb, 1.0);
+    //gl_FragColor = texture2D(u_normal, v_texCoords);
 }

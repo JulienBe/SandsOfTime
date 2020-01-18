@@ -26,12 +26,12 @@ object SEnemy : Setup() {
             draw.cpt = (GTime.enemyTime * 10f).toInt()
         }
 
-        shoot.setOffset(Dim.Enemy.half - Dim.Bullet.half, Dim.Enemy.half - Dim.Bullet.half)
+        shoot.setOffset(Dim.Enemy.hw - Dim.Bullet.hw, Dim.Enemy.hw - Dim.Bullet.hw)
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, SBullet::enemyBullet)
         shoot.shootingFunc = {
             val playerSpace = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).space()
-            shoot.dir.set(playerSpace.centerX - (space.x + Dim.Enemy.half), playerSpace.centerY - (space.y + Dim.Enemy.half))
+            shoot.dir.set(playerSpace.centerX - (space.x + Dim.Enemy.hw), playerSpace.centerY - (space.y + Dim.Enemy.hw))
             shoot.dir.nor()
             shoot.bullet.second.invoke(world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,

@@ -52,6 +52,7 @@ class ImgMan {
         const val font_pixel = "font_pixel"
         const val wall = "wall"
         const val dent = "dent"
+        const val player = "wizard"
         val manager = AssetManager()
     }
 }

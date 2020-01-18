@@ -34,14 +34,15 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             .with(SysClearActions())
             .build()
     val world = World(config)
-    private val pointerLight = GLight.create(GResolution.screenWidth / 2f, GResolution.screenHeight / 2f, GPalette.WHITEISH, .05f)
+    private val pointerLight = GLight.create(GResolution.screenWidth / 2f, GResolution.screenHeight / 2f, GPalette.WHITEISH, .1f)
 
     override fun show() {
         Gdx.input.inputProcessor = GInput
+
         SUi.prettyDisplay(world, "Hourglass", 20f, 150f)
-//        SUi.button(world, "Play!", 20f, 50f) {
-//            game.screen = FirstScreen(game)
-//        }
+        SUi.button(world, "Play!", 20f, 50f) {
+            switchScreen(FirstScreen(game))
+        }
         SProps.wall(world, 16, 16)
         SPlayer.player(world)
     }

@@ -11,7 +11,7 @@ object Builder {
     val explosionParticle = createBuilder(Aspects.ExplosionParticle)
     val prettyDisplay = createBuilder(Aspects.PrettyDisplay)
     val button = createBuilder(Aspects.Button)
-    val wall = createBuilder(Aspects.Wall)
+    val tiled = createBuilder(Aspects.Wall)
     val dent = createBuilder(Aspects.Dent)
 
     private fun createBuilder(aspects: Aspects): ArchetypeBuilder {

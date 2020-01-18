@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
+import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GResolution
@@ -9,11 +10,11 @@ import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.Layers
 import be.particulitis.hourglass.gamedata.graphics.Colors
-import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import com.artemis.World
 import com.artemis.managers.TagManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.math.Vector2
 
 object SPlayer : Setup() {
 
@@ -34,9 +35,9 @@ object SPlayer : Setup() {
         player.control().addAction(listOf(Input.Keys.S, Input.Keys.DOWN),                      GAction.DOWN)
 
         player.hp().setHp(10)
-        player.space().setDim(Dim.Player.w, Dim.Player.w)
-        player.space().setPos(GResolution.areaHDim - Dim.Player.half, GResolution.areaHDim - Dim.Player.half)
-        shoot.setOffset(Dim.Player.half - Dim.Bullet.half, Dim.Player.half - Dim.Bullet.half)
+        player.space().setDim(Dim.Player)
+        player.space().setPos(GResolution.areaHDim - Dim.Player.hw, GResolution.areaHDim - Dim.Player.hw)
+        shoot.setOffset(Dim.Player.hw - Dim.Bullet.hw, Dim.Player.hw - Dim.Bullet.hw)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
             !shoot.keyCheck || (shoot.keyCheck && Gdx.input.justTouched())
@@ -59,17 +60,22 @@ object SPlayer : Setup() {
         player.layer().setLayer(Layers.Player)
 
         val light = player.light()
-        light.setLight(Colors.player, space.x + 1f, space.centerY - 1f, 0.2f)
+        light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.1f)
         draw.color = Colors.player
         draw.layer = playerLayer
-        val trs = GGraphics.tr("link_shoot")
-        val nrs = GGraphics.nor("link_shoot")
+        val trs = GGraphics.tr(ImgMan.player)
+        val nrs = GGraphics.nor(ImgMan.player)
+        val angleVector = Vector2()
+        val spriteW = trs.regionWidth.toFloat()
+        val spriteH = trs.regionHeight.toFloat()
         draw.drawFront = { batch ->
-            light.updatePos(space.x + 2f, space.centerY + 1f)
-            batch.draw(trs, space.x, space.y)
+            val angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
+            angleVector.nor()
+            light.updatePos((space.x + 5) - angleVector.x * 12, (space.centerY + 10f) - angleVector.y * 12)
+            batch.draw(trs, space, Dim.PlayerSprite, angle)
         }
         draw.drawNormal = { batch ->
-            batch.draw(nrs, space.x, space.y)
+            batch.draw(nrs, space.x, space.y, spriteW / 2f, spriteH / 2f, spriteW, spriteH, 1f, 1f, angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f)
         }
     }
 }

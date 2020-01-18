@@ -9,6 +9,7 @@ import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompLight
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.setups.SPlayer
+import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
@@ -97,6 +98,7 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
                             }
                         }
                     })
+            SProps.ground(world, 7, 7)
         }
 
     }

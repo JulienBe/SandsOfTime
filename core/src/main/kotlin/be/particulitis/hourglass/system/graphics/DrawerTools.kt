@@ -39,6 +39,6 @@ object DrawerTools {
     }
 
     fun frameBuffer(): FrameBuffer {
-        return FrameBuffer(Pixmap.Format.RGBA4444, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
+        return FrameBuffer(Pixmap.Format.RGBA8888, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
     }
 }

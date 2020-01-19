@@ -19,7 +19,7 @@ object GLight {
     fun b(id: Int) = rgb[id * 3 + 2] ?: 1f
     fun intensity(id: Int) = intensity[id] ?: 1f
 
-    fun create(x: Float, y: Float, palette: GPalette, intensity: Float, angle: Float = 1f, tilt: Float = 1f): Int {
+    fun create(x: Float, y: Float, palette: GPalette, intensity: Float, angle: Float = 1f, tilt: Float = 0f): Int {
         return create(x, y, palette.r, palette.g, palette.b, intensity, angle, tilt)
     }
 

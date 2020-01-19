@@ -80,8 +80,8 @@ object SPlayer : Setup() {
             intensityRandomness.tick(GTime.delta)
             draw.normalAngle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
             angleVector.nor()
-            light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
-            light.updateIntesity(0.1f + intensityRandomness.value)
+            light.updatePosAngle((space.x + 6) - angleVector.x * 9, (space.centerY + 10f) - angleVector.y * 9, draw.normalAngle + angleRandomness.value - 45f)
+            light.updateIntesity(0.15f + intensityRandomness.value)
             light.updateTilt(4f + tiltRandomness.value)
             batch.draw(trs, space, Dim.PlayerSprite, draw.normalAngle)
         }

@@ -14,6 +14,22 @@ const vec2 resolution = vec2(256.0, 256.0);
 const float light_default_z = 1.0;
 const vec3 falloff = vec3(0.2, 6.0, 20.0);
 
+const int nb_steps = 7;
+const float dither_width = 4.0;
+const vec2[nb_steps] light_steps = vec2[](
+    vec2(0.79   - 0.05 * dither_width,    0.79   + 0.05 * dither_width),
+    vec2(0.53   - 0.025 * dither_width,   0.53   + 0.025 * dither_width),
+    vec2(0.354  - 0.0125 * dither_width,  0.354  + 0.0125 * dither_width),
+    vec2(0.236  - 0.0065 * dither_width,  0.236  + 0.0065 * dither_width),
+    vec2(0.157  - 0.0032 * dither_width,  0.157  + 0.0032 * dither_width),
+    vec2(0.105  - 0.0016 * dither_width,  0.105  + 0.0016 * dither_width),
+    vec2(0.07   - 0.0008 * dither_width,  0.07   + 0.0008 * dither_width)
+);
+const float[9] dither_pattern = float[](
+    -0.1, 0.0, 0.1,
+    -0.05, 0.0, 0.05,
+    -0.025, 0.0, 0.025);
+
 uniform sampler2D u_texture;
 uniform sampler2D u_palette;
 uniform sampler2D u_normal;
@@ -41,11 +57,20 @@ void main() {
 
         float l = u_light_intensity[i] * (1.0 - len) * attenuation * normal * angle_fitness;
 
+        for (int i = 0; i <= nb_steps; i++) {
+            float lower = step(light_steps[i].x, l);
+            float higher = step(l, light_steps[i].y);
+            float mul = lower * higher;
+            l += mul * dither_pattern[int(mod(gl_FragCoord.x * gl_FragCoord.y, 9))] * 0.1;
+        }
+
         total_light += l;
         // doing the steps avoid having 'invisible' interactions betweens the lights
+
         total_light += step(0.79, l) + step(0.53, l) + step(0.354, l) + step(0.236, l) + step(0.157, l) + step(0.105, l) + step(0.07, l);
     }
     total_light /= 6.0;
+
 
     int color = int((color_text.r + color_text.g) * 255.0);
     int palette_index =

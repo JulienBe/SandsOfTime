@@ -37,7 +37,7 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
         }
         onEachPixel(ui) { pixel: FontPixel ->
             pixel.boost = false
-            GLight.updatePos(pixel.lightId, pixel.x + space.x, pixel.y + space.y)
+            //GLight.updatePos(pixel.lightId, pixel.x + space.x, pixel.y + space.y)
         }
 
         ui.anims.removeIf { it.act() }

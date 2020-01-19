@@ -66,16 +66,28 @@ object SPlayer : Setup() {
         val trs = GGraphics.tr(ImgMan.player)
         val nrs = GGraphics.nor(ImgMan.player)
         val angleVector = Vector2()
-        val spriteW = trs.regionWidth.toFloat()
-        val spriteH = trs.regionHeight.toFloat()
+        val angleRandomness = GPeriodicValue(0.1f) {
+            GRand.nextGaussian().toFloat()
+        }
+        val intensityRandomness = GPeriodicValue(0.11f) {
+            GRand.nextGaussian().toFloat() / 1000f
+        }
+        val tiltRandomness = GPeriodicValue(0.09f) {
+            GRand.nextGaussian().toFloat() / 10f
+        }
         draw.drawFront = { batch ->
-            val angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
+            angleRandomness.tick(GTime.delta)
+            intensityRandomness.tick(GTime.delta)
+            draw.normalAngle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
             angleVector.nor()
-            light.updatePos((space.x + 5) - angleVector.x * 12, (space.centerY + 10f) - angleVector.y * 12)
-            batch.draw(trs, space, Dim.PlayerSprite, angle)
+            light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
+            light.updateIntesity(0.1f + intensityRandomness.value)
+            light.updateTilt(4f + tiltRandomness.value)
+            batch.draw(trs, space, Dim.PlayerSprite, draw.normalAngle)
         }
         draw.drawNormal = { batch ->
-            batch.draw(nrs, space.x, space.y, spriteW / 2f, spriteH / 2f, spriteW, spriteH, 1f, 1f, angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f)
+            batch.draw(nrs, space, Dim.PlayerSprite, draw.normalAngle)
         }
     }
+
 }

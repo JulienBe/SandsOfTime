@@ -12,12 +12,14 @@ class CompDraw : Comp() {
     var drawNormal = { _: GGraphics -> }
     var layer = 0
     var cpt = 0
-    var accu = 0f
+    var normalAngle = 0f
 
     override fun reset() {
         super.reset()
         drawFront = { }
         drawNormal = { }
         cpt = 0
+        normalAngle = 0f
     }
+
 }

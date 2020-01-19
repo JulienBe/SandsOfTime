@@ -14,6 +14,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.math.MathUtils
 
 @Wire(failOnNull = false)
 class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
@@ -25,6 +26,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     private val fboNormal = DrawerTools.frameBuffer()
     private val fboLight = DrawerTools.frameBuffer()
     private val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
+    private val normalShader = GShader.createShader("shaders/normal/vertex.glsl", "shaders/normal/fragment.glsl")
     private lateinit var mergedTexture: Texture
 
     override fun processSystem() {
@@ -36,9 +38,12 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
                 mDraw[it].drawFront.invoke(batch)
             }
         }
+        batch.shader = normalShader
         val normal = DrawerTools.drawToFb(fboNormal) {
             sortedEntities.forEach {
-                mDraw[it].drawNormal.invoke(batch)
+                val draw = mDraw[it]
+                normalShader.setUniformf("u_angle", draw.normalAngle * MathUtils.degreesToRadians)
+                draw.drawNormal.invoke(batch)
             }
         }
         batch.shader = lightShader
@@ -78,7 +83,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     private fun setLights(lightShader: ShaderProgram) {
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
         lightShader.setUniform1fv("u_light_intensity", GLight.intensity.values.toFloatArray(), 0, GLight.intensity.size)
-        lightShader.setUniform2fv("u_light_pos", GLight.xy.values.toFloatArray(), 0, GLight.xy.size)
+        lightShader.setUniform4fv("u_light_pos_angle_tilt", GLight.xyat.values.toFloatArray(), 0, GLight.xyat.size)
     }
 
     fun getCurrentTexture(): Texture {

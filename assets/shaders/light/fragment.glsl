@@ -18,7 +18,7 @@ uniform sampler2D u_texture;
 uniform sampler2D u_palette;
 uniform sampler2D u_normal;
 
-uniform vec2 u_light_pos[400];
+uniform vec4 u_light_pos_angle_tilt[400];
 uniform float u_light_intensity[400];
 uniform int u_light_count;
 
@@ -28,16 +28,18 @@ void main() {
     float total_light = 0.0;
 
     for (int i = 0; i < u_light_count; i++) {
-        vec3 delta_pixel_pos = vec3((u_light_pos[i] - gl_FragCoord.xy) / resolution.xy, light_default_z);
+        vec3 delta_pixel_pos = vec3((u_light_pos_angle_tilt[i].xy - gl_FragCoord.xy) / resolution.xy, light_default_z);
+
         float len = length(delta_pixel_pos.xy);
 
         vec3 nor_delta = normalize(delta_pixel_pos);
         vec3 nor_normal = normalize(normal);
 
-        float df = max(dot(nor_normal, nor_delta), 0.0);
+        float angle_fitness = dot(vec2(cos(u_light_pos_angle_tilt[i].z) * u_light_pos_angle_tilt[i].w, sin(u_light_pos_angle_tilt[i].z) * u_light_pos_angle_tilt[i].w), vec2(delta_pixel_pos.xy)) + 1.0;
+        float normal = max(dot(nor_normal, nor_delta), 0.0);
         float attenuation = 1.0 / (falloff.x + (falloff.y * len) + (falloff.z * len * len));
 
-        float l = u_light_intensity[i] * (1.0 - len) * attenuation * df;
+        float l = u_light_intensity[i] * (1.0 - len) * attenuation * normal * angle_fitness;
 
         total_light += l;
         // doing the steps avoid having 'invisible' interactions betweens the lights

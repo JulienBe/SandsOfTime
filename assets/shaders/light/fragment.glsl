@@ -55,7 +55,7 @@ void main() {
         float normal = max(dot(nor_normal, nor_delta), 0.0);
         float attenuation = 1.0 / (falloff.x + (falloff.y * len) + (falloff.z * len * len));
 
-        float l = u_light_intensity[i] * (1.0 - len) * attenuation * normal * angle_fitness;
+        float l = u_light_intensity[i] * (1.0 - len) * attenuation * normal * angle_fitness * angle_fitness * angle_fitness;
 
         for (int i = 0; i <= nb_steps; i++) {
             float lower = step(light_steps[i].x, l);

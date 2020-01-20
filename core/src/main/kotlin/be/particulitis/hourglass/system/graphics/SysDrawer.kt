@@ -40,9 +40,15 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         }
         batch.shader = normalShader
         val normal = DrawerTools.drawToFb(fboNormal) {
+            var previousAngle = -1546.54f
             sortedEntities.forEach {
                 val draw = mDraw[it]
-                normalShader.setUniformf("u_angle", draw.normalAngle * MathUtils.degreesToRadians)
+                var angle = draw.normalAngle * MathUtils.degreesToRadians
+                if (previousAngle != angle) {
+                    batch.flush()
+                    normalShader.setUniformf("u_angle", angle)
+                    previousAngle = angle
+                }
                 draw.drawNormal.invoke(batch)
             }
         }
@@ -65,7 +71,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
             batch.setColor(1f, 1f, 1f, 1f)
             batch.draw(front, 0f, GResolution.areaDim, GResolution.areaDim, -GResolution.areaDim)
         }
-
+//        mergedTexture = normal
         //DrawerTools.drawResult(mergedTexture)
     }
 

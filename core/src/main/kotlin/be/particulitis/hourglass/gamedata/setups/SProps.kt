@@ -8,7 +8,7 @@ import com.artemis.World
 
 object SProps : Setup() {
     fun ground(world: World, tilesWidth: Int, tilesHeight: Int, offsetX: Float = 0f, offsetY: Float = 0f) {
-        createTiled(tilesWidth, tilesHeight, world, offsetX, offsetY) { "ground" }
+        createTiled(tilesWidth, tilesHeight, world, offsetX, offsetY) { "floor1" }
     }
 
     fun barrel(world: World, x: Float, y: Float) {

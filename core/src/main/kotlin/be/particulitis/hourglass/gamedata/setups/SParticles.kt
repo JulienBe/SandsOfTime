@@ -1,15 +1,11 @@
 package be.particulitis.hourglass.gamedata.setups
 
-import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.common.drawing.GPalette
 import be.particulitis.hourglass.gamedata.Builder
-import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.Layers
-import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import com.artemis.World
 
 object SParticles : Setup() {
@@ -19,7 +15,6 @@ object SParticles : Setup() {
         val draw = p.draw()
         val space = p.space()
         val dir = p.dir()
-        val light = p.light()
         var time = 0f
 
         p.layer().setLayer(Layers.Other)
@@ -46,13 +41,10 @@ object SParticles : Setup() {
         }
         GSounds.explosion1.play()
 
-        light.setLight(GPalette.WHITEISH, explosionCenterX, explosionCenterY, 0.1f)
 
         p.particle().update = {
             dir.mul(.97f)
             time += GTime.delta
-            light.updateIntesity(1f / (64f + time * 25))
-            light.updatePos(space.centerX, space.centerY)
         }
     }
 

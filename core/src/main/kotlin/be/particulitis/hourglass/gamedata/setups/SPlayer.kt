@@ -59,8 +59,6 @@ object SPlayer : Setup() {
         player.charMvt().speed = playerSpeed
         player.layer().setLayer(Layers.Player)
 
-        //val light = player.light()
-        //light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.1f)
         draw.color = Colors.player
         draw.layer = playerLayer
         val trs = GGraphics.tr(ImgMan.player)
@@ -75,14 +73,16 @@ object SPlayer : Setup() {
         val tiltRandomness = GPeriodicValue(0.09f) {
             GRand.nextGaussian().toFloat() / 40f
         }
+        val light = player.light()
+        light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.1f)
         draw.drawFront = { batch ->
             angleRandomness.tick(GTime.delta)
             intensityRandomness.tick(GTime.delta)
             draw.normalAngle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
             angleVector.nor()
-            //light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
-            //light.updateIntesity(0.10f + intensityRandomness.value)
-            //light.updateTilt(2f + tiltRandomness.value)
+            light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
+            light.updateIntesity(0.12f + intensityRandomness.value)
+            light.updateTilt(2f + tiltRandomness.value)
             batch.draw(trs, space, Dim.PlayerSprite, draw.normalAngle)
         }
         draw.drawNormal = { batch ->

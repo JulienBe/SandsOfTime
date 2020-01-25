@@ -44,7 +44,7 @@ uniform sampler2D u_palette;
 uniform sampler2D u_normal;
 uniform sampler2D u_occlusion;
 
-uniform vec4 u_light_pos_angle_tilt[400];
+uniform vec4 u_light_pos_angle_tilt[600];
 uniform float u_light_intensity[400];
 uniform int u_light_count;
 
@@ -77,13 +77,18 @@ void main() {
         }
 
         // can be used to adjust the fact that a light could go over an obstacle. The closest you get, the less steps it does, to more likely it is to go 'over' the blocker
+
+        //**
         float shadow_total_steps = len * 96.0;
         vec2 shadow_sample_step = delta_pixel_pos.xy / shadow_total_steps;
+        float min_light = 1.0;
         for (float f = 0.0; f < shadow_total_steps; f += 1.0) {
             vec2 coord_to_sample = pixel_pos + vec2(shadow_sample_step.x * f, shadow_sample_step.y * f);
             vec4 occluder_color = texture2D(u_occlusion, coord_to_sample);
-             l *= 1.0 - occluder_color.r * 50.0;
+            min_light = min(min_light, 1.0 - occluder_color.r);
         }
+        l *= min_light;
+        //*/
 
         // doing this to avoid having 'invisible' interactions betweens the lights
         total_light += l;

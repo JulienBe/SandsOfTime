@@ -98,7 +98,7 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
                             }
                         }
                     })
-            SProps.ground(world, 7, 7)
+            SProps.ground(world, 14, 14)
         }
 
     }

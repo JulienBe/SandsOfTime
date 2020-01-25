@@ -45,8 +45,6 @@ object GLight {
         rgb[lightId * 3 + 1] = g
         rgb[lightId * 3 + 2] = b
 
-        println("createds $lightId")
-
         return lightId
     }
 

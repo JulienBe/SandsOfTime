@@ -4,6 +4,7 @@ import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.*
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.gamedata.graphics.DrawMethods
@@ -51,13 +52,22 @@ object SEnemy : Setup() {
         val space = enemy.space()
         val draw = enemy.draw()
         val dir = enemy.dir()
+        val occluder = enemy.occluder()
 
         enemy.targetSeek().target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
         enemy.targetFollow().set(player.space())
         enemy.dir().setSpeedAcceleration(20f, 0.3f)
+
+        GGraphics.setupTexturesOccluder("troll", draw, occluder)
         draw.drawFront = {
-            DrawMethods.basic(space, draw, it)
-            DrawMethods.drawTrail(draw, space, dir, it)
+            draw.normalAngle = dir.angle + 90f
+            DrawMethods.drawFrontAngle(space, draw, it)
+        }
+        draw.drawNormal = {
+            DrawMethods.drawNorAngle(space, draw, it)
+        }
+        occluder.draw = { batch ->
+            batch.draw(occluder.texture, space, draw.normalAngle)
         }
 
         enemy.emitter().emit = {

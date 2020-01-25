@@ -21,7 +21,8 @@ class SysSpawner : BaseSystem() {
         val enemies = world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))
         if (enemies.entities.size() < min + (GTime.playerTime / 2f)) {
             val playerPos = mSpace[world.getSystem(TagManager::class.java).getEntity(Data.playerTag)]
-            if (GRand.nextBoolean())
+            //if (GRand.nextBoolean())
+            if (true)
                 addEnemy(Builder.enemySlug, playerPos, SEnemy::enemySlug)
             else
                 addEnemy(Builder.enemyShoot, playerPos, SEnemy::enemyShoot)

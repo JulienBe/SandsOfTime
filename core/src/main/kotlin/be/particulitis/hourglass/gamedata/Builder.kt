@@ -13,6 +13,7 @@ object Builder {
     val button = createBuilder(Aspects.Button)
     val tiled = createBuilder(Aspects.Wall)
     val dent = createBuilder(Aspects.Dent)
+    val occluderProp = createBuilder(Aspects.OccluderProp)
 
     private fun createBuilder(aspects: Aspects): ArchetypeBuilder {
         val builder = ArchetypeBuilder()

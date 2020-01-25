@@ -39,7 +39,8 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompAction::class.java,
             CompHp::class.java,
             CompShooter::class.java,
-            CompLight::class.java)),
+            CompLight::class.java,
+            CompOccluder::class.java)),
     Bullet(listOf(
             CompLayer::class.java,
             CompSpace::class.java,
@@ -67,6 +68,11 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompDraw::class.java
     )),
     Wall(listOf(
+            CompSpace::class.java,
+            CompDraw::class.java
+    )),
+    OccluderProp(listOf(
+            CompOccluder::class.java,
             CompSpace::class.java,
             CompDraw::class.java
     )),

@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 
 object DrawerTools {
-    fun drawToFb(buffer: FrameBuffer, drawFun: () -> Unit): Texture {
+    fun drawToFb(buffer: FrameBuffer, xTrans: Float = 0f, yTrans: Float = 0f, drawFun: () -> Unit): Texture {
         GGraphics.cam.setToOrtho(false, GResolution.areaDim, GResolution.areaDim)
+        GGraphics.cam.translate(xTrans, yTrans)
         GGraphics.cam.update()
         GGraphics.batch.projectionMatrix = GGraphics.cam.combined
         buffer.begin()
+        buffer.bind()
         GGraphics.batch.begin()
         Gdx.graphics.gL20.glClearColor(0f, 0f, 0f, 0f)
         Gdx.graphics.gL20.glClear(GL20.GL_COLOR_BUFFER_BIT)

@@ -31,6 +31,10 @@ class ImgMan {
         return regions[name + "_normal"]
     }
 
+    fun occ(name: String): TextureRegion {
+        return regions[name + "_occluder"]
+    }
+
     init {
         manager.load<TextureAtlas>(atlasPath)
         manager.finishLoading()

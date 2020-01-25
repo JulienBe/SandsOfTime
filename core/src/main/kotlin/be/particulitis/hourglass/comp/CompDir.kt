@@ -12,6 +12,7 @@ class CompDir : Comp() {
 
     val x get() = dir.x
     val y get() = dir.y
+    val angle get() = dir.angle()
 
      fun setSpeedAcceleration(maxSpeed: Float, maxAcceleration: Float) {
         this.maxSpeed = maxSpeed

@@ -2,10 +2,10 @@ package be.particulitis.hourglass.common.drawing
 
 import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.comp.CompDraw
+import be.particulitis.hourglass.comp.CompOccluder
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Dim
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -33,14 +33,14 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         draw(img.square, x.toFloat(), y.toFloat(), w.toFloat(), w.toFloat())
     }
 
-    fun drawWhite(texture: TextureRegion, x: Float, y: Float) {
-        packedColor = Color.WHITE_FLOAT_BITS
-        draw(texture, x, y)
-    }
-
     fun draw(region: TextureRegion, space: CompSpace, dim: Dim, angle: Float) {
         draw(region, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(), dim.hw, dim.hh, dim.w, dim.h, 1f, 1f, angle)
     }
+
+    fun draw(region: TextureRegion, space: CompSpace, angle: Float) {
+        draw(region, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(), space.hw, space.hh, space.w, space.h, 1f, 1f, angle)
+    }
+
 
     companion object {
 
@@ -60,6 +60,16 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         fun tr(s: String): TextureRegion {
             println("get $s")
             return imgMan.tr(s)
+        }
+
+        fun setupTextures(draw: CompDraw, s: String) {
+            draw.texture = imgMan.tr(s)
+            draw.normal = imgMan.nor(s)
+        }
+
+        fun setupTexturesOccluder(s: String, draw: CompDraw, occluder: CompOccluder) {
+            setupTextures(draw, s)
+            occluder.texture = imgMan.occ(s)
         }
 
         val batch: GGraphics

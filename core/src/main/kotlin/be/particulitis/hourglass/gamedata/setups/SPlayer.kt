@@ -21,7 +21,7 @@ object SPlayer : Setup() {
     private const val playerSpeed = 150f
     private const val playerLayer = 10
 
-    fun player(world: World) {
+    fun player(world: World, offsetX: Float = 0f, offsetY: Float = 0f) {
         val player = world.create(Builder.player)
         world.getSystem(TagManager::class.java).register(Data.playerTag, player.id)
 
@@ -36,7 +36,7 @@ object SPlayer : Setup() {
 
         player.hp().setHp(10)
         player.space().setDim(Dim.Player)
-        player.space().setPos(GResolution.areaHDim - Dim.Player.hw, GResolution.areaHDim - Dim.Player.hw)
+        player.space().setPos(offsetX + GResolution.areaHDim - Dim.Player.hw, offsetY + GResolution.areaHDim - Dim.Player.hw)
         shoot.setOffset(Dim.Player.hw - Dim.Bullet.hw, Dim.Player.hw - Dim.Bullet.hw)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
@@ -59,8 +59,8 @@ object SPlayer : Setup() {
         player.charMvt().speed = playerSpeed
         player.layer().setLayer(Layers.Player)
 
-        val light = player.light()
-        light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.1f)
+        //val light = player.light()
+        //light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.1f)
         draw.color = Colors.player
         draw.layer = playerLayer
         val trs = GGraphics.tr(ImgMan.player)
@@ -80,13 +80,18 @@ object SPlayer : Setup() {
             intensityRandomness.tick(GTime.delta)
             draw.normalAngle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
             angleVector.nor()
-            light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
-            light.updateIntesity(0.12f + intensityRandomness.value)
-            light.updateTilt(2f + tiltRandomness.value)
+            //light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
+            //light.updateIntesity(0.10f + intensityRandomness.value)
+            //light.updateTilt(2f + tiltRandomness.value)
             batch.draw(trs, space, Dim.PlayerSprite, draw.normalAngle)
         }
         draw.drawNormal = { batch ->
             batch.draw(nrs, space, Dim.PlayerSprite, draw.normalAngle)
+        }
+        val occluder = player.occluder()
+        occluder.texture = GGraphics.tr("wizard_occluder")
+        occluder.draw = { batch ->
+            batch.draw(occluder.texture, space, Dim.PlayerSprite, draw.normalAngle)
         }
     }
 

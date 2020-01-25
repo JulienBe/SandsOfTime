@@ -11,6 +11,34 @@ object SProps : Setup() {
         createTiled(tilesWidth, tilesHeight, world, offsetX, offsetY) { "ground" }
     }
 
+    fun barrel(world: World, x: Float, y: Float) {
+        basicProp(world, x, y, "barrel")
+    }
+
+    fun chest(world: World, x: Float, y: Float) {
+        basicProp(world, x, y, "chest")
+    }
+
+    private fun basicProp(world: World, x: Float, y: Float, name: String) {
+        val barrel = world.create(Builder.occluderProp)
+        val space = barrel.space()
+        val draw = barrel.draw()
+        val occluder = barrel.occluder()
+
+        space.setPos(x, y)
+        GGraphics.setupTexturesOccluder(name, draw, occluder)
+        draw.drawFront = {
+            DrawMethods.drawFront(space, draw, it)
+        }
+        draw.drawNormal = {
+            DrawMethods.drawNor(space, draw, it)
+        }
+        occluder.draw = {
+            DrawMethods.drawOcc(space, occluder, it)
+        }
+        draw.layer = 2
+    }
+
     private fun createTiled(tilesWidth: Int, tilesHeight: Int, world: World, offsetX: Float, offsetY: Float, tr: () -> String) {
         for (x in 0 until tilesWidth)
             for (y in 0 until tilesHeight) {

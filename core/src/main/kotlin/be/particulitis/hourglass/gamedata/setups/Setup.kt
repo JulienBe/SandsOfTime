@@ -14,6 +14,9 @@ open class Setup {
     fun Entity.space(): CompSpace {
         return getComponent(CompSpace::class.java)
     }
+    fun Entity.occluder(): CompOccluder {
+        return getComponent(CompOccluder::class.java)
+    }
     fun Entity.draw(): CompDraw {
         return getComponent(CompDraw::class.java)
     }

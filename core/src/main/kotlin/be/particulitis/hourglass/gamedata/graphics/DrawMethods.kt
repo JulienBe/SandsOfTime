@@ -3,6 +3,7 @@ package be.particulitis.hourglass.gamedata.graphics
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.comp.CompDir
 import be.particulitis.hourglass.comp.CompDraw
+import be.particulitis.hourglass.comp.CompOccluder
 import be.particulitis.hourglass.comp.CompSpace
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
@@ -18,6 +19,9 @@ object DrawMethods {
     }
     fun drawFront(space: CompSpace, draw: CompDraw, batch: GGraphics) {
         batch.draw(draw.texture, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat())
+    }
+    fun drawOcc(space: CompSpace, occ: CompOccluder, batch: GGraphics) {
+        batch.draw(occ.texture, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat())
     }
 
     private val dirDisplay = Vector2()

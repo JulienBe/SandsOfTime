@@ -60,14 +60,14 @@ object SEnemy : Setup() {
 
         GGraphics.setupTexturesOccluder("troll", draw, occluder)
         draw.drawFront = {
-            draw.normalAngle = dir.angle + 90f
+            draw.angle = dir.angle + 90f
             DrawMethods.drawFrontAngle(space, draw, it)
         }
         draw.drawNormal = {
             DrawMethods.drawNorAngle(space, draw, it)
         }
         occluder.draw = { batch ->
-            batch.draw(occluder.texture, space, draw.normalAngle)
+            batch.draw(occluder.texture, space, draw.angle)
         }
 
         enemy.emitter().emit = {

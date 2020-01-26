@@ -41,6 +41,9 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         draw(region, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(), space.hw, space.hh, space.w, space.h, 1f, 1f, angle)
     }
 
+    fun draw(tr: TextureRegion, space: CompSpace) {
+        draw(tr, space.x, space.y)
+    }
 
     companion object {
 

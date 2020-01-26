@@ -837,9 +837,30 @@ square
   orig: 1, 1
   offset: 0, 0
   index: -1
+square_red
+  rotate: false
+  xy: 508, 61
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
 square_normal
   rotate: false
   xy: 96, 27
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+square_orange
+  rotate: false
+  xy: 376, 14
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+square_yellow
+  rotate: false
+  xy: 461, 29
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

@@ -66,10 +66,6 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
     }
 
     override fun render(delta: Float) {
-        if (Gdx.input.justTouched()) {
-            for (i in 0..50)
-                SParticles.explosionParticle(world, GHelper.x, GHelper.y, 38f)
-        }
         GLight.updatePos(pointerLight, GHelper.x, GHelper.y)
         lights.forEachIndexed { index, i ->
             GLight.updatePos(i, 128f + sin(GTime.time + index * 180f) * 70f, 128f + cos(GTime.time + index * 180f) * 50f)

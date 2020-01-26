@@ -78,20 +78,20 @@ object SPlayer : Setup() {
         draw.drawFront = { batch ->
             angleRandomness.tick(GTime.delta)
             intensityRandomness.tick(GTime.delta)
-            draw.normalAngle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
+            draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 45f
             angleVector.nor()
-            light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.normalAngle + angleRandomness.value - 45f)
+            light.updatePosAngle((space.x + 6) - angleVector.x * 11, (space.centerY + 10f) - angleVector.y * 11, draw.angle + angleRandomness.value - 45f)
             light.updateIntesity(0.12f + intensityRandomness.value)
             light.updateTilt(2f + tiltRandomness.value)
-            batch.draw(trs, space, Dim.PlayerSprite, draw.normalAngle)
+            batch.draw(trs, space, Dim.PlayerSprite, draw.angle)
         }
         draw.drawNormal = { batch ->
-            batch.draw(nrs, space, Dim.PlayerSprite, draw.normalAngle)
+            batch.draw(nrs, space, Dim.PlayerSprite, draw.angle)
         }
         val occluder = player.occluder()
         occluder.texture = GGraphics.tr("wizard_occluder")
         occluder.draw = { batch ->
-            batch.draw(occluder.texture, space, Dim.PlayerSprite, draw.normalAngle)
+            batch.draw(occluder.texture, space, Dim.PlayerSprite, draw.angle)
         }
     }
 

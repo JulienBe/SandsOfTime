@@ -47,4 +47,8 @@ class CompDir : Comp() {
         dir.set(0f, 0f)
     }
 
+    fun rotate(angle: Float) {
+        dir.rotate(angle)
+    }
+
 }

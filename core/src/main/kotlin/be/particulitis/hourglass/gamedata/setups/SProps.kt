@@ -53,7 +53,7 @@ object SProps : Setup() {
                     DrawMethods.drawFront(space, draw, it)
                 }
                 draw.drawNormal = {
-                    draw.normalAngle = 0.0f
+                    draw.angle = 0.0f
                     DrawMethods.drawNor(space, draw, it)
                 }
             }

@@ -58,7 +58,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         val normal = DrawerTools.drawToFb(fboNormal) {
             sortedEntities.forEach {
                 val draw = mDraw[it]
-                normalShader.setUniformf("u_angle", draw.normalAngle * MathUtils.degreesToRadians)
+                normalShader.setUniformf("u_angle", draw.angle * MathUtils.degreesToRadians)
                 draw.drawNormal.invoke(batch)
             }
         }

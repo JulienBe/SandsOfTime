@@ -1,6 +1,9 @@
 package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
+import be.particulitis.hourglass.common.GHelper
+import be.particulitis.hourglass.common.GPeriodicValue
+import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
@@ -47,11 +50,16 @@ object SBullet : Setup() {
         bullet.collide().addCollidingWith(Ids.enemy)
         bullet.ttl().remaining = 1f
         val light = bullet.light()
-        light.setLight(Colors.playerBullets, posX, posY, 0.04f)
+        light.setLight(Colors.playerBullets, posX, posY, 0.06f)
+        val intensityRandomness = GPeriodicValue(0.08f) {
+            GRand.nextGaussian().toFloat() / 10f
+        }
         draw.color = Colors.playerBullets
         draw.drawFront = {
             light.updatePos(space.centerX, space.centerY)
-            DrawMethods.basic(space, draw, it)
+            light.updateIntesity(0.06f + intensityRandomness.value)
+            for (i in 0..10)
+                SParticles.fireParticle(world, space.centerX, space.centerY, 1f)
         }
         draw.layer = Data.playerBulletLayer
     }

@@ -15,10 +15,10 @@ object DrawMethods {
         batch.draw(draw.normal, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat())
     }
     fun drawFrontAngle(space: CompSpace, draw: CompDraw, batch: GGraphics) {
-        batch.draw(draw.texture, space, draw.normalAngle)
+        batch.draw(draw.texture, space, draw.angle)
     }
     fun drawNorAngle(space: CompSpace, draw: CompDraw, batch: GGraphics) {
-        batch.draw(draw.normal, space, draw.normalAngle)
+        batch.draw(draw.normal, space, draw.angle)
     }
     fun drawFront(space: CompSpace, draw: CompDraw, batch: GGraphics) {
         batch.draw(draw.texture, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat())

@@ -11,7 +11,8 @@ object Builder {
     val bloodParticle = createBuilder(Aspects.BloodParticles)
     val prettyDisplay = createBuilder(Aspects.PrettyDisplay)
     val button = createBuilder(Aspects.Button)
-    val tiled = createBuilder(Aspects.Wall)
+    val tiled = createBuilder(Aspects.Tiled)
+    val wall = createBuilder(Aspects.Wall)
     val dent = createBuilder(Aspects.Dent)
     val occluderProp = createBuilder(Aspects.OccluderProp)
 

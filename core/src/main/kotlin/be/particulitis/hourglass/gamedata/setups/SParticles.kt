@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.gamedata.setups
 
-import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
@@ -24,14 +23,14 @@ object SParticles : Setup() {
 
         p.layer().setLayer(Layers.Other)
 
-        space.setPos(centerX + GRand.gauss(2f), centerY + GRand.gauss(2f))
+        space.setPos(centerX + GRand.gauss(0.3f), centerY + GRand.gauss(0.3f))
 
-        val dim1 = GRand.absGauss(2f)
-        val dim2 = GRand.absGauss(2f)
+        val dim1 = GRand.absGauss(3f)
+        val dim2 = GRand.absGauss(1f)
         space.setDim(if (dim1 > dim2) dim1 else dim2, if (dim1 < dim2) dim1 / 2f else dim2 / 2f)
 
-        ttl.remaining = GRand.absGauss(.5f)
-        dir.add((space.x - centerX) * 10f, (space.y - centerY) * 10f)
+        ttl.remaining = 0.1f + GRand.absGauss(.4f)
+        dir.add((space.x - centerX) * 30f, (space.y - centerY) * 30f)
 
         draw.normal = GGraphics.nor("square")
         draw.drawFront = {
@@ -42,10 +41,10 @@ object SParticles : Setup() {
         }
 
         p.particle().update = {
-            dir.mul(.97f)
             time += GTime.delta
-            dir.rotate(GTime.delta * 1000f)
+            dir.rotate(GTime.delta * 500f)
             draw.angle = dir.angle
+            space.move(dir, GTime.delta)
         }
     }
 

@@ -1,6 +1,8 @@
 package be.particulitis.hourglass.comp
 
 import be.particulitis.hourglass.Ids
+import be.particulitis.hourglass.common.GSide
+import ktx.collections.gdxMapOf
 
 class CompCollide : Comp() {
 
@@ -14,6 +16,15 @@ class CompCollide : Comp() {
         private set
     var collidesWith = 0
         private set
+    var collision = { otherCollide: CompCollide, otherSpace: CompSpace, side: GSide -> }
+    var fromOtherCollider = { otherCollide: CompCollide, otherSpace: CompSpace, side: GSide -> }
+    var collidingMap = gdxMapOf(Ids.player.id to { entity: Int, otherEntity: Int, meCollide: CompCollide, meSpace: CompSpace, otherCollide: CompCollide, otherSpace: CompSpace, side: GSide -> })
+
+    init {
+        Ids.values().forEach {
+            collidingMap.put(it.id) { entity: Int, otherEntity: Int, meCollide: CompCollide, meSpace: CompSpace, otherCollide: CompCollide, otherSpace: CompSpace, side: GSide -> }
+        }
+    }
 
     fun setDmgToInflict(dmg: Int) {
         this.dmgToInflict = dmg
@@ -36,9 +47,6 @@ class CompCollide : Comp() {
         ids.forEach {
             collidesWith = collidesWith or it.id
         }
-    }
-
-    fun collidesWith(collide: CompCollide) {
     }
 
     override fun reset() {

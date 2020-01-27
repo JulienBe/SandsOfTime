@@ -47,4 +47,8 @@ class CompSpace : Comp() {
         pos.set(x, y)
         rect.setPosition(pos)
     }
+
+    fun move(dir: CompDir, delta: Float) {
+        setPos(x + dir.x * delta, y + dir.y * delta)
+    }
 }

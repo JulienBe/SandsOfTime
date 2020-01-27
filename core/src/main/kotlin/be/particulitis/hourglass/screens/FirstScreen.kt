@@ -1,13 +1,15 @@
 package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.Boombox
-import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.common.drawing.GLight
+import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompLight
 import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
@@ -24,6 +26,7 @@ import com.artemis.utils.IntBag
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import kotlin.math.roundToInt
 
 /** First screen of the application. Displayed after the application is created.  */
 class FirstScreen(game: Game) : AbstractScreen(game) {
@@ -36,7 +39,6 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
     }
 
     override fun render(delta: Float) {
-        println("lights ${GLight.numberOfLights()}")
         world.setDelta(delta)
         GGraphics.render {
             GInput.newFrame()
@@ -72,7 +74,6 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
 
                 .with(SysClearActions())
                 .with(SysDead())
-                .with(SysScore())
                 .with(SysSpawner())
                 .with(SysStartGame())
                 .build()
@@ -98,7 +99,15 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
                             }
                         }
                     })
+            stageSetup()
+        }
+
+        private fun stageSetup() {
             SProps.ground(world, 14, 14)
+            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), 1, GSide.BOTTOM, 0f, GResolution.areaDim - Dim.WallSprite.w)
+            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), 1, GSide.TOP, 0f, 0f)
+            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), GSide.LEFT, GResolution.areaDim - Dim.WallSprite.w, 0f)
+            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), GSide.RIGHT, 0f, 0f)
         }
 
     }

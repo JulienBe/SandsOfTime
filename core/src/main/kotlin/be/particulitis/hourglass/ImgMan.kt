@@ -54,7 +54,7 @@ class ImgMan {
         const val palettePath = "img/palette.png"
         const val atlasPath = "textures/texture1/atlas.atlas"
         const val font_pixel = "font_pixel"
-        const val wall = "wall"
+        const val wall = "wall1"
         const val dent = "dent"
         const val player = "wizard"
         val manager = AssetManager()

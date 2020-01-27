@@ -3,6 +3,8 @@ package be.particulitis.hourglass.system
 import be.particulitis.hourglass.common.GAngleCollision
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.comp.CompCollide
+import be.particulitis.hourglass.comp.CompDir
+import be.particulitis.hourglass.comp.CompSide
 import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -11,12 +13,15 @@ import com.artemis.utils.IntBag
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
+import kotlin.math.abs
 import kotlin.math.atan2
 
 class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompCollide::class.java)) {
 
     private lateinit var mSpace: ComponentMapper<CompSpace>
     private lateinit var mCollide: ComponentMapper<CompCollide>
+    private lateinit var mDir: ComponentMapper<CompDir>
+    private lateinit var mSide: ComponentMapper<CompSide>
 
     override fun processSystem() {
         val actives = subscription.entities
@@ -27,19 +32,20 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
     private fun updatePos(actives: IntBag, ids: IntArray) {
         for (it in actives.size() - 1 downTo 0) {
             val col = mCollide[ids[it]]
-            val dim = mSpace[ids[it]]
+            val space = mSpace[ids[it]]
             for (oIt in it - 1 downTo 0) {
                 val oCol = mCollide[ids[oIt]]
-                val oDim = mSpace[ids[oIt]]
+                val oSpace = mSpace[ids[oIt]]
 
-                if (oCol.id and col.collidesWith != 0 && dim.rect.overlaps(oDim.rect)) {
-                    val side = determineRectangleSideHit(dim.rect, oDim.rect)
+                if ((oCol.id and col.collidesWith != 0) && space.rect.overlaps(oSpace.rect)) {
+                    val side = determineRectangleSideHit(space.rect, oSpace.rect)
                     oCol.dmgToTake
                     col.setDmgToTake(oCol.dmgToInflict)
                     oCol.setDmgToTake(col.dmgToInflict)
-                    pushAway(dim, side, oDim)
-                    oCol.collidesWith(col)
-                    col.collidesWith(oCol)
+//                    pushAway(space, side, oSpace)
+                    oCol.collision.invoke(col, space, side)
+                    col.collision.invoke(oCol, oSpace, side)
+                    col.collidingMap[oCol.id].invoke(ids[it], ids[oIt], col, space, oCol, oSpace, side)
                 }
             }
         }
@@ -48,7 +54,7 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
     private fun pushAway(dim: CompSpace, side: GSide, oDim: CompSpace, thickness: Int = 5) {
         var cpt = thickness
         do {
-            dim.move(-side.x, -side.y, 1f)
+            dim.move(-side.pushX, -side.pushY, 1f)
         } while (cpt-- > 0 && dim.rect.overlaps(oDim.rect))
     }
 
@@ -62,6 +68,19 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
                 return it.side
         }
         return collisionAngles.last().side
+    }
+
+    fun bounce(entity: Int, otherEntity: Int, meCollide: CompCollide, meSpace: CompSpace, otherCollide: CompCollide, otherSpace: CompSpace, side: GSide) {
+        val meDir = mDir[entity]
+
+        if (side == GSide.TOP || side == GSide.BOTTOM) {
+            meDir.set(meDir.x, abs(meDir.y) * side.pushY)
+        } else {
+            meDir.set(abs(meDir.x) * side.pushX, meDir.y)
+        }
+    }
+    fun bounceOfWall(entity: Int, otherEntity: Int, meCollide: CompCollide, meSpace: CompSpace, otherCollide: CompCollide, otherSpace: CompSpace, side: GSide) {
+        bounce(entity, otherEntity, meCollide, meSpace, otherCollide, otherSpace, mSide[otherEntity].side)
     }
 
     companion object {

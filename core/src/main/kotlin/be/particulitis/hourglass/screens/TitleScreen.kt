@@ -2,6 +2,7 @@ package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
@@ -57,7 +58,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
         SUi.button(world, "Play!", 20f, 50f) {
             switchScreen(FirstScreen(game))
         }
-        SProps.wall(world, 16, 16)
+        SProps.wall(world, 16, 16, GSide.BOTTOM)
         SPlayer.player(world)
         //SPlayer.player(world, 20f, 20f)
         //SPlayer.player(world, -20f, -20f)

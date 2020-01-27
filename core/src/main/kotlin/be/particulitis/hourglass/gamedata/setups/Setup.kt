@@ -65,4 +65,7 @@ open class Setup {
     fun Entity. charMvt(): CompCharMovement {
         return getComponent(CompCharMovement::class.java)
     }
+    fun Entity. side(): CompSide {
+        return getComponent(CompSide::class.java)
+    }
 }

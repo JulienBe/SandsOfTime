@@ -68,9 +68,15 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompSpace::class.java,
             CompDraw::class.java
     )),
-    Wall(listOf(
+    Tiled(listOf(
             CompSpace::class.java,
             CompDraw::class.java
+    )),
+    Wall(listOf(
+            CompSpace::class.java,
+            CompCollide::class.java,
+            CompDraw::class.java,
+            CompSide::class.java
     )),
     OccluderProp(listOf(
             CompOccluder::class.java,

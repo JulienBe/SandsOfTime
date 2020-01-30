@@ -78,7 +78,6 @@ void main() {
 
         // can be used to adjust the fact that a light could go over an obstacle. The closest you get, the less steps it does, to more likely it is to go 'over' the blocker
 
-        //**
         float shadow_total_steps = len * 96.0;
         vec2 shadow_sample_step = delta_pixel_pos.xy / shadow_total_steps;
         float min_light = 1.0;
@@ -88,15 +87,10 @@ void main() {
             min_light = min(min_light, 1.0 - occluder_color.r);
         }
         l *= min_light;
-        //*/
 
-        // doing this to avoid having 'invisible' interactions betweens the lights
-        total_light += l;
-
-        total_light += step(lvl1, l) + step(lvl2, l) + step(lvl3, l) + step(lvl4, l) + step(lvl5, l) + step(lvl6, l) + step(lvl7, l);
+        total_light += step(lvl1, l) + step(lvl2, l) + step(lvl3, l) + step(lvl4, l) + step(lvl5, l);
     }
-    total_light /= 6.0;
-
+    total_light /= 4.98;
 
     int color = int((color_text.r + color_text.g) * 255.0);
     int palette_index =

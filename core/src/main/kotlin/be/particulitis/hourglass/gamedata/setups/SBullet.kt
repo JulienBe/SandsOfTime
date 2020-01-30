@@ -66,8 +66,8 @@ object SBullet : Setup() {
             light.updatePos(space.centerX, space.centerY)
             intensityRandomness.tick(GTime.delta)
             light.updateIntesity(0.06f + intensityRandomness.value)
-            for (i in 0..5 + (5f * ttl.remaining).roundToInt())
-                SParticles.fireParticle(world, space.centerX, space.centerY, 1f + ttl.remaining)
+            for (i in 0..8 + (1f * ttl.remaining).roundToInt())
+                SParticles.fireParticle(world, space.centerX, space.centerY, 1.5f)
         }
         draw.layer = Data.playerBulletLayer
     }

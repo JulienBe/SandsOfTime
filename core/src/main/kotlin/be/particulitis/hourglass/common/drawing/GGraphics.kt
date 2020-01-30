@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.common.drawing
 
 import be.particulitis.hourglass.ImgMan
+import be.particulitis.hourglass.common.GAnim
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompOccluder
 import be.particulitis.hourglass.comp.CompSpace
@@ -45,6 +46,14 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         draw(tr, space.x, space.y)
     }
 
+    fun drawCenteredOnBox(region: TextureRegion, space: CompSpace, sprite: Dim, angle: Float) {
+        draw(region,
+                (space.centerX - sprite.hw).roundToInt().toFloat(), (space.centerY - sprite.hh).roundToInt().toFloat(),
+                sprite.hw, sprite.hh,
+                sprite.w, sprite.h,
+                1f, 1f, angle)
+    }
+
     companion object {
 
         fun render(function: () -> Unit) {
@@ -61,7 +70,6 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
             return imgMan.nor(s)
         }
         fun tr(s: String): TextureRegion {
-            println("get $s")
             return imgMan.tr(s)
         }
 
@@ -73,6 +81,10 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         fun setupTexturesOccluder(s: String, draw: CompDraw, occluder: CompOccluder) {
             setupTextures(draw, s)
             occluder.texture = imgMan.occ(s)
+        }
+
+        fun anim(shoot: String, timePerFrame: Float): GAnim {
+            return GAnim(shoot, timePerFrame)
         }
 
         val batch: GGraphics

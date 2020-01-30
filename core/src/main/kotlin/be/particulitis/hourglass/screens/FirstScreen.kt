@@ -2,6 +2,7 @@ package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.Boombox
 import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GKeyGlobalState
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
@@ -42,6 +43,7 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
         world.setDelta(delta)
         GGraphics.render {
             GInput.newFrame()
+            GKeyGlobalState.act()
             world.process()
         }
 

@@ -31,11 +31,12 @@ object SProps : Setup() {
             collide.collision = { col, oSpace, side ->
                 col.fromOtherCollider(collide, space, exposedSide)
             }
+            draw.angle = exposedSide.angle + 90f
             draw.drawFront = {
-                batch -> batch.draw(draw.texture, space, exposedSide.angle + 90f)
+                batch -> batch.draw(draw.texture, space, draw.angle)
             }
             draw.drawNormal = {
-                batch -> batch.draw(draw.normal, space, exposedSide.angle + 90f)
+                batch -> batch.draw(draw.normal, space, draw.angle)
             }
         }
     }

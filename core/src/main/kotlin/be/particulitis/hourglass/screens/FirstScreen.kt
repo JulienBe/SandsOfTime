@@ -106,10 +106,10 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
 
         private fun stageSetup() {
             SProps.ground(world, 14, 14)
-            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), 1, GSide.BOTTOM, 0f, GResolution.areaDim - Dim.WallSprite.w)
-            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), 1, GSide.TOP, 0f, 0f)
-            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), GSide.LEFT, GResolution.areaDim - Dim.WallSprite.w, 0f)
-            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.w).roundToInt(), GSide.RIGHT, 0f, 0f)
+            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaDim - Dim.WallSprite.h)
+            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, 0f)
+            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.h).toInt() + 1, GSide.LEFT, GResolution.areaDim - Dim.WallSprite.h, 0f)
+            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.h).toInt() + 1, GSide.RIGHT, 0f, 0f)
         }
 
     }

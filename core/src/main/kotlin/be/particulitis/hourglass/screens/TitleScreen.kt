@@ -58,7 +58,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
         SUi.button(world, "Play!", 20f, 50f) {
             switchScreen(FirstScreen(game))
         }
-        SProps.wall(world, 16, 16, GSide.BOTTOM)
+//        SProps.wall(world, 16, 16, GSide.BOTTOM)
         SPlayer.player(world)
         //SPlayer.player(world, 20f, 20f)
         //SPlayer.player(world, -20f, -20f)

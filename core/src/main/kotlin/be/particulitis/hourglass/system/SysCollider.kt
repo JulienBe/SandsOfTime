@@ -82,6 +82,9 @@ class SysCollider : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompColli
     fun bounceOfWall(entity: Int, otherEntity: Int, meCollide: CompCollide, meSpace: CompSpace, otherCollide: CompCollide, otherSpace: CompSpace, side: GSide) {
         bounce(entity, otherEntity, meCollide, meSpace, otherCollide, otherSpace, mSide[otherEntity].side)
     }
+    fun rollback(entity: Int, otherEntity: Int, meCollide: CompCollide, meSpace: CompSpace, otherCollide: CompCollide, otherSpace: CompSpace, side: GSide) {
+        meSpace.rollback()
+    }
 
     companion object {
         val center = Vector2(5f, 5f)

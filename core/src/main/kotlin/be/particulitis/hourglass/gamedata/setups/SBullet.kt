@@ -4,12 +4,12 @@ import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GPeriodicValue
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.Layers
 import be.particulitis.hourglass.gamedata.graphics.Colors
-import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import be.particulitis.hourglass.system.SysCollider
 import com.artemis.World
 import com.badlogic.gdx.math.Vector2
@@ -34,7 +34,7 @@ object SBullet : Setup() {
         bullet.ttl().remaining = 9f
         bullet.light().setLight(Colors.enemyBullets, posX, posY, 0.04f)
         draw.color = Colors.enemyBullets
-        draw.drawFront = { DrawMethods.basic(space, draw, it)}
+//        draw.drawFront = { DrawMethods.basic(space, draw, it)}
         draw.layer = Data.enemyBulletLayer
     }
 
@@ -62,10 +62,11 @@ object SBullet : Setup() {
             GRand.nextGaussian().toFloat() / 1000f
         }
         draw.color = Colors.playerBullets
-        draw.drawFront = {
+        draw.currentImg = GGraphics.img("square")
+        draw.preDraw = {
             light.updatePos(space.centerX, space.centerY)
             intensityRandomness.tick(GTime.delta)
-            light.updateIntesity(0.06f + intensityRandomness.value)
+            light.updateIntesity(0.26f + intensityRandomness.value)
             for (i in 0..8 + (1f * ttl.remaining).roundToInt())
                 SParticles.fireParticle(world, space.centerX, space.centerY, 1.5f)
         }

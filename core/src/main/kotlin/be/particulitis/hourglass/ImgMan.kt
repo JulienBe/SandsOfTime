@@ -11,7 +11,6 @@ class ImgMan {
 
     val palette: Texture = getTexture(palettePath)
     val square: Texture = getTexture(squarePath)
-    val cube: Texture = getTexture(cubePath)
     val walls: Array<TextureRegion>
     val atlas: TextureAtlas
     val regions = GdxMap<String, TextureRegion>()
@@ -50,12 +49,9 @@ class ImgMan {
 
     companion object {
         const val squarePath = "img/square.png"
-        const val cubePath = "img/square3d.png"
         const val palettePath = "img/palette.png"
         const val atlasPath = "textures/texture1/atlas.atlas"
-        const val font_pixel = "font_pixel"
         const val wall = "wall1"
-        const val dent = "dent"
         const val player = "wizard_f"
         const val animPlayerShoot = "wizard_shoot_f"
         val manager = AssetManager()

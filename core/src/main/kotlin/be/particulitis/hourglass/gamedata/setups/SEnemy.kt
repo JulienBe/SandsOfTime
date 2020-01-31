@@ -3,11 +3,9 @@ package be.particulitis.hourglass.gamedata.setups
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.drawing.GResolution
-import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.*
 import be.particulitis.hourglass.gamedata.graphics.Colors
-import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import com.artemis.Entity
 import com.artemis.World
 import com.artemis.managers.TagManager
@@ -21,12 +19,12 @@ object SEnemy : Setup() {
         val draw = enemy.draw()
 
         draw.color = Colors.enemyShoots
-        draw.drawFront = {
-            DrawMethods.basic(space, draw, it)
-            //DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
-            draw.cpt = (GTime.enemyTime * 10f).toInt()
-        }
+//        draw.drawFront = {
+//            DrawMethods.basic(space, draw, it)
+//            DrawMethods.draw33animLoop(space, draw, Anims33.SquareNoDir, 2, Dim.Enemy, batch)
+//        }
 
+        draw.currentImg = GGraphics.img("troll")
         shoot.setOffset(Dim.Enemy.hw - Dim.Bullet.hw, Dim.Enemy.hw - Dim.Bullet.hw)
         shoot.shouldShood = { true }
         shoot.setBullet(Builder.bullet, SBullet::enemyBullet)
@@ -52,22 +50,14 @@ object SEnemy : Setup() {
         val space = enemy.space()
         val draw = enemy.draw()
         val dir = enemy.dir()
-        val occluder = enemy.occluder()
 
         enemy.targetSeek().target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
         enemy.targetFollow().set(player.space())
         enemy.dir().setSpeedAcceleration(20f, 0.3f)
 
-        GGraphics.setupTexturesOccluder("troll", draw, occluder)
-        draw.drawFront = {
+        draw.currentImg = GGraphics.img("troll")
+        draw.preDraw = {
             draw.angle = dir.angle + 90f
-            DrawMethods.drawFrontAngle(space, draw, it)
-        }
-        draw.drawNormal = {
-            DrawMethods.drawNorAngle(space, draw, it)
-        }
-        occluder.draw = { batch ->
-            batch.draw(occluder.texture, space, draw.angle)
         }
 
         enemy.emitter().emit = {

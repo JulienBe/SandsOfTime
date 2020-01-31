@@ -6,8 +6,7 @@ import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.drawing.GShader
 import be.particulitis.hourglass.comp.CompDraw
-import be.particulitis.hourglass.comp.CompOccluder
-import be.particulitis.hourglass.entities
+import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
@@ -22,7 +21,7 @@ import com.badlogic.gdx.math.MathUtils
 class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
     private lateinit var mDraw: ComponentMapper<CompDraw>
-    private lateinit var mOccluder: ComponentMapper<CompOccluder>
+    private lateinit var mSpace: ComponentMapper<CompSpace>
 
     private val listEntitiesIds = mutableListOf<Int>()
     private val fboCurrent = DrawerTools.frameBuffer()
@@ -40,18 +39,18 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         val sortedEntities = sortEntities()
         batch.end()
 
+        // I don't know if it's worth filtering what really is an occluder or not. We'll see when it drops below 40fps on my t420
         val occluders = DrawerTools.drawToFb(fboOccluders) {
-            val actives = world.entities(Aspect.one(CompOccluder::class.java))
-            val ids: IntArray = actives.data
-            for (it in actives.size() - 1 downTo 0) {
-                val id = ids[it]
-                mOccluder.get(id).draw.invoke(batch)
+            sortedEntities.forEach {
+                mDraw[it].preDraw.invoke()
+                batch.drawOccCenteredOnBox(mDraw[it], mSpace[it])
             }
         }
 
         val front = DrawerTools.drawToFb(fboCurrent) {
             sortedEntities.forEach {
-                mDraw[it].drawFront.invoke(batch)
+                val draw = mDraw[it]
+                draw.drawFront.invoke(batch, draw, mSpace[it])
             }
         }
         batch.shader = normalShader
@@ -59,7 +58,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
             sortedEntities.forEach {
                 val draw = mDraw[it]
                 normalShader.setUniformf("u_angle", draw.angle * MathUtils.degreesToRadians)
-                draw.drawNormal.invoke(batch)
+                draw.drawNormal.invoke(batch, draw, mSpace[it])
             }
         }
         batch.shader = lightShader

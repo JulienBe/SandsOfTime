@@ -18,7 +18,6 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompDir::class.java,
             CompTargetSeek::class.java,
             CompTargetFollow::class.java,
-            CompOccluder::class.java,
             CompParticleEmitter::class.java)),
     EnemyShoot(listOf(
             CompLayer::class.java,
@@ -40,8 +39,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompAction::class.java,
             CompHp::class.java,
             CompShooter::class.java,
-            CompLight::class.java,
-            CompOccluder::class.java)),
+            CompLights::class.java)),
     Bullet(listOf(
             CompLayer::class.java,
             CompSpace::class.java,
@@ -50,7 +48,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompHp::class.java,
             CompDir::class.java,
             CompTtl::class.java,
-            CompLight::class.java)),
+            CompLights::class.java)),
     Score(listOf(
             CompSpace::class.java,
             CompTxt::class.java,
@@ -79,7 +77,6 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompSide::class.java
     )),
     OccluderProp(listOf(
-            CompOccluder::class.java,
             CompSpace::class.java,
             CompDraw::class.java
     )),

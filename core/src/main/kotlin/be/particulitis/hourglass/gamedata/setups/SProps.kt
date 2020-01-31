@@ -1,11 +1,9 @@
 package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
-import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.Builder
-import be.particulitis.hourglass.gamedata.graphics.DrawMethods
 import com.artemis.ArchetypeBuilder
 import com.artemis.Entity
 import com.artemis.World
@@ -18,7 +16,6 @@ object SProps : Setup() {
 
     fun wall(world: World, tilesWidth: Int, tilesHeight: Int, exposedSide: GSide, offsetX: Float = 0f, offsetY: Float = 0f) {
         val walls = createTiled(tilesWidth, tilesHeight, world, offsetX, offsetY, Builder.wall) {
-            //GGraphics.imgMan.walls.random().toString()
             "wall1"
         }
         walls.forEach {
@@ -32,12 +29,6 @@ object SProps : Setup() {
                 col.fromOtherCollider(collide, space, exposedSide)
             }
             draw.angle = exposedSide.angle + 90f
-            draw.drawFront = {
-                batch -> batch.draw(draw.texture, space, draw.angle)
-            }
-            draw.drawNormal = {
-                batch -> batch.draw(draw.normal, space, draw.angle)
-            }
         }
     }
 
@@ -53,19 +44,9 @@ object SProps : Setup() {
         val barrel = world.create(Builder.occluderProp)
         val space = barrel.space()
         val draw = barrel.draw()
-        val occluder = barrel.occluder()
 
         space.setPos(x, y)
-        GGraphics.setupTexturesOccluder(name, draw, occluder)
-        draw.drawFront = {
-            DrawMethods.drawFront(space, draw, it)
-        }
-        draw.drawNormal = {
-            DrawMethods.drawNor(space, draw, it)
-        }
-        occluder.draw = {
-            DrawMethods.drawOcc(space, occluder, it)
-        }
+        draw.currentImg = GGraphics.img(name)
         draw.layer = 2
     }
 
@@ -76,32 +57,12 @@ object SProps : Setup() {
                 val tile = world.create(builder)
                 val space = tile.space()
                 val draw = tile.draw()
-                val trName = tr.invoke()
-                draw.texture = GGraphics.imgMan.tr(trName)
-                draw.normal = GGraphics.imgMan.nor(trName)
-                space.setPos(offsetX + x * draw.texture.regionWidth, offsetY + y * draw.texture.regionHeight)
-                space.setDim(draw.texture.regionWidth.toFloat(), draw.texture.regionHeight.toFloat())
-                draw.drawFront = {
-                    DrawMethods.drawFront(space, draw, it)
-                }
-                draw.drawNormal = {
-                    draw.angle = 0.0f
-                    DrawMethods.drawNor(space, draw, it)
-                }
+                draw.currentImg = GGraphics.img(tr.invoke())
+                space.setPos(offsetX + x * draw.currentImg.front.regionWidth, offsetY + y * draw.currentImg.front.regionHeight)
+                space.setDim(draw.currentImg.front.regionWidth.toFloat(), draw.currentImg.front.regionHeight.toFloat())
                 entities.add(tile)
             }
         return entities
     }
 
-    fun dent(world: World, depth: Int, x: Float, y: Float) {
-        val dent = world.create(Builder.dent)
-        val space = dent.space()
-        val draw = dent.draw()
-        draw.normal = GGraphics.nor(ImgMan.dent)
-        space.setPos(x, y)
-        draw.drawFront = {}
-        draw.drawNormal = {
-            DrawMethods.drawNor(space, draw, it)
-        }
-    }
 }

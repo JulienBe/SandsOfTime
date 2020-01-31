@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2
 
 class CompSpace : Comp() {
     private val pos = Vector2()
+    private val oldPos = Vector2()
     var w: Float = 1f
         private set
     var hw = w / 2f
@@ -18,13 +19,14 @@ class CompSpace : Comp() {
         private set
     val x get() = pos.x
     val y get() = pos.y
+    val oldX get() = oldPos.x
+    val oldY get() = oldPos.y
     val centerX get() = pos.x + hw
     val centerY get() = pos.y + hh
     val rect = Rectangle()
 
     override fun reset() {
-        pos.x = 0f
-        pos.y = 0f
+        setPos(0f, 0f)
     }
 
     fun setDim(dim: Dim) {
@@ -44,8 +46,13 @@ class CompSpace : Comp() {
     }
 
     fun setPos(x: Float, y: Float) {
+        oldPos.set(pos)
         pos.set(x, y)
         rect.setPosition(pos)
+    }
+
+    fun rollback() {
+        setPos(oldPos.x, oldPos.y)
     }
 
     fun move(dir: CompDir, delta: Float) {

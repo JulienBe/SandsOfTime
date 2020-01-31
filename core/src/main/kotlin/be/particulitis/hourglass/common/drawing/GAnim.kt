@@ -1,14 +1,12 @@
-package be.particulitis.hourglass.common
+package be.particulitis.hourglass.common.drawing
 
-import be.particulitis.hourglass.common.drawing.GGraphics
 import com.badlogic.gdx.graphics.g2d.Animation
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
 import ktx.collections.GdxArray
 
 class GAnim(val name: String, val frameTime: Float) {
 
-    private val frames = GdxArray<TextureRegion>()
+    private val frames = GdxArray<GImage>()
     private var totalTime = 0f
     var time = 0f
     var playMode = Animation.PlayMode.NORMAL
@@ -18,7 +16,9 @@ class GAnim(val name: String, val frameTime: Float) {
     init {
         for (i in 1..hugeMaxFrameNumberThatWillNeverEverBeReachedByOneAnimation) {
             if (GGraphics.imgMan.regions.containsKey(name + i)) {
-                frames.add(GGraphics.tr(name + i))
+                frames.add(
+                        GImage(GGraphics.tr(name + i), GGraphics.nor(name + i), GGraphics.occ(name + i))
+                )
             } else {
                 break
             }
@@ -31,24 +31,23 @@ class GAnim(val name: String, val frameTime: Float) {
         return this
     }
 
-    fun frame(delta: Float): TextureRegion {
+    fun frame(delta: Float): GImage {
         time += delta
         return getKeyFrame()
     }
 
-    private fun getKeyFrame(): TextureRegion {
-        return frames[MathUtils.clamp((time / frameTime).toInt(), 0, frames.size - 1)]
-    }
 
-    fun nextAnim(anim: GAnim): GAnim {
-        return if (isFinished)
-            anim.start()
-        else
-            this
+    fun getKeyFrame(t: Float = time): GImage {
+        return frames[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
     }
 
     fun finish() {
         time = totalTime + 1f
+    }
+
+    fun addFrame(img: GImage) {
+        frames.add(img)
+        totalTime = frames.size * frameTime
     }
 
     companion object {

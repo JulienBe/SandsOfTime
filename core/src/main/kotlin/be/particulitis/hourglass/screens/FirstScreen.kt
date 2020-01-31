@@ -8,7 +8,7 @@ import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompEnemy
-import be.particulitis.hourglass.comp.CompLight
+import be.particulitis.hourglass.comp.CompLights
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.setups.SPlayer
@@ -90,9 +90,9 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
                             score++
                         }
                     })
-            world.aspectSubscriptionManager.get(Aspect.all(CompLight::class.java))
+            world.aspectSubscriptionManager.get(Aspect.all(CompLights::class.java))
                     .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
-                        val mLight = world.getMapper(CompLight::class.java)
+                        val mLight = world.getMapper(CompLights::class.java)
                         override fun inserted(entities: IntBag?) { }
                         override fun removed(entities: IntBag) {
                             val ids: IntArray = entities.data

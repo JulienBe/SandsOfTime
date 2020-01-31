@@ -1,9 +1,7 @@
 package be.particulitis.hourglass.common.drawing
 
 import be.particulitis.hourglass.ImgMan
-import be.particulitis.hourglass.common.GAnim
 import be.particulitis.hourglass.comp.CompDraw
-import be.particulitis.hourglass.comp.CompOccluder
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Dim
 import com.badlogic.gdx.Gdx
@@ -12,6 +10,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import kotlin.math.roundToInt
+
+private val TextureRegion.hw: Float
+    get() {
+        return regionWidth / 2f
+    }
+private val TextureRegion.hh: Float
+    get() {
+        return regionHeight / 2f
+    }
+private val TextureRegion.w: Float
+    get() {
+        return regionWidth.toFloat()
+    }
+private val TextureRegion.h: Float
+    get() {
+        return regionHeight.toFloat()
+    }
 
 class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
 
@@ -46,12 +61,38 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         draw(tr, space.x, space.y)
     }
 
-    fun drawCenteredOnBox(region: TextureRegion, space: CompSpace, sprite: Dim, angle: Float) {
-        draw(region,
-                (space.centerX - sprite.hw).roundToInt().toFloat(), (space.centerY - sprite.hh).roundToInt().toFloat(),
-                sprite.hw, sprite.hh,
-                sprite.w, sprite.h,
-                1f, 1f, angle)
+    fun drawOccCenteredOnBox(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBox(draw, space, draw.currentImg.occluder)
+    }
+    fun drawFrontCenteredOnBox(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBox(draw, space, draw.currentImg.front)
+    }
+    fun drawNormalCenteredOnBox(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBox(draw, space, draw.currentImg.normal)
+    }
+    fun drawOccCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.occluder)
+    }
+    fun drawFrontCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.front)
+    }
+    fun drawNormalCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.normal)
+    }
+
+    fun drawCenteredOnBox(draw: CompDraw, space: CompSpace, textureRegion: TextureRegion) {
+        draw(textureRegion,
+                (space.centerX - textureRegion.hw).roundToInt().toFloat(), (space.centerY - textureRegion.hh).roundToInt().toFloat(),
+                textureRegion.hw, textureRegion.hh,
+                textureRegion.w, textureRegion.h,
+                1f, 1f, draw.angle)
+    }
+    fun drawCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace, textureRegion: TextureRegion) {
+        draw(textureRegion,
+                space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(),
+                space.hw, space.hh,
+                space.w, space.h,
+                1f, 1f, draw.angle)
     }
 
     companion object {
@@ -72,15 +113,11 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
         fun tr(s: String): TextureRegion {
             return imgMan.tr(s)
         }
-
-        fun setupTextures(draw: CompDraw, s: String) {
-            draw.texture = imgMan.tr(s)
-            draw.normal = imgMan.nor(s)
+        fun occ(s: String): TextureRegion {
+            return imgMan.occ(s)
         }
-
-        fun setupTexturesOccluder(s: String, draw: CompDraw, occluder: CompOccluder) {
-            setupTextures(draw, s)
-            occluder.texture = imgMan.occ(s)
+        fun img(s: String): GImage {
+            return GImage(imgMan.tr(s), imgMan.nor(s), imgMan.occ(s))
         }
 
         fun anim(shoot: String, timePerFrame: Float): GAnim {

@@ -11,10 +11,13 @@ import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.Layers
 import be.particulitis.hourglass.gamedata.graphics.Colors
+import be.particulitis.hourglass.system.SysCollider
 import com.artemis.World
 import com.artemis.managers.TagManager
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 object SPlayer : Setup() {
 
@@ -40,7 +43,7 @@ object SPlayer : Setup() {
         player.space().setDim(Dim.Player)
         player.space().setPos(offsetX + GResolution.areaHDim - Dim.Player.hw, offsetY + GResolution.areaHDim - Dim.Player.hw)
         val shootAnim = GGraphics.anim(ImgMan.animPlayerShoot, 0.04f)
-        val defaultAnim = GGraphics.anim("wizard_f", 2f)
+        val defaultAnim = GGraphics.anim("wizard_f", .3f)
         var currentAnim = defaultAnim
         shootAnim.finish()
         shoot.setFirerate(0.5f)
@@ -62,14 +65,14 @@ object SPlayer : Setup() {
         shoot.setBullet(Builder.bullet, SBullet::playerBullet)
 
         player.collide().setIds(Ids.player)
-        player.collide().addCollidingWith(Ids.enemy, Ids.enemyBullet)
+        player.collide().addCollidingWith(Ids.enemy, Ids.enemyBullet, Ids.propsWall)
+        player.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::rollback)
 
         player.charMvt().speed = playerSpeed
         player.layer().setLayer(Layers.Player)
 
         draw.color = Colors.player
         draw.layer = playerLayer
-        val nrs = GGraphics.nor(ImgMan.player + "1")
         val angleVector = Vector2()
         val angleRandomness = GPeriodicValue(0.1f) {
             GRand.nextGaussian().toFloat()
@@ -81,44 +84,34 @@ object SPlayer : Setup() {
             GRand.nextGaussian().toFloat() / 40f
         }
         val light = player.light()
-        light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.1f)
-        draw.drawFront = { batch ->
+        val wizLight = light.setLight(Colors.player, space.centerX, space.centerY, 0.15f)
+        val bdfLight = light.setLight(Colors.player, space.centerX, space.centerY, 0.0f)
+        val mainLight = light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.2f)
+        draw.preDraw = {
             if (GKeyGlobalState.justTouched) {
                 currentAnim = shootAnim.start()
                 charge = true
             }
+            draw.currentImg = currentAnim.frame(GTime.playerDelta)
+            light.updateIntesity(0f, bdfLight)
             if (charge) {
                 chargeValue += GTime.playerDelta
                 val position = getShootPosition(GHelper.x, GHelper.y, space)
-                SParticles.chargingParticles(world, position.x, position.y, chargeValue)
-                SParticles.chargingParticles(world, position.x, position.y, chargeValue)
-                SParticles.chargingParticles(world, position.x, position.y, chargeValue)
+                for (i in 0..(chargeValue * 10).roundToInt())
+                    SParticles.chargingParticles(world, position.x, position.y, chargeValue)
+                light.updateIntesity(min(0.5f, chargeValue), bdfLight)
+                light.updatePos(position.x, position.y, bdfLight)
             }
             angleRandomness.tick(GTime.delta)
             intensityRandomness.tick(GTime.delta)
             draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
             angleVector.nor()
-            light.updatePosAngle(space.centerX - angleVector.x * 10f, space.centerY - angleVector.y * 10f, draw.angle + angleRandomness.value - 90f)
-            light.updateIntesity(0.2f + intensityRandomness.value)
-            light.updateTilt(2f + tiltRandomness.value)
-            batch.drawCenteredOnBox(currentAnim.frame(GTime.playerDelta), space, Dim.PlayerSprite, draw.angle)
+            light.updatePos(space.centerX, space.centerY, wizLight)
+            light.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f, mainLight)
+            light.updateIntesity(0.2f + intensityRandomness.value, mainLight)
+            light.updateTilt(2f + tiltRandomness.value, mainLight)
         }
-        draw.drawNormal = { batch ->
-            batch.drawCenteredOnBox(nrs, space, Dim.PlayerSprite, draw.angle)
-        }
-        val occluder = player.occluder()
-        occluder.texture = GGraphics.tr("wizard_occluder")
-        occluder.draw = { batch ->
-            batch.drawCenteredOnBox(occluder.texture, space, Dim.PlayerSprite, draw.angle)
-        }
-        /**
-         * patch anesthésie 1h avant
-         * 2 avril: téléphoner la veille à l'hopital chirurgical de jour: 081 42 61 11
-         * douche d'iso betadine la veille au soir avec 5 flapules puis le matin la même chose
-         *
-         *
-         *
-         */
+
     }
 
     val shootOffsetVector = Vector2(Dim.PlayerSprite.hw, Dim.PlayerSprite.hh)

@@ -8,16 +8,16 @@ import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
-import be.particulitis.hourglass.gamedata.Layers
+import be.particulitis.hourglass.gamedata.Phases
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.system.SysCollider
+import com.artemis.Entity
 import com.artemis.World
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.roundToInt
 
 object SBullet : Setup() {
 
-    fun enemyBullet(world: World, posX: Float, posY: Float, dir: Vector2) {
+    fun enemyBullet(world: World, posX: Float, posY: Float, dir: Vector2, str: Int): Entity {
         val bullet = world.create(Builder.bullet)
         bullet.space().setDim(Dim.Bullet)
         bullet.space().setPos(posX, posY)
@@ -27,7 +27,7 @@ object SBullet : Setup() {
 
         bullet.dir().set(dir)
         bullet.dir().setSpeedAcceleration(100f, 100f)
-        bullet.layer().setLayer(Layers.Enemy)
+        bullet.layer().setLayer(Phases.Enemy)
         bullet.hp().setHp(1)
         bullet.collide().setIds(Ids.enemyBullet)
         bullet.collide().addCollidingWith(Ids.player)
@@ -36,19 +36,19 @@ object SBullet : Setup() {
         draw.color = Colors.enemyBullets
 //        draw.drawFront = { DrawMethods.basic(space, draw, it)}
         draw.layer = Data.enemyBulletLayer
+        return bullet
     }
 
-    fun playerBullet(world: World, posX: Float, posY: Float, desiredDir: Vector2) {
+    fun playerBullet(world: World, posX: Float, posY: Float, desiredDir: Vector2, str: Int): Entity {
         val bullet = world.create(Builder.bullet)
         bullet.space().setDim(Dim.Bullet)
         bullet.space().setPos(posX, posY)
         desiredDir.scl(160f)
         val space = bullet.space()
         val draw = bullet.draw()
-        val ttl = bullet.ttl()
         val dirComp = bullet.dir()
         dirComp.set(desiredDir)
-        bullet.layer().setLayer(Layers.Player)
+        bullet.layer().setLayer(Phases.Player)
         bullet.hp().setHp(100000)
 
         bullet.collide().setIds(Ids.playerBullet)
@@ -62,15 +62,16 @@ object SBullet : Setup() {
             GRand.nextGaussian().toFloat() / 1000f
         }
         draw.color = Colors.playerBullets
-        draw.currentImg = GGraphics.img("square")
+        draw.currentImg = GGraphics.img("square_yellow")
         draw.preDraw = {
             light.updatePos(space.centerX, space.centerY)
             intensityRandomness.tick(GTime.delta)
-            light.updateIntesity(0.26f + intensityRandomness.value)
-            for (i in 0..8 + (1f * ttl.remaining).roundToInt())
+            light.updateIntesity((0.1f + intensityRandomness.value) * (1 + (str / 5)) )
+            for (i in 0..4 * str)
                 SParticles.fireParticle(world, space.centerX, space.centerY, 1.5f)
         }
         draw.layer = Data.playerBulletLayer
+        return bullet
     }
 
 }

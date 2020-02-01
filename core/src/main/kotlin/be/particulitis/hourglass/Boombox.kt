@@ -2,7 +2,7 @@ package be.particulitis.hourglass
 
 import be.particulitis.hourglass.gamedata.Aspects
 import be.particulitis.hourglass.common.GSounds
-import be.particulitis.hourglass.comp.CompLayer
+import be.particulitis.hourglass.comp.CompTimePhase
 import com.artemis.Aspect
 import com.artemis.EntitySubscription
 import com.artemis.EntitySubscription.SubscriptionListener
@@ -15,7 +15,7 @@ class Boombox(world: World) {
     private val explosionSlug = world.aspectSubscriptionManager.get(Aspect.all(Aspects.EnemySlug.comps))
     private val explosionShooter = world.aspectSubscriptionManager.get(Aspect.all(Aspects.EnemyShoot.comps))
     private val shoot = world.aspectSubscriptionManager.get(Aspect.all(Aspects.Bullet.comps))
-    val playerMapper = world.getMapper(CompLayer::class.java)
+    val playerMapper = world.getMapper(CompTimePhase::class.java)
 
     init {
         onRemove(explosionShooter, GSounds.explosion3)

@@ -35,8 +35,8 @@ open class Setup {
     fun Entity.dir(): CompDir {
         return getComponent(CompDir::class.java)
     }
-    fun Entity.layer(): CompLayer {
-        return getComponent(CompLayer::class.java)
+    fun Entity.layer(): CompTimePhase {
+        return getComponent(CompTimePhase::class.java)
     }
     fun Entity.shooter(): CompShooter {
         return getComponent(CompShooter::class.java)

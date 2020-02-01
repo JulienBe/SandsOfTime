@@ -1,7 +1,5 @@
 package be.particulitis.hourglass.comp
 
-import com.artemis.Component
-
 class CompHp : Comp() {
 
     var hp = 1

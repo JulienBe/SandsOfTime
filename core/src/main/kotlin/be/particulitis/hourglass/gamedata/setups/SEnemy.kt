@@ -34,7 +34,8 @@ object SEnemy : Setup() {
             shoot.dir.nor()
             shoot.bullet.second.invoke(world,
                     space.x + shoot.offsetX + shoot.dir.x / 100f, space.y + shoot.offsetY + shoot.dir.y / 100f,
-                    shoot.dir)
+                    shoot.dir,
+                    1)
         }
         shoot.setFirerate(2f)
 
@@ -72,7 +73,7 @@ object SEnemy : Setup() {
         enemy.space().setPos(GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartY, exclusionStopY))
         enemy.collide().setIds(Ids.enemy)
         enemy.collide().addCollidingWith(Ids.player, Ids.playerBullet)
-        enemy.layer().setLayer(Layers.Enemy)
+        enemy.layer().setLayer(Phases.Enemy)
         enemy.draw().color = Colors.enemy
         enemy.draw().layer = Data.enemyLayer
         return enemy

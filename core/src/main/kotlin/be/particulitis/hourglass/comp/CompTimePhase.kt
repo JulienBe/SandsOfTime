@@ -1,10 +1,10 @@
 package be.particulitis.hourglass.comp
 
-import be.particulitis.hourglass.gamedata.Layers
+import be.particulitis.hourglass.gamedata.Phases
 
-class CompLayer : Comp() {
+class CompTimePhase : Comp() {
 
-    var layer = Layers.Player
+    var layer = Phases.Player
     private set
     val delta: Float
         get() { return layer.delta.invoke() }
@@ -13,7 +13,7 @@ class CompLayer : Comp() {
     val isPlayer: Boolean
         get() { return layer.isPlayer }
 
-    fun setLayer(layer: Layers) {
+    fun setLayer(layer: Phases) {
         this.layer = layer
     }
 

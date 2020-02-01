@@ -3,9 +3,10 @@ package be.particulitis.hourglass.comp
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.setups.SBullet
 import com.artemis.ArchetypeBuilder
+import com.artemis.Entity
 import com.artemis.World
 import com.badlogic.gdx.math.Vector2
-import kotlin.reflect.KFunction4
+import kotlin.reflect.KFunction5
 
 class CompShooter : Comp() {
 
@@ -27,7 +28,7 @@ class CompShooter : Comp() {
     var shootingFunc = {}
     var justShot = false
 
-    fun setBullet(build: ArchetypeBuilder, setup: KFunction4<@ParameterName(name = "world") World, @ParameterName(name = "posX") Float, @ParameterName(name = "posY") Float, @ParameterName(name = "dir") Vector2, Unit>) {
+    fun setBullet(build: ArchetypeBuilder, setup: KFunction5<@ParameterName(name = "world") World, @ParameterName(name = "posX") Float, @ParameterName(name = "posY") Float, @ParameterName(name = "dir") Vector2, @ParameterName(name = "str") Int, Entity>) {
         bullet = Pair(build, setup)
     }
 

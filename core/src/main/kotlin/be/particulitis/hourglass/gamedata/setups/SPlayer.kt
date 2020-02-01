@@ -9,7 +9,7 @@ import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
-import be.particulitis.hourglass.gamedata.Layers
+import be.particulitis.hourglass.gamedata.Phases
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.system.SysCollider
 import com.artemis.World
@@ -23,6 +23,7 @@ object SPlayer : Setup() {
 
     private const val playerSpeed = 150f
     private const val playerLayer = 10
+    private const val maxCharge = 0.5f
 
     fun player(world: World, offsetX: Float = 0f, offsetY: Float = 0f) {
         val player = world.create(Builder.player)
@@ -58,7 +59,8 @@ object SPlayer : Setup() {
             val position = getShootPosition(GHelper.x, GHelper.y, space)
             shoot.dir.set(GHelper.x - position.x, GHelper.y - position.y)
             shoot.dir.nor()
-            shoot.bullet.second.invoke(world, position.x, position.y, shoot.dir)
+            val bulletEntity = shoot.bullet.second.invoke(world, position.x, position.y, shoot.dir, 1 + (min(chargeValue, maxCharge) * 10).roundToInt())
+
             chargeValue = 0f
             charge = false
         }
@@ -69,7 +71,7 @@ object SPlayer : Setup() {
         player.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::rollback)
 
         player.charMvt().speed = playerSpeed
-        player.layer().setLayer(Layers.Player)
+        player.layer().setLayer(Phases.Player)
 
         draw.color = Colors.player
         draw.layer = playerLayer
@@ -88,30 +90,36 @@ object SPlayer : Setup() {
         val bdfLight = light.setLight(Colors.player, space.centerX, space.centerY, 0.0f)
         val mainLight = light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.2f)
         draw.preDraw = {
-            if (GKeyGlobalState.justTouched) {
-                currentAnim = shootAnim.start()
-                charge = true
+            if (!GTime.enemyPhase) {
+                draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
+                angleVector.nor()
+                light.updatePos(space.centerX, space.centerY, wizLight)
+                light.updateTilt(2f + tiltRandomness.value, mainLight)
+                angleRandomness.tick(GTime.playerDelta)
+                intensityRandomness.tick(GTime.playerDelta)
+                if (GKeyGlobalState.justTouched) {
+                    currentAnim = shootAnim.start()
+                    charge = true
+                }
+                draw.currentImg = currentAnim.frame(GTime.playerDelta)
+                light.updateIntesity(0f, bdfLight)
+                if (charge) {
+                    chargeValue += GTime.playerDelta
+                    val position = getShootPosition(GHelper.x, GHelper.y, space)
+                    for (i in 0 until (chargeValue * 500 * GTime.playerDelta).roundToInt())
+                        SParticles.chargingParticles(world, position.x, position.y, chargeValue)
+                    light.updateIntesity(min(maxCharge, chargeValue), bdfLight)
+                    light.updatePos(position.x, position.y, bdfLight)
+                    if (chargeValue > maxCharge) {
+                        light.updateIntesity(maxCharge + GRand.gauss(.1f), bdfLight)
+                    }
+                }
             }
-            draw.currentImg = currentAnim.frame(GTime.playerDelta)
-            light.updateIntesity(0f, bdfLight)
-            if (charge) {
-                chargeValue += GTime.playerDelta
-                val position = getShootPosition(GHelper.x, GHelper.y, space)
-                for (i in 0..(chargeValue * 10).roundToInt())
-                    SParticles.chargingParticles(world, position.x, position.y, chargeValue)
-                light.updateIntesity(min(0.5f, chargeValue), bdfLight)
-                light.updatePos(position.x, position.y, bdfLight)
-            }
-            angleRandomness.tick(GTime.delta)
-            intensityRandomness.tick(GTime.delta)
-            draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
-            angleVector.nor()
-            light.updatePos(space.centerX, space.centerY, wizLight)
             light.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f, mainLight)
             light.updateIntesity(0.2f + intensityRandomness.value, mainLight)
-            light.updateTilt(2f + tiltRandomness.value, mainLight)
+            if (!GKeyGlobalState.touched)
+                charge = false
         }
-
     }
 
     val shootOffsetVector = Vector2(Dim.PlayerSprite.hw, Dim.PlayerSprite.hh)

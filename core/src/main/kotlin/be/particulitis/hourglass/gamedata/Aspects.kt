@@ -8,7 +8,7 @@ import be.particulitis.hourglass.comp.ui.CompTxt
 enum class Aspects(val comps: List<Class<out Comp>>) {
 
     EnemySlug(listOf(
-            CompLayer::class.java,
+            CompTimePhase::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -20,7 +20,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompTargetFollow::class.java,
             CompParticleEmitter::class.java)),
     EnemyShoot(listOf(
-            CompLayer::class.java,
+            CompTimePhase::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -30,7 +30,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompShooter::class.java,
             CompParticleEmitter::class.java)),
     Player(listOf(
-            CompLayer::class.java,
+            CompTimePhase::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -41,7 +41,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompShooter::class.java,
             CompLights::class.java)),
     Bullet(listOf(
-            CompLayer::class.java,
+            CompTimePhase::class.java,
             CompSpace::class.java,
             CompDraw::class.java,
             CompCollide::class.java,
@@ -84,7 +84,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompDraw::class.java,
             CompSpace::class.java,
             CompParticle::class.java,
-            CompLayer::class.java,
+            CompTimePhase::class.java,
             CompTtl::class.java,
             CompDir::class.java
     ))

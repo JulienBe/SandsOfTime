@@ -42,7 +42,7 @@ object SPlayer : Setup() {
 
         player.hp().setHp(100)
         player.space().setDim(Dim.Player)
-        player.space().setPos(offsetX + GResolution.areaHDim - Dim.Player.hw, offsetY + GResolution.areaHDim - Dim.Player.hw)
+        player.space().setPos(offsetX + GResolution.areaHW - Dim.Player.hw, offsetY + GResolution.areaHH - Dim.Player.hw)
         val shootAnim = GGraphics.anim(ImgMan.animPlayerShoot, 0.04f)
         val defaultAnim = GGraphics.anim("wizard_f", .3f)
         var currentAnim = defaultAnim
@@ -111,14 +111,16 @@ object SPlayer : Setup() {
                     light.updateIntesity(min(maxCharge, chargeValue), bdfLight)
                     light.updatePos(position.x, position.y, bdfLight)
                     if (chargeValue > maxCharge) {
-                        light.updateIntesity(maxCharge + GRand.gauss(.1f), bdfLight)
+                        light.updateIntesity(maxCharge + GRand.gauss(.05f), bdfLight)
                     }
                 }
             }
             light.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f, mainLight)
             light.updateIntesity(0.2f + intensityRandomness.value, mainLight)
-            if (!GKeyGlobalState.touched)
+            if (!GKeyGlobalState.touched) {
+                currentAnim = defaultAnim
                 charge = false
+            }
         }
     }
 

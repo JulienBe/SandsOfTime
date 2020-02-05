@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.gamedata.setups
 
+import be.particulitis.hourglass.common.GKeyGlobalState
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
@@ -54,7 +55,8 @@ object SParticles : Setup() {
         p.particle().update = {
             time += GTime.playerDelta
             dir.mul(0.97f)
-            space.move(targetX - space.x, targetY - space.y, GTime.playerDelta * 10f * normalizedStr * normalizedStr)
+            if (GKeyGlobalState.touched)
+                space.move(targetX - space.x, targetY - space.y, GTime.playerDelta * 10f * normalizedStr * normalizedStr)
             angleV.set(space.x - space.oldX, space.y - space.oldY)
             draw.angle = (angleV.angle() + dir.angle) / 2f
         }

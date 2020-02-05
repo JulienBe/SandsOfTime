@@ -55,6 +55,8 @@ object SEnemy : Setup() {
         enemy.targetSeek().target.set(GRand.nextFloat() * 100f, GRand.nextFloat() * 100f)
         enemy.targetFollow().set(player.space())
         enemy.dir().setSpeedAcceleration(20f, 0.3f)
+        enemy.hp().setHp(10)
+        enemy.collide().setDmgToInflict(3)
 
         draw.currentImg = GGraphics.img("troll")
         draw.preDraw = {
@@ -70,7 +72,7 @@ object SEnemy : Setup() {
     private fun baseEnemy(id: Int, world: World, exclusionStartX: Float, exclusionStopX: Float, exclusionStartY: Float, exclusionStopY: Float): Entity {
         val enemy = world.getEntity(id)
         enemy.space().setDim(Dim.Enemy.w, Dim.Enemy.w)
-        enemy.space().setPos(GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaDim - Dim.Enemy.w, exclusionStartY, exclusionStopY))
+        enemy.space().setPos(GRand.floatExcludingPlease(0f, GResolution.areaW - Dim.Enemy.w, exclusionStartX, exclusionStopX), GRand.floatExcludingPlease(0f, GResolution.areaH - Dim.Enemy.w, exclusionStartY, exclusionStopY))
         enemy.collide().setIds(Ids.enemy)
         enemy.collide().addCollidingWith(Ids.player, Ids.playerBullet)
         enemy.layer().setLayer(Phases.Enemy)

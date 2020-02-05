@@ -49,8 +49,9 @@ object SBullet : Setup() {
         val dirComp = bullet.dir()
         dirComp.set(desiredDir)
         bullet.layer().setLayer(Phases.Player)
-        bullet.hp().setHp(100000)
+        bullet.hp().setHp(str)
 
+        bullet.collide().setDmgToInflict(str)
         bullet.collide().setIds(Ids.playerBullet)
         bullet.collide().addCollidingWith(Ids.enemy, Ids.propsWall, Ids.player)
         bullet.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::bounceOfWall)

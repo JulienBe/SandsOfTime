@@ -5,20 +5,12 @@ import be.particulitis.hourglass.gamedata.graphics.Anims33
 import com.badlogic.gdx.Gdx
 
 object GHelper {
-    val percentX get() = ((Gdx.input.x.toFloat() / Gdx.graphics.width) -
-            // offset by screen unused
-            (1 - GResolution.percentageUsedX) / 2f) /
-            // scale to screen used
-            GResolution.percentageUsedX
+    val percentX get() = Gdx.input.x.toFloat() / Gdx.graphics.width
     val percentY get(): Float = 1 - (
                 // screen percentage
-            (((Gdx.input.y).toFloat() / Gdx.graphics.height) -
-                // offset by screen unused
-            (1 - GResolution.percentageUsedY) / 2f) /
-                // scale to screen used
-            GResolution.percentageUsedY)
-    val x get() = percentX * GResolution.areaDim
-    val y get() = percentY * GResolution.areaDim
+            (Gdx.input.y).toFloat() / Gdx.graphics.height)
+    val x get() = percentX * GResolution.areaW
+    val y get() = percentY * GResolution.areaH
 
     fun isClicked(x: Float, y: Float, width: Float, height: Float): Boolean {
         return x <= this.x && x + width >= this.x && y <= this.y && y + height >= this.y

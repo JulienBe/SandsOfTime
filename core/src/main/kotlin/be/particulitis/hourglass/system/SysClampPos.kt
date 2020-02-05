@@ -13,6 +13,6 @@ class SysClampPos : IteratingSystem(Aspect.all(CompSpace::class.java)) {
 
     override fun process(entityId: Int) {
         val dim = mSpace[entityId]
-        dim.setPos(MathUtils.clamp(dim.x, 0f, GResolution.areaDim - dim.w), MathUtils.clamp(dim.y, 0f, GResolution.areaDim - dim.h))
+        dim.setPos(MathUtils.clamp(dim.x, 0f, GResolution.areaW - dim.w), MathUtils.clamp(dim.y, 0f, GResolution.areaH - dim.h))
     }
 }

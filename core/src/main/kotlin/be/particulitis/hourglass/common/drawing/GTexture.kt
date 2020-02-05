@@ -9,8 +9,8 @@ object GTexture {
         GPalette.D_GRAY, GPalette.D_GRAY, GPalette.D_GRAY, GPalette.L_GRAY,
         GPalette.D_BLUE, GPalette.D_GRAY, GPalette.D_GRAY, GPalette.D_GRAY
     )
-    val xIndexes = Array<Float>(w * h) { (it % w).toFloat() }
-    val yIndexes = Array<Float>(w * h) { (it / h).toFloat() }
+    val xIndexes = Array(w * h) { (it % w).toFloat() }
+    val yIndexes = Array(w * h) { (it / h).toFloat() }
     fun x(index: Int): Float {
         return xIndexes[index]
     }

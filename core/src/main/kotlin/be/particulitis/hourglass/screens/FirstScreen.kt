@@ -1,10 +1,7 @@
 package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.Boombox
-import be.particulitis.hourglass.common.GInput
-import be.particulitis.hourglass.common.GKeyGlobalState
-import be.particulitis.hourglass.common.GSide
-import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompEnemy
@@ -27,7 +24,6 @@ import com.artemis.utils.IntBag
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import kotlin.math.roundToInt
 
 /** First screen of the application. Displayed after the application is created.  */
 class FirstScreen(game: Game) : AbstractScreen(game) {
@@ -105,11 +101,11 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
         }
 
         private fun stageSetup() {
-            SProps.ground(world, 14, 14)
-            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaDim - Dim.WallSprite.h)
-            SProps.wall(world, (GResolution.areaDim / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, 0f)
-            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.h).toInt() + 1, GSide.LEFT, GResolution.areaDim - Dim.WallSprite.h, 0f)
-            SProps.wall(world, 1,  (GResolution.areaDim / Dim.WallSprite.h).toInt() + 1, GSide.RIGHT, 0f, 0f)
+            SProps.ground(world, 18, 14)
+            SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaH - Dim.WallSprite.h)
+            SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, 0f)
+            SProps.wall(world, 1,  (GResolution.areaH / Dim.WallSprite.h).toInt() + 1, GSide.LEFT, GResolution.areaW, 0f)
+            SProps.wall(world, 1,  (GResolution.areaH / Dim.WallSprite.h).toInt() + 1, GSide.RIGHT, -Dim.WallSprite.hw, 0f)
         }
 
     }

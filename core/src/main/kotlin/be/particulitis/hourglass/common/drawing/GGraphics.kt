@@ -126,7 +126,7 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
 
         val batch: GGraphics
         val imgMan = ImgMan()
-        val cam = OrthographicCamera(GResolution.screenWidth, GResolution.screenHeight)
+        val cam = OrthographicCamera(GResolution.areaW, GResolution.areaH)
 
         init {
             batch =  GGraphics(imgMan)

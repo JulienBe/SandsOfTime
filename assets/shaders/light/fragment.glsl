@@ -10,7 +10,7 @@ precision mediump float;
 varying LOWP vec4 v_color;
 varying vec2 v_texCoords;
 
-const vec2 resolution = vec2(256.0, 256.0);
+const vec2 resolution = vec2(456.0, 256.0);
 const float light_default_z = 0.5;
 const vec3 falloff = vec3(0.2, 6.0, 20.0);
 
@@ -36,8 +36,7 @@ const float[9] dither_pattern = float[](
     -0.1, 0.0, +0.1,
     -0.02, 0.0, +0.02,
     -0.05, 0.0, +0.05);
-const float pixel_size_x = 1.0 / resolution.x;
-const float pixel_size_y = 1.0 / resolution.y;
+const float ratio = 456.0 / 256.0;
 
 uniform sampler2D u_texture;
 uniform sampler2D u_palette;
@@ -57,9 +56,9 @@ void main() {
     for (int i = 0; i <= u_light_count; i++) {
         vec2 light_pos = u_light_pos_angle_tilt[i].xy / resolution.xy;
         vec3 delta_pixel_pos = vec3(light_pos - pixel_pos, light_default_z);
+        delta_pixel_pos.x *= ratio;
 
         float len = length(delta_pixel_pos.xy);
-
         vec3 nor_delta = normalize(delta_pixel_pos);
         vec3 nor_normal = normalize(normal);
 
@@ -76,18 +75,18 @@ void main() {
             l += mul * dither_pattern[int(mod(gl_FragCoord.x * gl_FragCoord.y, 9))] * 0.1;
         }
 
-        // can be used to adjust the fact that a light could go over an obstacle. The closest you get, the less steps it does, to more likely it is to go 'over' the blocker
-
-        float shadow_total_steps = len * 96.0;
+        //**
+        float shadow_total_steps = len * 100;
         vec2 shadow_sample_step = delta_pixel_pos.xy / shadow_total_steps;
+        shadow_sample_step.x /= ratio;
         float min_light = 1.0;
         for (float f = 0.0; f < shadow_total_steps; f += 1.0) {
             vec2 coord_to_sample = pixel_pos + vec2(shadow_sample_step.x * f, shadow_sample_step.y * f);
-            vec4 occluder_color = texture2D(u_occlusion, coord_to_sample);
-            min_light = min(min_light, 1.0 - occluder_color.r);
+            float occluder_color = 1.0 - texture2D(u_occlusion, coord_to_sample).r;
+            min_light = min(min_light, occluder_color);
         }
         l *= min_light;
-
+        //*/
         total_light += step(lvl1, l) + step(lvl2, l) + step(lvl3, l) + step(lvl4, l) + step(lvl5, l);
     }
     total_light /= 4.98;

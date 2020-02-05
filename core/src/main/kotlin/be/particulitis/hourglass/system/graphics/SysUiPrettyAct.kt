@@ -1,8 +1,8 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.common.*
-import be.particulitis.hourglass.common.drawing.GLight
-import be.particulitis.hourglass.common.drawing.GResolution
+import be.particulitis.hourglass.common.GHelper
+import be.particulitis.hourglass.common.GRand
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.font.FontAnim
@@ -13,7 +13,7 @@ import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.*
+import kotlin.math.roundToInt
 
 @Wire(failOnNull = false)
 class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPrettyUi::class.java)) {
@@ -26,8 +26,8 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
         val ui = mUi[entityId]
 
         if (Gdx.input.justTouched()) {
-            val xTouch = (GResolution.baseX + GHelper.x) - space.x
-            val yTouch = (GResolution.baseY + GHelper.y) - space.y
+            val xTouch = GHelper.x - space.x
+            val yTouch = GHelper.y - space.y
             ui.anims.add(FontAnim(ui.pixels.sortedBy { Vector2.dst(xTouch, yTouch, it.x, it.y) }.toMutableList()))
         }
         ui.time += GTime.delta

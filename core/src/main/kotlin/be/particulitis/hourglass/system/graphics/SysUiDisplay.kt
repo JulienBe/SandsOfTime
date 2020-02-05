@@ -1,10 +1,8 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.drawing.GShader
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompButton
@@ -32,7 +30,6 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
     override fun processSystem() {
         GGraphics.batch.shader = shader
 
-
         val backgroundTexture = world.getSystem(SysDrawer::class.java).getCurrentTexture()
 
         val mergedTexture = DrawerTools.drawToFb(fboCurrent) {
@@ -42,7 +39,7 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
             shader.setUniformi("u_background_texture", 1)
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
-            GGraphics.imgMan.palette.bind()
+            GGraphics.imgMan.palettes[0].bind()
             shader.setUniformi("u_palette", 0)
 
             GGraphics.batch.setColor(1f, 1f, 1f, 1f)

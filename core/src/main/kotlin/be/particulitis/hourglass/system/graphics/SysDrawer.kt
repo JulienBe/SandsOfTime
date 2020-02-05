@@ -1,5 +1,7 @@
 package be.particulitis.hourglass.system.graphics
 
+import be.particulitis.hourglass.common.GBloom
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GGraphics.Companion.batch
 import be.particulitis.hourglass.common.drawing.GLight
@@ -12,6 +14,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
@@ -25,19 +28,26 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
     private val listEntitiesIds = mutableListOf<Int>()
     private val fboCurrent = DrawerTools.frameBuffer()
+    private val fboCorrectBloomRatioForNow = DrawerTools.frameBuffer()
     private val fboOccluders = DrawerTools.frameBuffer()
     private val fboNormal = DrawerTools.frameBuffer()
     private val fboLight = DrawerTools.frameBuffer()
+    private val fboBloom = DrawerTools.frameBuffer()
     private val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
     private val normalShader = GShader.createShader("shaders/normal/vertex.glsl", "shaders/normal/fragment.glsl")
-
+    private val bloom = GBloom()
+    private var paletteIndex = 0f
 
     private lateinit var mergedTexture: Texture
-
+    private var gogoBloom = true
+    private var drawOcc = false
 
     override fun processSystem() {
+        if (Gdx.input.isKeyPressed(Input.Keys.F9))
+            gogoBloom = !gogoBloom
         val sortedEntities = sortEntities()
         batch.end()
+        paletteIndex += GTime.delta / 2f
 
         // I don't know if it's worth filtering what really is an occluder or not. We'll see when it drops below 40fps on my t420
         val occluders = DrawerTools.drawToFb(fboOccluders) {
@@ -49,20 +59,24 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
         val front = DrawerTools.drawToFb(fboCurrent) {
             sortedEntities.forEach {
-                val draw = mDraw[it]
-                draw.drawFront.invoke(batch, draw, mSpace[it])
+                batch.drawFrontCenteredOnBox(mDraw[it], mSpace[it])
             }
         }
         batch.shader = normalShader
         val normal = DrawerTools.drawToFb(fboNormal) {
+            var previousAngle = 4324324f
             sortedEntities.forEach {
                 val draw = mDraw[it]
-                normalShader.setUniformf("u_angle", draw.angle * MathUtils.degreesToRadians)
-                draw.drawNormal.invoke(batch, draw, mSpace[it])
+                if (draw.angle != previousAngle) {
+                    batch.flush()
+                    normalShader.setUniformf("u_angle", draw.angle * MathUtils.degreesToRadians)
+                    previousAngle = draw.angle
+                }
+                batch.drawNormalCenteredOnBox(draw, mSpace[it])
             }
         }
         batch.shader = lightShader
-        mergedTexture = DrawerTools.drawToFb(fboLight) {
+        val finalTexture = DrawerTools.drawToFb(fboLight) {
             setLights(lightShader)
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE3)
@@ -74,7 +88,8 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
             lightShader.setUniformi("u_normal", 2)
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE1)
-            GGraphics.imgMan.palette.bind()
+            //GGraphics.imgMan.palettes[paletteIndex.toInt() % GGraphics.imgMan.palettes.size].bind()
+            GGraphics.imgMan.palettes[0].bind()
             lightShader.setUniformi("u_palette", 1)
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
@@ -82,8 +97,20 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
             lightShader.setUniformi("u_texture", 0)
 
             batch.setColor(1f, 1f, 1f, 1f)
-            batch.draw(front, 0f, GResolution.areaDim, GResolution.areaDim, -GResolution.areaDim)
+            batch.draw(front, 0f, GResolution.areaH, GResolution.areaW, -GResolution.areaH)
         }
+
+        mergedTexture = if (gogoBloom) {
+            DrawerTools.drawToFb(fboBloom) {
+                bloom.render(finalTexture)
+            }
+        } else
+            finalTexture
+        if (drawOcc)
+            mergedTexture = occluders
+        if (Gdx.input.isKeyJustPressed(Input.Keys.O))
+            drawOcc = !drawOcc
+        //mergedTexture = finalTexture
     }
 
     private fun sortEntities(): List<Int> {

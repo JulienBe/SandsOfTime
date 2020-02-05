@@ -1,7 +1,6 @@
 package be.particulitis.hourglass.system
 
 import be.particulitis.hourglass.gamedata.Builder
-import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
@@ -36,6 +35,6 @@ class SysSpawner : BaseSystem() {
 
     companion object {
         const val min = 5
-        const val exclusionRange = GResolution.areaDim / 5f
+        const val exclusionRange = GResolution.areaH / 5f
     }
 }

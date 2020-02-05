@@ -5,7 +5,6 @@ import be.particulitis.hourglass.comp.CompHp
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.Gdx
 
 class SysDamage : BaseEntitySystem(Aspect.all(CompCollide::class.java, CompHp::class.java)) {
 

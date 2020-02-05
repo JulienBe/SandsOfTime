@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer
 
 object DrawerTools {
     fun drawToFb(buffer: FrameBuffer, xTrans: Float = 0f, yTrans: Float = 0f, drawFun: () -> Unit): Texture {
-        GGraphics.cam.setToOrtho(false, GResolution.areaDim, GResolution.areaDim)
+        GGraphics.cam.setToOrtho(false, GResolution.areaW, GResolution.areaH)
         GGraphics.cam.translate(xTrans, yTrans)
         GGraphics.cam.update()
         GGraphics.batch.projectionMatrix = GGraphics.cam.combined
@@ -30,17 +30,17 @@ object DrawerTools {
     fun drawResult(vararg textures: Texture) {
         GGraphics.batch.shader = null
         GGraphics.batch.begin()
-        GGraphics.cam.setToOrtho(false, GResolution.screenWidth, GResolution.screenHeight)
+        GGraphics.cam.setToOrtho(false, GResolution.areaW, GResolution.areaH)
         GGraphics.cam.update()
         GGraphics.batch.projectionMatrix = GGraphics.cam.combined
         Gdx.gl20.glEnable(GL20.GL_BLEND)
         GGraphics.batch.setColor(1f, 1f, 1f, 1f)
         textures.forEach {
-            GGraphics.batch.draw(it, GResolution.baseX, GResolution.areaDim, GResolution.areaDim, -GResolution.areaDim)
+            GGraphics.batch.draw(it, 0f, GResolution.areaH, GResolution.areaW, -GResolution.areaH)
         }
     }
 
     fun frameBuffer(): FrameBuffer {
-        return FrameBuffer(Pixmap.Format.RGBA8888, GResolution.areaDim.toInt(), GResolution.areaDim.toInt(), false)
+        return FrameBuffer(Pixmap.Format.RGBA8888, GResolution.areaW.toInt(), GResolution.areaH.toInt(), false)
     }
 }

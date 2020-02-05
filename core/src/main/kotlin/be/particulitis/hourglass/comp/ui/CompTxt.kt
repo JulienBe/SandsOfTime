@@ -26,8 +26,8 @@ open class CompTxt : Comp() {
         pixels.addAll(txt.mapIndexed { index, c -> FontPixel.get(index, c, w, pixels) }.flatten())
         if (sort)
             pixels.sort { pixel, pixel2 ->
-                (Vector2.dst2(pixel.x, pixel.y, GResolution.screenWidth / 2f, GResolution.screenHeight / 2f) -
-                        Vector2.dst2(pixel2.x, pixel2.y, GResolution.screenWidth / 2f, GResolution.screenHeight / 2f)).roundToInt()
+                (Vector2.dst2(pixel.x, pixel.y, GResolution.areaW, GResolution.areaHH) -
+                        Vector2.dst2(pixel2.x, pixel2.y, GResolution.areaW, GResolution.areaHH)).roundToInt()
             }
         for (i in 1 until w)
             pixels.forEach {

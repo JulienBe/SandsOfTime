@@ -52,10 +52,10 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
 
         SUi.prettyDisplay(world, "Hourglass", 20f, 150f)
         SUi.button(world, "Play!", 0f, 0f) {
-            switchScreen(FirstScreen(game))
+            switchScreen(GameScreen(game))
         }
-        SProps.ground(FirstScreen.world, 18, 14)
-        SPlayer.player(world)
+//        SProps.ground(GameScreen.world, 18, 14)
+//        SPlayer.player(world)
         //SPlayer.player(world, 20f, 20f)
         //SPlayer.player(world, -20f, -20f)
         //SPlayer.player(world, -20f, 20f)
@@ -64,7 +64,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
 
     override fun render(delta: Float) {
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            switchScreen(FirstScreen(game))
+            switchScreen(GameScreen(game))
         }
         //GLight.updatePos(pointerLight, GHelper.x, GHelper.y)
         lights.forEachIndexed { index, i ->

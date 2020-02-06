@@ -26,7 +26,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
 /** First screen of the application. Displayed after the application is created.  */
-class FirstScreen(game: Game) : AbstractScreen(game) {
+class GameScreen(game: Game) : AbstractScreen(game) {
 
     override fun show() {
         GTime.reset()
@@ -64,7 +64,7 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
                 .with(SysTtl())
                 .with(SysCollider())
                 .with(SysDamage())
-                .with(SysClampPos())
+//                .with(SysClampPos())
 
                 .with(SysLightTrack())
                 .with(SysDrawer())
@@ -102,10 +102,11 @@ class FirstScreen(game: Game) : AbstractScreen(game) {
 
         private fun stageSetup() {
             SProps.ground(world, 18, 14)
-            SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaH - Dim.WallSprite.h)
-            SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, 0f)
-            SProps.wall(world, 1,  (GResolution.areaH / Dim.WallSprite.h).toInt() + 1, GSide.LEFT, GResolution.areaW, 0f)
-            SProps.wall(world, 1,  (GResolution.areaH / Dim.WallSprite.h).toInt() + 1, GSide.RIGHT, -Dim.WallSprite.hw, 0f)
+
+            SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaH - Dim.WallSprite.h + 7f)
+            SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, -7f)
+            SProps.wall(world, 1,  (GResolution.areaH / Dim.WallSprite.h).toInt() + 1, GSide.LEFT, GResolution.areaW - Dim.WallSprite.h, 0f)
+            SProps.wall(world, 1,  (GResolution.areaH / Dim.WallSprite.h).toInt() + 1, GSide.RIGHT, -Dim.WallSprite.hh - 3f, 0f)
         }
 
     }

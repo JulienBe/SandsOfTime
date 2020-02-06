@@ -4,7 +4,7 @@ import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.Comp
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.entities
-import be.particulitis.hourglass.screens.FirstScreen
+import be.particulitis.hourglass.screens.GameScreen
 import com.artemis.Aspect
 import com.artemis.World
 import kotlin.reflect.KClass
@@ -41,7 +41,7 @@ object StateManager {
 
         GTime.reset()
         deleteAll(world, CompHp::class)
-        FirstScreen.score = -1
+        GameScreen.score = -1
 
         changedState(world)
     }

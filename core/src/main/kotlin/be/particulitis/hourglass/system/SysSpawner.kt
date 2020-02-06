@@ -7,7 +7,7 @@ import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.setups.SEnemy
-import be.particulitis.hourglass.screens.FirstScreen
+import be.particulitis.hourglass.screens.GameScreen
 import com.artemis.*
 import com.artemis.managers.TagManager
 import kotlin.reflect.KFunction6
@@ -29,8 +29,8 @@ class SysSpawner : BaseSystem() {
     }
 
     private fun addEnemy(builder: ArchetypeBuilder, playerPos: CompSpace, setup: KFunction6<@ParameterName(name = "id") Int, @ParameterName(name = "world") World, @ParameterName(name = "exclusionStartX") Float, @ParameterName(name = "exclusionStopX") Float, @ParameterName(name = "exclusionStartY") Float, @ParameterName(name = "exclusionStopY") Float, Unit>) {
-        val enemyEntityId = FirstScreen.world.create(builder.build(FirstScreen.world))
-        setup.invoke(enemyEntityId, FirstScreen.world, playerPos.centerX - exclusionRange, playerPos.centerX + exclusionRange, playerPos.centerY - exclusionRange, playerPos.centerY + exclusionRange)
+        val enemyEntityId = GameScreen.world.create(builder.build(GameScreen.world))
+        setup.invoke(enemyEntityId, GameScreen.world, playerPos.centerX - exclusionRange, playerPos.centerX + exclusionRange, playerPos.centerY - exclusionRange, playerPos.centerY + exclusionRange)
     }
 
     companion object {

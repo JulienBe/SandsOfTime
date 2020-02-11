@@ -81,7 +81,7 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompDraw::class.java
     )),
     BloodParticles(listOf(
-            CompDraw::class.java,
+            CompBloomer::class.java,
             CompSpace::class.java,
             CompParticle::class.java,
             CompTimePhase::class.java,

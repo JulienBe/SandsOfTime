@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.common.GBloom
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GGraphics.Companion.batch
@@ -28,27 +27,22 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
     private val listEntitiesIds = mutableListOf<Int>()
     private val fboCurrent = DrawerTools.frameBuffer()
-    private val fboCorrectBloomRatioForNow = DrawerTools.frameBuffer()
     private val fboOccluders = DrawerTools.frameBuffer()
     private val fboNormal = DrawerTools.frameBuffer()
     private val fboLight = DrawerTools.frameBuffer()
-    private val fboBloom = DrawerTools.frameBuffer()
     private val lightShader = GShader.createShader("shaders/light/vertex.glsl", "shaders/light/fragment.glsl")
     private val normalShader = GShader.createShader("shaders/normal/vertex.glsl", "shaders/normal/fragment.glsl")
-    private val bloom = GBloom()
     private var paletteIndex = 0f
 
     private lateinit var mergedTexture: Texture
-    private var gogoBloom = true
     private var drawOcc = false
 
     override fun processSystem() {
-        if (Gdx.input.isKeyPressed(Input.Keys.F9))
-            gogoBloom = !gogoBloom
         val sortedEntities = sortEntities()
         batch.end()
         paletteIndex += GTime.delta / 2f
 
+        batch.shader = null
         // I don't know if it's worth filtering what really is an occluder or not. We'll see when it drops below 40fps on my t420
         val occluders = DrawerTools.drawToFb(fboOccluders) {
             sortedEntities.forEach {
@@ -99,18 +93,14 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
             batch.setColor(1f, 1f, 1f, 1f)
             batch.draw(front, 0f, GResolution.areaH, GResolution.areaW, -GResolution.areaH)
         }
-
-        mergedTexture = if (gogoBloom) {
-            DrawerTools.drawToFb(fboBloom) {
-                bloom.render(finalTexture)
-            }
-        } else
-            finalTexture
+        batch.shader = null
+        DrawerTools.drawResult(finalTexture)
         if (drawOcc)
             mergedTexture = occluders
         if (Gdx.input.isKeyJustPressed(Input.Keys.O))
             drawOcc = !drawOcc
-        //mergedTexture = finalTexture
+
+        mergedTexture = finalTexture
     }
 
     private fun sortEntities(): List<Int> {

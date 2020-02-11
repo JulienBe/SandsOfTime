@@ -15,8 +15,8 @@ object DrawerTools {
         GGraphics.cam.update()
         GGraphics.batch.projectionMatrix = GGraphics.cam.combined
         buffer.begin()
-        buffer.bind()
-        GGraphics.batch.begin()
+        if (!GGraphics.batch.isDrawing)
+            GGraphics.batch.begin()
         Gdx.graphics.gL20.glClearColor(0f, 0f, 0f, 0f)
         Gdx.graphics.gL20.glClear(GL20.GL_COLOR_BUFFER_BIT)
         drawFun.invoke()
@@ -27,9 +27,21 @@ object DrawerTools {
         return texture
     }
 
+    fun draw(drawFun: () -> Unit) {
+        if (!GGraphics.batch.isDrawing)
+            GGraphics.batch.begin()
+        GGraphics.cam.setToOrtho(false, GResolution.areaW, GResolution.areaH)
+        GGraphics.cam.update()
+        GGraphics.batch.projectionMatrix = GGraphics.cam.combined
+        Gdx.gl20.glEnable(GL20.GL_BLEND)
+        GGraphics.batch.setColor(1f, 1f, 1f, 1f)
+        drawFun.invoke()
+        GGraphics.batch.end()
+    }
+
     fun drawResult(vararg textures: Texture) {
-        GGraphics.batch.shader = null
-        GGraphics.batch.begin()
+        if (!GGraphics.batch.isDrawing)
+            GGraphics.batch.begin()
         GGraphics.cam.setToOrtho(false, GResolution.areaW, GResolution.areaH)
         GGraphics.cam.update()
         GGraphics.batch.projectionMatrix = GGraphics.cam.combined

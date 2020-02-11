@@ -13,8 +13,8 @@ import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
+import be.particulitis.hourglass.system.graphics.SysBloomer
 import be.particulitis.hourglass.system.graphics.SysDrawer
-import be.particulitis.hourglass.system.graphics.SysUiDisplay
 import com.artemis.Aspect
 import com.artemis.EntitySubscription
 import com.artemis.World
@@ -68,7 +68,7 @@ class GameScreen(game: Game) : AbstractScreen(game) {
 
                 .with(SysLightTrack())
                 .with(SysDrawer())
-                .with(SysUiDisplay())
+                .with(SysBloomer())
 
                 .with(SysClearActions())
                 .with(SysDead())

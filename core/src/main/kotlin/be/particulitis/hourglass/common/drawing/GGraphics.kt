@@ -1,6 +1,7 @@
 package be.particulitis.hourglass.common.drawing
 
 import be.particulitis.hourglass.ImgMan
+import be.particulitis.hourglass.comp.CompBloomer
 import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Dim
@@ -95,6 +96,22 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
                 1f, 1f, draw.angle)
     }
 
+    fun drawFrontStreched(bloomer: CompBloomer, space: CompSpace) {
+        draw(bloomer.tr,
+                space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(),
+                space.hw, space.hh,
+                space.w, space.h,
+                1f, 1f, bloomer.angle)
+    }
+
+    fun drawFront(bloomer: CompBloomer, space: CompSpace) {
+        draw(bloomer.tr,
+                (space.centerX - bloomer.tr.hw).roundToInt().toFloat(), (space.centerY - bloomer.tr.hh).roundToInt().toFloat(),
+                bloomer.tr.hw, bloomer.tr.hh,
+                bloomer.tr.w, bloomer.tr.h,
+                1f, 1f, bloomer.angle)
+    }
+
     companion object {
 
         fun render(function: () -> Unit) {
@@ -104,7 +121,8 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
             batch.projectionMatrix = cam.combined
             batch.begin()
             function.invoke()
-            batch.end()
+            if (batch.isDrawing)
+                batch.end()
         }
 
         fun nor(s: String): TextureRegion {

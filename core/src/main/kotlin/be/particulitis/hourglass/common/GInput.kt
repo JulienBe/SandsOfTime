@@ -2,7 +2,6 @@ package be.particulitis.hourglass.common
 
 import com.badlogic.gdx.InputAdapter
 import ktx.collections.gdxArrayOf
-import com.badlogic.gdx.utils.Array as GdxArray
 
 object GInput : InputAdapter() {
 
@@ -26,5 +25,9 @@ object GInput : InputAdapter() {
 
     fun newFrame() {
         keyJustPressed.clear()
+    }
+
+    fun isKeyJustPressed(key: Int): Boolean {
+        return keyJustPressed.contains(key)
     }
 }

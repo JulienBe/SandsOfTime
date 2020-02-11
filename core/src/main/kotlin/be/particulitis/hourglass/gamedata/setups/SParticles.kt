@@ -26,7 +26,7 @@ object SParticles : Setup() {
     val angleV = Vector2()
     fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float) {
         val p = world.create(Builder.bloodParticle)
-        val draw = p.draw()
+        val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
         val ttl = p.ttl()
@@ -46,10 +46,9 @@ object SParticles : Setup() {
         dir.add((space.x - targetX) * -20f, (space.y - targetY) * -20f)
         dir.rotate(-90f)
 
-        draw.drawFront = GGraphics::drawFrontCenteredOnBoxSpaceStreched
-        draw.drawNormal = GGraphics::drawNormalCenteredOnBoxSpaceStreched
-        draw.preDraw = {
-            draw.currentImg = fireAnim.getKeyFrame(ttl.remaining * 8f)
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.preDraw = {
+            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
         }
 
         p.particle().update = {
@@ -58,13 +57,13 @@ object SParticles : Setup() {
             if (GKeyGlobalState.touched)
                 space.move(targetX - space.x, targetY - space.y, GTime.playerDelta * 10f * normalizedStr * normalizedStr)
             angleV.set(space.x - space.oldX, space.y - space.oldY)
-            draw.angle = (angleV.angle() + dir.angle) / 2f
+            bloomer.angle = (angleV.angle() + dir.angle) / 2f
         }
     }
 
     fun fireParticle(world: World, centerX: Float, centerY: Float, str: Float) {
         val p = world.create(Builder.bloodParticle)
-        val draw = p.draw()
+        val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
         val ttl = p.ttl()
@@ -81,24 +80,23 @@ object SParticles : Setup() {
         ttl.remaining = 0.02f + GRand.absGauss(.1f)
         dir.add((space.x - centerX) * 60f * str, (space.y - centerY) * 60f * str)
 
-        draw.drawFront = GGraphics::drawFrontCenteredOnBoxSpaceStreched
-        draw.drawNormal = GGraphics::drawNormalCenteredOnBoxSpaceStreched
-        draw.preDraw = {
-            draw.currentImg = fireAnim.getKeyFrame(ttl.remaining * 8f)
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.preDraw = {
+            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
         }
 
         p.particle().update = {
             time += GTime.delta
             dir.mul(0.97f)
             dir.rotate(GTime.delta * 1000f * str)
-            draw.angle = dir.angle
+            bloomer.angle = dir.angle
             space.move(dir, GTime.delta)
         }
     }
 
     fun explosionParticle(world: World, explosionCenterX: Float, explosionCenterY: Float, str: Float) {
         val p = world.create(Builder.bloodParticle)
-        val draw = p.draw()
+        val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
         val ttl = p.ttl()
@@ -116,10 +114,10 @@ object SParticles : Setup() {
 
         dir.add(GRand.gauss(str * 2f), GRand.gauss(str * 2f))
 
-        draw.currentImg = GGraphics.img("square")
-        draw.preDraw = {
-            draw.angle = dir.angle
-            draw.currentImg = fireAnim.getKeyFrame(ttl.remaining * 8f)
+        bloomer.tr = GGraphics.img("square").front
+        bloomer.preDraw = {
+            bloomer.angle = dir.angle
+            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
         }
         GSounds.explosion1.play()
 

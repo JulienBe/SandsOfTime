@@ -8,6 +8,7 @@ import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.system.*
+import be.particulitis.hourglass.system.graphics.SysBloomer
 import be.particulitis.hourglass.system.graphics.SysDrawer
 import be.particulitis.hourglass.system.graphics.SysUiDisplay
 import be.particulitis.hourglass.system.graphics.SysUiPrettyAct
@@ -35,8 +36,8 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             .with(SysTtl())
 
             .with(SysDrawer())
+            .with(SysBloomer())
             .with(SysUiPrettyAct())
-            .with(SysUiDisplay())
             .with(SysClearActions())
             .build()
     val world = World(config)

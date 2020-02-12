@@ -78,6 +78,7 @@ object SEnemy : Setup() {
         enemy.layer().setLayer(Phases.Enemy)
         enemy.draw().color = Colors.enemy
         enemy.draw().layer = Data.enemyLayer
+        enemy.collide().setDmgToInflict(2)
         return enemy
     }
 

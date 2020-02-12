@@ -16,7 +16,8 @@ class CompHp : Comp() {
 
     override fun reset() {
         super.reset()
-        onDead = {}
+        onDead = {
+        }
         hp = 1
     }
 }

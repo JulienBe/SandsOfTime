@@ -6,11 +6,11 @@ import ktx.collections.gdxMapOf
 
 class CompCollide : Comp() {
 
-    var dmgToInflict = 1
+    var dmgToInflict = 0
         private set
     var dmgToTake = 0
         private set
-    var dmgTakenTime = 0L
+    var dmgTakenTime = 0f
         private set
     var id = 0
         private set
@@ -34,7 +34,7 @@ class CompCollide : Comp() {
         this.dmgToTake = dmg
     }
 
-    fun setDmgTakenTime(time: Long) {
+    fun setDmgTakenTime(time: Float) {
         dmgTakenTime = time
         dmgToTake = 0
     }
@@ -53,7 +53,7 @@ class CompCollide : Comp() {
         super.reset()
         id = 0
         collidesWith = 0
-        dmgTakenTime = 0L
+        dmgTakenTime = 0f
         dmgToInflict = 1
     }
 }

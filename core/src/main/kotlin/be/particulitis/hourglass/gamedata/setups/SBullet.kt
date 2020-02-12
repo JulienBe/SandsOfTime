@@ -74,6 +74,7 @@ object SBullet : Setup() {
         }
         draw.layer = Data.playerBulletLayer
         bullet.hp().onDead = {
+            println("clear ${light.id}")
             light.clear()
         }
         return bullet

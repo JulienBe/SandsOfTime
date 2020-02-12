@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.system
 
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompCollide
 import be.particulitis.hourglass.comp.CompHp
 import com.artemis.Aspect
@@ -16,10 +17,10 @@ class SysDamage : BaseEntitySystem(Aspect.all(CompCollide::class.java, CompHp::c
         val ids: IntArray = actives.data
         for (it in actives.size() - 1 downTo 0) {
             val col = mCollide[ids[it]]
-            if (col.dmgToTake > 0 && col.dmgTakenTime < System.currentTimeMillis()) {
+            if (col.dmgToTake > 0 && col.dmgTakenTime < GTime.time) {
                 val hp = mHp[ids[it]]
                 hp.addHp(-col.dmgToTake)
-                col.setDmgTakenTime(System.currentTimeMillis() + 100L)
+                col.setDmgTakenTime(GTime.time + 0.5f)
             }
             col.setDmgToTake(0)
         }

@@ -90,6 +90,7 @@ object SPlayer : Setup() {
         val bdfLight = GLight(space.centerX, space.centerY, 0.0f)
         val mainLight = GLight(space.x + 1f, space.centerY + 6f, 0.2f)
         draw.preDraw = {
+            println("${player.hp().hp}")
             if (!GTime.enemyPhase) {
                 draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
                 angleVector.nor()

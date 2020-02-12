@@ -4,6 +4,7 @@ import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
@@ -85,16 +86,15 @@ object SPlayer : Setup() {
         val tiltRandomness = GPeriodicValue(0.09f) {
             GRand.nextGaussian().toFloat() / 40f
         }
-        val light = player.light()
-        val wizLight = light.setLight(Colors.player, space.centerX, space.centerY, 0.15f)
-        val bdfLight = light.setLight(Colors.player, space.centerX, space.centerY, 0.0f)
-        val mainLight = light.setLight(Colors.player, space.x + 1f, space.centerY + 6f, 0.2f)
+        val wizLight = GLight(space.centerX, space.centerY, 0.15f)
+        val bdfLight = GLight(space.centerX, space.centerY, 0.0f)
+        val mainLight = GLight(space.x + 1f, space.centerY + 6f, 0.2f)
         draw.preDraw = {
             if (!GTime.enemyPhase) {
                 draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
                 angleVector.nor()
-                light.updatePos(space.centerX, space.centerY, wizLight)
-                light.updateTilt(2f + tiltRandomness.value, mainLight)
+                wizLight.updatePos(space.centerX, space.centerY)
+                mainLight.updateTilt(2f + tiltRandomness.value)
                 angleRandomness.tick(GTime.playerDelta)
                 intensityRandomness.tick(GTime.playerDelta)
                 if (GKeyGlobalState.justTouched) {
@@ -102,21 +102,21 @@ object SPlayer : Setup() {
                     charge = true
                 }
                 draw.currentImg = currentAnim.frame(GTime.playerDelta)
-                light.updateIntesity(0f, bdfLight)
+                bdfLight.updateIntesity(0f)
                 if (charge) {
                     chargeValue += GTime.playerDelta
                     val position = getShootPosition(GHelper.x, GHelper.y, space)
                     for (i in 0 until (chargeValue * 500 * GTime.playerDelta).roundToInt())
                         SParticles.chargingParticles(world, position.x, position.y, chargeValue)
-                    light.updateIntesity(min(maxCharge, chargeValue), bdfLight)
-                    light.updatePos(position.x, position.y, bdfLight)
+                    bdfLight.updateIntesity(min(maxCharge, chargeValue))
+                    bdfLight.updatePos(position.x, position.y)
                     if (chargeValue > maxCharge) {
-                        light.updateIntesity(maxCharge + GRand.gauss(.05f), bdfLight)
+                        bdfLight.updateIntesity(maxCharge + GRand.gauss(.05f))
                     }
                 }
             }
-            light.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f, mainLight)
-            light.updateIntesity(0.2f + intensityRandomness.value, mainLight)
+            mainLight.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f)
+            mainLight.updateIntesity(0.2f + intensityRandomness.value)
             if (!GKeyGlobalState.touched) {
                 currentAnim = defaultAnim
                 charge = false

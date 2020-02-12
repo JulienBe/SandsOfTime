@@ -23,9 +23,6 @@ open class Setup {
     fun Entity.collide(): CompCollide {
         return getComponent(CompCollide::class.java)
     }
-    fun Entity.light(): CompLights {
-        return getComponent(CompLights::class.java)
-    }
     fun Entity.emitter(): CompParticleEmitter {
         return getComponent(CompParticleEmitter::class.java)
     }

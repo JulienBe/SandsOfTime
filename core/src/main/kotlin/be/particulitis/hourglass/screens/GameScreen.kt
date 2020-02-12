@@ -5,7 +5,6 @@ import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompEnemy
-import be.particulitis.hourglass.comp.CompLights
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.setups.SPlayer
@@ -66,7 +65,6 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                 .with(SysDamage())
 //                .with(SysClampPos())
 
-                .with(SysLightTrack())
                 .with(SysDrawer())
                 .with(SysBloomer())
 
@@ -84,17 +82,6 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                         override fun inserted(entities: IntBag) { }
                         override fun removed(entities: IntBag) {
                             score++
-                        }
-                    })
-            world.aspectSubscriptionManager.get(Aspect.all(CompLights::class.java))
-                    .addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
-                        val mLight = world.getMapper(CompLights::class.java)
-                        override fun inserted(entities: IntBag?) { }
-                        override fun removed(entities: IntBag) {
-                            val ids: IntArray = entities.data
-                            for (it in entities.size() - 1 downTo 0) {
-                                mLight[ids[it]].clear()
-                            }
                         }
                     })
             stageSetup()

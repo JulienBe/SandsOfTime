@@ -67,10 +67,6 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             switchScreen(GameScreen(game))
         }
-        //GLight.updatePos(pointerLight, GHelper.x, GHelper.y)
-        lights.forEachIndexed { index, i ->
-            GLight.updatePos(i, 128f + sin(GTime.time + index * 180f) * 70f, 128f + cos(GTime.time + index * 180f) * 50f)
-        }
 
         world.setDelta(delta)
         GGraphics.render {

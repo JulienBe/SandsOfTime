@@ -52,11 +52,6 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
             swapPixel(ui)
     }
 
-    private fun maybeAddLight(ui: CompPrettyUi) {
-        if (ui.pixels.filter { it.lightId != -1 }.count() < (ui.pixels.size / 10))
-            ui.pixels.random().initLight()
-    }
-
     private fun onEachPixel(ui: CompPrettyUi, inside: (pixel: FontPixel) -> Unit) {
         ui.pixels.filterIndexed { index, _ ->
             index < ui.currentIndex

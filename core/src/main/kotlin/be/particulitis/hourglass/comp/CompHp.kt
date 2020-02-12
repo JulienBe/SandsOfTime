@@ -4,6 +4,7 @@ class CompHp : Comp() {
 
     var hp = 1
         private set
+    var onDead = {}
 
     fun setHp(hp: Int) {
         this.hp = hp
@@ -15,6 +16,7 @@ class CompHp : Comp() {
 
     override fun reset() {
         super.reset()
+        onDead = {}
         hp = 1
     }
 }

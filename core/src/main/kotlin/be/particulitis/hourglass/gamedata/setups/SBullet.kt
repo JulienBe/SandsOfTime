@@ -5,6 +5,7 @@ import be.particulitis.hourglass.common.GPeriodicValue
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
@@ -32,7 +33,8 @@ object SBullet : Setup() {
         bullet.collide().setIds(Ids.enemyBullet)
         bullet.collide().addCollidingWith(Ids.player)
         bullet.ttl().remaining = 9f
-        bullet.light().setLight(Colors.enemyBullets, posX, posY, 0.04f)
+        val light = GLight(posX, posY, 0.04f)
+
         draw.color = Colors.enemyBullets
 //        draw.drawFront = { DrawMethods.basic(space, draw, it)}
         draw.layer = Data.enemyBulletLayer
@@ -57,8 +59,7 @@ object SBullet : Setup() {
         bullet.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::bounceOfWall)
 
         bullet.ttl().remaining = 2f
-        val light = bullet.light()
-        light.setLight(Colors.playerBullets, posX, posY, 0.06f)
+        val light = GLight(posX, posY, 0.06f)
         val intensityRandomness = GPeriodicValue(0.08f) {
             GRand.nextGaussian().toFloat() / 1000f
         }
@@ -72,6 +73,9 @@ object SBullet : Setup() {
                 SParticles.fireParticle(world, space.centerX, space.centerY, 1.5f)
         }
         draw.layer = Data.playerBulletLayer
+        bullet.hp().onDead = {
+            light.clear()
+        }
         return bullet
     }
 

@@ -2,8 +2,6 @@ package be.particulitis.hourglass.font
 
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.common.drawing.GLight
-import be.particulitis.hourglass.common.drawing.GPalette
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.graphics.Colors
 import com.badlogic.gdx.Gdx
@@ -44,7 +42,7 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float, va
         if (!snapped && abs(x - desiredX) + abs(y - desiredY) < 0.1f) {
             snapped = true
             boost = true
-            GSounds.pixelSnap.play(0.5f, 1 + ((x / GResolution.screenWidth) / 2f), 1f)
+            GSounds.pixelSnap.play(0.1f, 1 + ((x / GResolution.areaW) / 2f), 1f)
         }
     }
 
@@ -53,11 +51,6 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float, va
         desiredY = futureY
         snapped = false
         boost = false
-    }
-
-    fun initLight() {
-        if (lightId == -1)
-            lightId = GLight.create(x, y, GPalette.WHITEISH, .01f)
     }
 
     companion object {
@@ -161,13 +154,14 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float, va
             }.filter { it.isNotEmpty() }.flatten()
         }
 
+        // TODO find something pretty with these fonts
         private fun getTr(_0: Boolean, _1: Boolean, _2: Boolean, _3: Boolean, _5: Boolean, _6: Boolean, _7: Boolean, _8: Boolean): TextureRegion {
-            println(" ")
-            println(" ")
-            println("\nGetting ================ ===============  ")
-            println("Getting ================ ===============  ")
-            println("Getting \n$_0\t $_1\t $_2 \n$_3 \t\t $_5\n$_6\t $_7\t $_8")
-            println(" ")
+//            println(" ")
+//            println(" ")
+//            println("\nGetting ================ ===============  ")
+//            println("Getting ================ ===============  ")
+//            println("Getting \n$_0\t $_1\t $_2 \n$_3 \t\t $_5\n$_6\t $_7\t $_8")
+//            println(" ")
             var name = ""
 //            name +=    if (_0) "0" else ""
             name +=    if (_1) "1" else ""

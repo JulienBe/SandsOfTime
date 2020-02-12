@@ -18,6 +18,7 @@ class SysDead : IteratingSystem(Aspect.all(CompHp::class.java)) {
         val hp = mHp[entityId]
 
         if (hp.hp <= 0) {
+            hp.onDead.invoke()
             world.delete(entityId)
             if (world.getSystem(TagManager::class.java).getTag(entityId) == Data.playerTag)
                 StateManager.playerDead(world)

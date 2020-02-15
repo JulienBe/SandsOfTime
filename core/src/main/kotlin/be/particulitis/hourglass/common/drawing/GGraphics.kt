@@ -29,26 +29,7 @@ private val TextureRegion.h: Float
         return regionHeight.toFloat()
     }
 
-class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
-
-    fun draw(space: CompSpace, draw: CompDraw) {
-        draw(draw.color, space.x, space.y, space.w)
-    }
-
-    fun draw(color: GPalette, x: Float, y: Float, w: Float) {
-        //packedColor = color.f
-        draw(img.square, x, y, w, w)
-    }
-
-    fun draw(color: Float, x: Float, y: Float, w: Float) {
-        packedColor = color
-        draw(img.square, x, y, w, w)
-    }
-
-    fun draw(color: Float, x: Int, y: Int, w: Int) {
-        packedColor = color
-        draw(img.square, x.toFloat(), y.toFloat(), w.toFloat(), w.toFloat())
-    }
+class GGraphics : SpriteBatch(8191) {
 
     fun draw(region: TextureRegion, space: CompSpace, dim: Dim, angle: Float) {
         draw(region, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(), dim.hw, dim.hh, dim.w, dim.h, 1f, 1f, angle)
@@ -142,13 +123,10 @@ class GGraphics(private val img: ImgMan) : SpriteBatch(8191) {
             return GAnim(shoot, timePerFrame)
         }
 
-        val batch: GGraphics
+        val batch: GGraphics = GGraphics()
         val imgMan = ImgMan()
         val cam = OrthographicCamera(GResolution.areaW, GResolution.areaH)
 
-        init {
-            batch =  GGraphics(imgMan)
-        }
     }
 
 }

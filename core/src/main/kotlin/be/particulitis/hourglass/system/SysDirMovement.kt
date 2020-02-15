@@ -15,9 +15,7 @@ class SysDirMovement : IteratingSystem(Aspect.all(CompDir::class.java, CompDir::
 
     override fun process(entityId: Int) {
         val dir = mDir[entityId]
-        val dim = mSpace[entityId]
-        val player = mPlayer[entityId]
 
-        dim.move(dir.x, dir.y, player.delta)
+        mSpace[entityId].move(dir.x, dir.y, mPlayer[entityId].delta)
     }
 }

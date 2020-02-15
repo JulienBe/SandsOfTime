@@ -15,7 +15,7 @@ class SysTtl : IteratingSystem(Aspect.all(CompTtl::class.java, CompTimePhase::cl
         val ttl = mTtl[entityId]
         ttl.remaining -= mTimePhase[entityId].delta
         if (ttl.remaining < 0f) {
-            ttl.finished()
+            ttl.onEnd.invoke()
             world.delete(entityId)
         }
     }

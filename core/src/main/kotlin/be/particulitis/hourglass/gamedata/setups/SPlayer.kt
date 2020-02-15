@@ -17,14 +17,12 @@ import com.artemis.World
 import com.artemis.managers.TagManager
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 object SPlayer : Setup() {
 
     private const val playerSpeed = 150f
     private const val playerLayer = 10
-    private const val maxCharge = 0.5f
+    private var shootLeft = true
 
     fun player(world: World, offsetX: Float = 0f, offsetY: Float = 0f) {
         val player = world.create(Builder.player)
@@ -33,8 +31,6 @@ object SPlayer : Setup() {
         val draw = player.draw()
         val space = player.space()
         val shoot = player.shooter()
-        var chargeValue = 0f
-        var charge = false
 
         player.control().addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         player.control().addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
@@ -44,26 +40,31 @@ object SPlayer : Setup() {
         player.hp().setHp(100)
         player.space().setDim(Dim.Player)
         player.space().setPos(offsetX + GResolution.areaHW - Dim.Player.hw, offsetY + GResolution.areaHH - Dim.Player.hw)
-        val shootAnim = GGraphics.anim(ImgMan.animPlayerShoot, 0.04f)
-        val defaultAnim = GGraphics.anim("wizard_f", .3f)
+        val shootAnim = GGraphics.anim(ImgMan.animPlayerShootBoth, 0.04f)
+        val shootLeftAnim = GGraphics.anim(ImgMan.animPlayerShootLeft, 0.04f)
+        val shootRightAnim = GGraphics.anim(ImgMan.animPlayerShootRight, 0.04f)
+        val defaultAnim = GGraphics.anim(ImgMan.player, .3f)
         var currentAnim = defaultAnim
         shootAnim.finish()
-        shoot.setFirerate(0.5f)
+        shoot.setFirerate(0.25f)
         shoot.setOffset(Dim.PlayerSprite.hw - Dim.Bullet.hw, Dim.PlayerSprite.hh - Dim.Bullet.hw)
         shoot.setKey(Input.Keys.SPACE)
         shoot.shouldShood = {
-            !shoot.keyCheck || (shoot.keyCheck && GKeyGlobalState.justReleased)
+            !shoot.keyCheck || (shoot.keyCheck && GKeyGlobalState.touched)
         }
 
         shoot.shootingFunc = {
-            currentAnim = defaultAnim.start()
-            val position = getShootPosition(GHelper.x, GHelper.y, space)
-            shoot.dir.set(GHelper.x - position.x, GHelper.y - position.y)
+            val position = getShootOffsetFromCenter(GHelper.x, GHelper.y, space)
+            shoot.dir.set(GHelper.x - space.centerX, GHelper.y - space.centerY)
             shoot.dir.nor()
-            val bulletEntity = shoot.bullet.second.invoke(world, position.x, position.y, shoot.dir, 1 + (min(chargeValue, maxCharge) * 10).roundToInt())
-
-            chargeValue = 0f
-            charge = false
+            currentAnim = if (shootLeft)
+                shootLeftAnim
+            else
+                shootRightAnim
+            shootLeft = !shootLeft
+            val bulletEntity = shoot.bullet.second.invoke(world, space.centerX + position.x, space.centerY +  position.y, shoot.dir, 1)
+            for (i in 0..15)
+                SParticles.muzzle(world, space.centerX + position.x, space.centerY +  position.y, shoot.dir)
         }
         shoot.setBullet(Builder.bullet, SBullet::playerBullet)
 
@@ -90,7 +91,6 @@ object SPlayer : Setup() {
         val bdfLight = GLight(space.centerX, space.centerY, 0.0f)
         val mainLight = GLight(space.x + 1f, space.centerY + 6f, 0.2f)
         draw.preDraw = {
-            println("${player.hp().hp}")
             if (!GTime.enemyPhase) {
                 draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
                 angleVector.nor()
@@ -100,42 +100,26 @@ object SPlayer : Setup() {
                 intensityRandomness.tick(GTime.playerDelta)
                 if (GKeyGlobalState.justTouched) {
                     currentAnim = shootAnim.start()
-                    charge = true
                 }
                 draw.currentImg = currentAnim.frame(GTime.playerDelta)
                 bdfLight.updateIntesity(0f)
-                if (charge) {
-                    chargeValue += GTime.playerDelta
-                    val position = getShootPosition(GHelper.x, GHelper.y, space)
-                    for (i in 0 until (chargeValue * 500 * GTime.playerDelta).roundToInt())
-                        SParticles.chargingParticles(world, position.x, position.y, chargeValue)
-                    bdfLight.updateIntesity(min(maxCharge, chargeValue))
-                    bdfLight.updatePos(position.x, position.y)
-                    if (chargeValue > maxCharge) {
-                        bdfLight.updateIntesity(maxCharge + GRand.gauss(.05f))
-                    }
-                }
             }
             mainLight.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f)
             mainLight.updateIntesity(0.2f + intensityRandomness.value)
             if (!GKeyGlobalState.touched) {
                 currentAnim = defaultAnim
-                charge = false
             }
         }
     }
 
-    val shootOffsetVector = Vector2(Dim.PlayerSprite.hw, Dim.PlayerSprite.hh)
-    val shootStart = Vector2()
-    val shootTarget = Vector2()
-    fun getShootPosition(targetX: Float, targetY: Float, space: CompSpace): Vector2 {
-        shootTarget.set(targetX - space.centerX, targetY - space.centerY)
-        shootOffsetVector.setAngle(shootTarget.angle())
-        shootStart.set(
-                space.x + shootOffsetVector.x,
-                space.y + shootOffsetVector.y
-        )
-        return shootStart
+    val shootOffset = Vector2(0f, 18f)
+    val angleCompute = Vector2()
+    fun getShootOffsetFromCenter(targetX: Float, targetY: Float, space: CompSpace): Vector2 {
+        val angle = angleCompute.set(targetX - space.centerX, targetY - space.centerY).angleRad()
+        return if (shootLeft)
+            shootOffset.setAngleRad(angle - .22f)
+        else
+            shootOffset.setAngleRad(angle + .22f)
     }
 
 }

@@ -27,6 +27,7 @@ class CompSpace : Comp() {
 
     override fun reset() {
         setPos(0f, 0f)
+        setDim(1f, 1f)
     }
 
     fun setDim(dim: Dim) {

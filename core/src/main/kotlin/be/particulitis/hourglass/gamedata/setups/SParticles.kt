@@ -9,28 +9,33 @@ import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Phases
 import com.artemis.World
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.min
 
 object SParticles : Setup() {
 
     // yes one for all
-    val fireAnim = GAnim("prout", 0.3f)
+    val fireAnim = GAnim("fire", 0.3f)
+    val blueAnim = GAnim("blue", 0.3f)
 
     init {
-        fireAnim.addFrame(GGraphics.img("square_red"))
-        fireAnim.addFrame(GGraphics.img("square_orange"))
-        fireAnim.addFrame(GGraphics.img("square_yellow"))
+        fireAnim.addFrame(GGraphics.img("squares/square_red"))
+        fireAnim.addFrame(GGraphics.img("squares/square_orange"))
+        fireAnim.addFrame(GGraphics.img("squares/square_yellow"))
+
+        blueAnim.addFrame(GGraphics.img("squares/square_purple"))
+        blueAnim.addFrame(GGraphics.img("squares/square_blue"))
+        blueAnim.addFrame(GGraphics.img("squares/square_cyan"))
     }
 
     val angleV = Vector2()
-    fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float) {
+    fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float, anim: GAnim = fireAnim) {
         val p = world.create(Builder.bloodParticle)
         val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
         val ttl = p.ttl()
-        var time = 0f
         val normalizedStr = 1f + min(str, 0.5f)
 
         p.layer().setLayer(Phases.Player)
@@ -48,16 +53,66 @@ object SParticles : Setup() {
 
         bloomer.draw = GGraphics::drawFrontStreched
         bloomer.preDraw = {
-            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
+            bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
         }
 
         p.particle().update = {
-            time += GTime.playerDelta
             dir.mul(0.97f)
             if (GKeyGlobalState.touched)
                 space.move(targetX - space.x, targetY - space.y, GTime.playerDelta * 10f * normalizedStr * normalizedStr)
             angleV.set(space.x - space.oldX, space.y - space.oldY)
             bloomer.angle = (angleV.angle() + dir.angle) / 2f
+        }
+    }
+
+    fun muzzle(world: World, centerX: Float, centerY: Float, dir: Vector2, str: Float = 1f) {
+        val p = world.create(Builder.bloodParticle)
+        val ttl = p.ttl()
+        val bloomer = p.bloomer()
+        val space = p.space()
+        p.layer().setLayer(Phases.Other)
+        p.dir().set(dir)
+        p.dir().dir.nor()
+        p.dir().rotate(GRand.gauss(35f))
+        p.dir().dir.scl(GRand.absGauss(240f))
+        space.setDim(1f + GRand.absGauss(3f), 1f)
+        space.setPos(centerX + GRand.gauss(.01f) * str, centerY + GRand.gauss(.01f) * str)
+//        ttl.remaining = GRand.absGauss(.1f)
+        ttl.remaining = .09f
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.angle = p.dir().angle
+        bloomer.preDraw = {
+            bloomer.tr = blueAnim.getKeyFrame(ttl.remaining * 16f).front
+        }
+    }
+
+    fun lollipopShoot(world: World, centerX: Float, centerY: Float, str: Float = 1f) {
+        val p = world.create(Builder.bloodParticle)
+        val ttl = p.ttl()
+        val bloomer = p.bloomer()        
+        val space = p.space()
+        p.layer().setLayer(Phases.Other)
+        space.setPos(centerX + GRand.gauss(1f) * str, centerY + GRand.gauss(1f) * str)
+        ttl.remaining = MathUtils.clamp(1.2f - Vector2.dst2(space.centerX, space.centerY, centerX, centerY), 0.01f, 0.15f) / 2f
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.preDraw = {
+            bloomer.tr = blueAnim.getKeyFrame(ttl.remaining * 16f).front
+        }
+    }
+
+    val angleVec = Vector2(0f, 4f)
+    fun lollipopTrail(world: World, centerX: Float, centerY: Float, angle: Float, str: Float = 1f) {
+        val p = world.create(Builder.bloodParticle)
+        val ttl = p.ttl()
+        val bloomer = p.bloomer()
+        val space = p.space()
+        p.layer().setLayer(Phases.Other)
+        angleVec.setAngleRad(angle)
+        space.setPos(centerX + angleVec.x, centerY + angleVec.y)
+        ttl.remaining = .01f + GRand.absGauss(0.15f)
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.preDraw = {
+            bloomer.tr = blueAnim.getKeyFrame(ttl.remaining * 8f + GRand.gauss(0.1f)).front
         }
     }
 
@@ -67,7 +122,6 @@ object SParticles : Setup() {
         val space = p.space()
         val dir = p.dir()
         val ttl = p.ttl()
-        var time = 0f
 
         p.layer().setLayer(Phases.Other)
 
@@ -86,7 +140,6 @@ object SParticles : Setup() {
         }
 
         p.particle().update = {
-            time += GTime.delta
             dir.mul(0.97f)
             dir.rotate(GTime.delta * 1000f * str)
             bloomer.angle = dir.angle
@@ -114,7 +167,7 @@ object SParticles : Setup() {
 
         dir.add(GRand.gauss(str * 2f), GRand.gauss(str * 2f))
 
-        bloomer.tr = GGraphics.img("square").front
+        bloomer.tr = GGraphics.img("squares/square_red").front
         bloomer.preDraw = {
             bloomer.angle = dir.angle
             bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front

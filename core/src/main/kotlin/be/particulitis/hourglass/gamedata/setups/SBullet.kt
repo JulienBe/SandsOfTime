@@ -64,19 +64,23 @@ object SBullet : Setup() {
             GRand.nextGaussian().toFloat() / 1000f
         }
         draw.color = Colors.playerBullets
-        draw.currentImg = GGraphics.img("square_yellow")
+        draw.currentImg = GGraphics.img("squares/square_cyan")
         draw.preDraw = {
             light.updatePos(space.centerX, space.centerY)
             intensityRandomness.tick(GTime.delta)
             light.updateIntesity((0.1f + intensityRandomness.value) * (1 + (str / 5)) )
-            for (i in 0..4 * str)
-                SParticles.fireParticle(world, space.centerX, space.centerY, 1.5f)
+            for (i in 0..20)
+                SParticles.lollipopShoot(world, space.centerX, space.centerY)
+            SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * 12f))
+            SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * -12f))
+            dirComp.dir.setLength(160f)
         }
         draw.layer = Data.playerBulletLayer
-        bullet.hp().onDead = {
-            println("clear ${light.id}")
+        val onEnd = {
             light.clear()
         }
+        bullet.hp().onDead = onEnd
+        bullet.ttl().onEnd = onEnd
         return bullet
     }
 

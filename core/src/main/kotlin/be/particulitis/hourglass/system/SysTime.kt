@@ -7,7 +7,7 @@ import kotlin.math.min
 
 class SysTime : BaseSystem() {
 
-    private val phaseDuration = 3f
+    private val phaseDuration = 300f
     private var currentPhaseTimer = 0f
 
     override fun processSystem() {

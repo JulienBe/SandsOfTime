@@ -17,9 +17,8 @@ class ImgMan {
             getTexture("img/palette_gameboy"),
             getTexture("img/palette_pico8")
     )
-    val square: Texture = getTexture(squarePath)
-    val walls: Array<TextureRegion>
-    val atlas: TextureAtlas
+    private val walls: Array<TextureRegion>
+    private val atlas: TextureAtlas
     val regions = GdxMap<String, TextureRegion>()
 
     private fun getTexture(path: String): Texture {
@@ -55,11 +54,12 @@ class ImgMan {
     }
 
     companion object {
-        const val squarePath = "img/square"
         const val atlasPath = "textures/texture1/atlas.atlas"
         const val wall = "wall1"
-        const val player = "wizard_f"
-        const val animPlayerShoot = "wizard_shoot_f"
+        const val player = "gunner_idle"
+        const val animPlayerShootBoth = "gunner_shoot"
+        const val animPlayerShootLeft = "gunner_shoot_left"
+        const val animPlayerShootRight = "gunner_shoot_right"
         val manager = AssetManager()
     }
 }

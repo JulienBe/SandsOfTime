@@ -6,6 +6,7 @@ import ktx.collections.GdxSet
 class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Float = 0f) {
 
     val id: Int
+    var cleared = false
 
     init {
         id = if (idPool.isEmpty) {
@@ -20,15 +21,19 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
 
         updatePosAngle(x, y, angle)
         xyat[id * 4 + 3] = tilt
+        cleared = false
     }
 
     fun clear() {
+        if (cleared)
+            return
         xyat.remove(id * 4 + 0)
         xyat.remove(id * 4 + 1)
         xyat.remove(id * 4 + 2)
         xyat.remove(id * 4 + 3)
         intensity.remove(id)
         idPool.add(id)
+        cleared = true
     }
 
     fun updatePos(x: Float, y: Float) {

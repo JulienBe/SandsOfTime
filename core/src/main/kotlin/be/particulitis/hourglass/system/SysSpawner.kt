@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.system
 
-import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompEnemy
@@ -18,13 +18,9 @@ class SysSpawner : BaseSystem() {
 
     override fun processSystem() {
         val enemies = world.aspectSubscriptionManager.get(Aspect.all(CompEnemy::class.java))
-        if (enemies.entities.size() < min + (GTime.playerTime / 2f)) {
+        if (enemies.entities.size() < min + (GTime.playerTime / 4f)) {
             val playerPos = mSpace[world.getSystem(TagManager::class.java).getEntity(Data.playerTag)]
-            //if (GRand.nextBoolean())
-            if (true)
-                addEnemy(Builder.enemySlug, playerPos, SEnemy::enemySlug)
-            else
-                addEnemy(Builder.enemyShoot, playerPos, SEnemy::enemyShoot)
+            SEnemy.enemySlug(world, GRand.float(30f, GResolution.areaW - 30f), GRand.float(30f, GResolution.areaH - 30f))
         }
     }
 

@@ -18,15 +18,58 @@ object SParticles : Setup() {
     // yes one for all
     val fireAnim = GAnim("fire", 0.3f)
     val blueAnim = GAnim("blue", 0.3f)
+    val red = GGraphics.img("squares/square_red")
+    val yellow = GGraphics.img("squares/square_yellow")
 
     init {
-        fireAnim.addFrame(GGraphics.img("squares/square_red"))
+        fireAnim.addFrame(red)
         fireAnim.addFrame(GGraphics.img("squares/square_orange"))
-        fireAnim.addFrame(GGraphics.img("squares/square_yellow"))
+        fireAnim.addFrame(yellow)
 
         blueAnim.addFrame(GGraphics.img("squares/square_purple"))
         blueAnim.addFrame(GGraphics.img("squares/square_blue"))
         blueAnim.addFrame(GGraphics.img("squares/square_cyan"))
+    }
+
+    fun cpuHearthParticle(world: World, x: Float, y: Float, w: Float, h: Float, angle: Float) {
+        val p = world.create(Builder.bloodParticle)
+        val space = p.space()
+        space.setDim(w, h)
+        space.setPos(x, y)
+        p.layer().setLayer(Phases.Other)
+        val ttl = p.ttl()
+        ttl.remaining = 0.1f
+        val bloomer = p.bloomer()
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.tr = red.front
+        bloomer.angle = angle
+    }
+
+    fun cpuFootstep(world: World, x: Float, y: Float) {
+        val p = world.create(Builder.particle)
+        val space = p.space()
+        space.setDim(1f, 1f)
+        space.setPos(x, y)
+        p.layer().setLayer(Phases.Other)
+        val ttl = p.ttl()
+        ttl.remaining = GRand.absGauss(0.5f)
+        val draw = p.draw()
+        draw.currentImg = yellow
+    }
+
+    fun cpuAttackParticle(world: World, x: Float, y: Float) {
+        val p = world.create(Builder.bloodParticle)
+        val space = p.space()
+        space.setDim(1f, 1f)
+        space.setPos(x, y)
+        p.layer().setLayer(Phases.Other)
+        val ttl = p.ttl()
+        ttl.remaining = GRand.absGauss(0.5f)
+        val bloomer = p.bloomer()
+        bloomer.draw = GGraphics::drawFrontStreched
+        bloomer.preDraw = {
+            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
+        }
     }
 
     val angleV = Vector2()
@@ -72,9 +115,9 @@ object SParticles : Setup() {
         val space = p.space()
         p.layer().setLayer(Phases.Other)
         p.dir().set(dir)
-        p.dir().dir.nor()
+        p.dir().v.nor()
         p.dir().rotate(GRand.gauss(35f))
-        p.dir().dir.scl(GRand.absGauss(240f))
+        p.dir().v.scl(GRand.absGauss(240f))
         space.setDim(1f + GRand.absGauss(3f), 1f)
         space.setPos(centerX + GRand.gauss(.01f) * str, centerY + GRand.gauss(.01f) * str)
 //        ttl.remaining = GRand.absGauss(.1f)

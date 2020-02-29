@@ -4,6 +4,7 @@ import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
+import be.particulitis.hourglass.gamedata.setups.SEnemy
 import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
@@ -37,7 +38,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
 
             .with(SysDrawer())
             .with(SysBloomer())
-            .with(SysUiPrettyAct())
+            .with(SysHourglassDisplay())
             .with(SysClearActions())
             .build()
     val world = World(config)
@@ -56,11 +57,12 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             switchScreen(GameScreen(game))
         }
 //        SProps.ground(GameScreen.world, 18, 14)
-//        SPlayer.player(world)
         //SPlayer.player(world, 20f, 20f)
         //SPlayer.player(world, -20f, -20f)
         //SPlayer.player(world, -20f, 20f)
         //SPlayer.player(world, 20f, -20f)
+        SPlayer.player(world)
+        SEnemy.enemySlug(world, 30f, 30f)
     }
 
     override fun render(delta: Float) {

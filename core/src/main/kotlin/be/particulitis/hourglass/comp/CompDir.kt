@@ -8,11 +8,11 @@ class CompDir : Comp() {
         private set
     var maxAcceleration = 10f
         private set
-    var dir = Vector2()
+    var v = Vector2()
 
-    val x get() = dir.x
-    val y get() = dir.y
-    val angle get() = dir.angle()
+    val x get() = v.x
+    val y get() = v.y
+    val angle get() = v.angle()
 
      fun setSpeedAcceleration(maxSpeed: Float, maxAcceleration: Float) {
         this.maxSpeed = maxSpeed
@@ -24,31 +24,31 @@ class CompDir : Comp() {
     }
 
     fun set(x: Float, y: Float) {
-        this.dir.set(x, y)
+        this.v.set(x, y)
     }
 
     fun add(x: Float, y: Float) {
-        dir.add(x, y)
+        v.add(x, y)
     }
 
     fun mul(mul: Float) {
-        dir.scl(mul)
+        v.scl(mul)
     }
 
     // TODO: enrich vec2 to avoid going over max speed
     fun clamp() {
-        dir.clamp(-maxSpeed, maxSpeed)
+        v.clamp(-maxSpeed, maxSpeed)
     }
 
     override fun reset() {
         super.reset()
         maxSpeed = 200f
         maxAcceleration = 20f
-        dir.set(0f, 0f)
+        v.set(0f, 0f)
     }
 
     fun rotate(angle: Float) {
-        dir.rotate(angle)
+        v.rotate(angle)
     }
 
 }

@@ -7,22 +7,24 @@ import kotlin.math.min
 
 class SysTime : BaseSystem() {
 
-    private val phaseDuration = 300f
+    private val phaseDuration = 4f
     private var currentPhaseTimer = 0f
 
     override fun processSystem() {
+        GTime.delta = Gdx.graphics.deltaTime
         GTime.playerDelta = computeDeltas(GTime.enemyPhase)
         GTime.enemyDelta = computeDeltas(!GTime.enemyPhase)
 
         if (currentPhaseTimer <= 0f) {
             GTime.enemyPhase = !GTime.enemyPhase
             currentPhaseTimer = phaseDuration
+            GTime.phaseTime = 0f
         }
 
-        GTime.delta = Gdx.graphics.deltaTime
         currentPhaseTimer -= GTime.delta
         GTime.playerTime += GTime.playerDelta
         GTime.enemyTime += GTime.enemyDelta
+        GTime.phaseTime += GTime.delta
         GTime.time += GTime.delta
     }
 

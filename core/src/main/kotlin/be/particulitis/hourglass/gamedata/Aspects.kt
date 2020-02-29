@@ -15,9 +15,6 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompAction::class.java,
             CompHp::class.java,
             CompEnemy::class.java,
-            CompDir::class.java,
-            CompTargetSeek::class.java,
-            CompTargetFollow::class.java,
             CompParticleEmitter::class.java)),
     EnemyShoot(listOf(
             CompTimePhase::class.java,
@@ -43,11 +40,11 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
     Bullet(listOf(
             CompTimePhase::class.java,
             CompSpace::class.java,
-            CompDraw::class.java,
             CompCollide::class.java,
             CompHp::class.java,
             CompDir::class.java,
-            CompTtl::class.java
+            CompTtl::class.java,
+            CompAct::class.java
     )),
     Score(listOf(
             CompSpace::class.java,
@@ -80,8 +77,16 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompSpace::class.java,
             CompDraw::class.java
     )),
-    BloodParticles(listOf(
+    BloomParticles(listOf(
             CompBloomer::class.java,
+            CompSpace::class.java,
+            CompParticle::class.java,
+            CompTimePhase::class.java,
+            CompTtl::class.java,
+            CompDir::class.java
+    )),
+    Particles(listOf(
+            CompDraw::class.java,
             CompSpace::class.java,
             CompParticle::class.java,
             CompTimePhase::class.java,

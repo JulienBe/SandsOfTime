@@ -14,7 +14,6 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
 import kotlin.math.roundToInt
 
 @Wire(failOnNull = false)
@@ -24,24 +23,10 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
     private lateinit var mTxt: ComponentMapper<CompTxt>
     private lateinit var mButton: ComponentMapper<CompButton>
     private lateinit var mPrettyUi: ComponentMapper<CompPrettyUi>
-    private val shader = GShader.createShader("shaders/font/vertex.glsl", "shaders/font/fragment.glsl")
-    private val fboCurrent = DrawerTools.frameBuffer()
 
     override fun processSystem() {
-        GGraphics.batch.shader = shader
-
-        val backgroundTexture = world.getSystem(SysDrawer::class.java).getCurrentTexture()
-
-        val mergedTexture = DrawerTools.drawToFb(fboCurrent) {
-
-            Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE1)
-            backgroundTexture.bind()
-            shader.setUniformi("u_background_texture", 1)
-
-            Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
-            GGraphics.imgMan.palettes[0].bind()
-            shader.setUniformi("u_palette", 0)
-
+        GGraphics.batch.shader = null
+        DrawerTools.draw {
             GGraphics.batch.setColor(1f, 1f, 1f, 1f)
             val entities = entityIds
             for (i in 0 until entities.size()) {
@@ -59,9 +44,6 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
                 }
             }
         }
-
-
-        DrawerTools.drawResult(backgroundTexture, mergedTexture)
     }
 
     private fun getTxt(entityId: Int): CompTxt {

@@ -9,7 +9,7 @@ import com.artemis.ComponentMapper
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.math.Vector2
 
-class SysTargetSeek : IteratingSystem(Aspect.all(CompTargetSeek::class.java)) {
+class SysTargetSeek : IteratingSystem(Aspect.all(CompTargetSeek::class.java, CompDir::class.java)) {
 
     private lateinit var mTarget: ComponentMapper<CompTargetSeek>
     private lateinit var mDir: ComponentMapper<CompDir>

@@ -9,6 +9,7 @@ object GTime {
     var time = 0f
     var playerTime = 0f
     var enemyTime = 0f
+    var phaseTime = 0f
 
     fun reset() {
         enemyPhase = true
@@ -18,6 +19,7 @@ object GTime {
         time = 0f
         playerTime = 0f
         enemyTime = 0f
+        phaseTime = 0f
     }
 
     fun myTime(isPlayer: Boolean): Float {

@@ -52,6 +52,9 @@ void main() {
     vec3 normal = texture2D(u_normal, v_texCoords).rgb * 2.0 - 1.0;
     float total_light = 0.0;
     vec2 pixel_pos = gl_FragCoord.xy / resolution.xy;
+    float r = 1.0;
+    float g = 1.0;
+    float b = 1.0;
 
     for (int i = 0; i <= u_light_count; i++) {
         vec2 light_pos = u_light_pos_angle_tilt[i].xy / resolution.xy;
@@ -99,6 +102,7 @@ void main() {
         int(418 > color) + int(459 > color) + int(491 > color) + int(496 > color);
 
     vec4 awesome_paletted_color = texture2D(u_palette, vec2(1.0 - total_light, palette_index / 15.0));
+//    awesome_paletted_color.gb /= 2.0;
     gl_FragColor = vec4(awesome_paletted_color.rgb, 1.0);
     //gl_FragColor = texture2D(u_normal, v_texCoords);
 //    vec3 dark = vec3(0.01, 0.02, 0.4);

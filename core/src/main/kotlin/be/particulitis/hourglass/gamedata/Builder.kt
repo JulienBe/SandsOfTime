@@ -5,10 +5,11 @@ import com.artemis.ArchetypeBuilder
 object Builder {
     val player = createBuilder(Aspects.Player)
     val bullet = createBuilder(Aspects.Bullet)
-    val enemySlug = createBuilder(Aspects.EnemySlug)
+    val enemyCpu = createBuilder(Aspects.EnemySlug)
     val enemyShoot = createBuilder(Aspects.EnemyShoot)
     val score = createBuilder(Aspects.Score)
-    val bloodParticle = createBuilder(Aspects.BloodParticles)
+    val bloodParticle = createBuilder(Aspects.BloomParticles)
+    val particle = createBuilder(Aspects.Particles)
     val prettyDisplay = createBuilder(Aspects.PrettyDisplay)
     val button = createBuilder(Aspects.Button)
     val tiled = createBuilder(Aspects.Tiled)

@@ -95,9 +95,9 @@ object SEnemy : Setup() {
             dir.setAngle(easeAttackRotation.apply(originalAngle, originalAngle + 1080f, attack.time / 2f))
             val angle = dir.angle()
             if (attack.time < 1f)
-                GLight.updateIntesityCheck(lightId, easeAttackRotation.apply(baseLightIntensity + 0.2f, highLightIntensity + 0.2f, attack.time))
+                GLight.updateIntensityCheck(lightId, easeAttackRotation.apply(baseLightIntensity + 0.2f, highLightIntensity + 0.2f, attack.time))
             else
-                GLight.updateIntesityCheck(lightId, easeAttackRotation.apply(highLightIntensity + 0.2f, baseLightIntensity + 0.2f, attack.time - 1f))
+                GLight.updateIntensityCheck(lightId, easeAttackRotation.apply(highLightIntensity + 0.2f, baseLightIntensity + 0.2f, attack.time - 1f))
             when (attackEmitCpt) {
                 1 -> {
                     spawnParticle(11f, 13f, angle, space, world)
@@ -163,7 +163,7 @@ object SEnemy : Setup() {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
-            GLight.updateIntesity(lightId, highLightIntensity)
+            GLight.updateIntensityCheck(lightId, highLightIntensity)
             testWalkToJump(jump, animController, player, space)
             testWalkToJump(jump, animController, player, space)
             spawnFootstep(-7f, 26f, angle, space, world)
@@ -173,7 +173,7 @@ object SEnemy : Setup() {
         }
         walk.frames[1].onFrame = {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
-            GLight.updateIntesity(lightId, baseLightIntensity)
+            GLight.updateIntensityCheck(lightId, baseLightIntensity)
             if (!testWalkToJump(jump, animController, player, space))
                 testWalkToIdle(idle, animController, player, dir, space)
         }
@@ -189,7 +189,7 @@ object SEnemy : Setup() {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
-            GLight.updateIntesity(lightId, highLightIntensity)
+            GLight.updateIntensityCheck(lightId, highLightIntensity)
             testWalkToJump(jump, animController, player, space)
             spawnFootstep(7f, 26f, angle, space, world)
             spawnFootstep(8f, 25f, angle, space, world)

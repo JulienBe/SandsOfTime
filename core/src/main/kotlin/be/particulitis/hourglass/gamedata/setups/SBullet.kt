@@ -57,7 +57,7 @@ object SBullet : Setup() {
         bullet.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::bounceOfWall)
 
         bullet.ttl().remaining = 2f
-        val light = GLight(posX, posY, 0.06f)
+        val light = GLight(posX, posY, 0.06f, 0f, 0f, 0f, 1f, 1f)
         val intensityRandomness = GPeriodicValue(0.08f) {
             GRand.nextGaussian().toFloat() / 1000f
         }

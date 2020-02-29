@@ -3,7 +3,7 @@ package be.particulitis.hourglass.common.drawing
 import com.badlogic.gdx.math.MathUtils
 import ktx.collections.GdxSet
 
-class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Float = 0f) {
+class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Float = 0f, r: Float = 1f, g: Float = 1f, b: Float = 1f) {
 
     val id: Int
     var cleared = false
@@ -17,9 +17,12 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
         }
         idPool.remove(id)
 
-        GLight.intensity[id] = intensity
+        intensityrgb[id * 4 + 0] = intensity
+        intensityrgb[id * 4 + 1] = r
+        intensityrgb[id * 4 + 2] = g
+        intensityrgb[id * 4 + 3] = b
 
-        updatePosAngle(x, y, angle)
+        updatePosAngle(id, x, y, angle)
         xyat[id * 4 + 3] = tilt
         cleared = false
     }
@@ -40,7 +43,7 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
     }
 
     fun updateIntesity(i: Float) {
-        updateIntesity(id, i)
+        updateIntensity(id, i)
     }
 
     fun updateTilt(tilt: Float) {
@@ -49,7 +52,7 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
 
     companion object {
         val xyat = LinkedHashMap<Int, Float>()
-        val intensity = LinkedHashMap<Int, Float>()
+        val intensityrgb = LinkedHashMap<Int, Float>()
         var globalId = 0
 
         private var idPool = GdxSet<Int>()
@@ -59,12 +62,12 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
         fun a(id: Int) = xyat[id * 4 + 2] ?: 0f
         fun i(id: Int) = xyat[id * 4 + 3] ?: 0f
 
-        fun intensity(id: Int) = intensity[id] ?: 1f
+        fun intensity(id: Int) = intensityrgb[id * 4 + 0] ?: 1f
 
-        fun numberOfLights() = intensity.size - 1
+        fun numberOfLights(): Int = (intensityrgb.size / 4) - 1
 
         fun clear() {
-            intensity.clear()
+            intensityrgb.clear()
             xyat.clear()
             globalId = 0
             idPool.clear()
@@ -80,7 +83,10 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
             xyat.remove(id * 4 + 1)
             xyat.remove(id * 4 + 2)
             xyat.remove(id * 4 + 3)
-            intensity.remove(id)
+            intensityrgb.remove(id * 4 + 0)
+            intensityrgb.remove(id * 4 + 1)
+            intensityrgb.remove(id * 4 + 2)
+            intensityrgb.remove(id * 4 + 3)
             idPool.add(id)
         }
 
@@ -95,13 +101,13 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
             xyat[id * 4 + 2] = angle / MathUtils.radiansToDegrees
         }
 
-        fun updateIntesityCheck(id: Int, i: Float) {
+        fun updateIntensityCheck(id: Int, i: Float) {
             if (id != -1)
-                intensity[id] = i
+                intensityrgb[id * 4 + 0] = i
         }
 
-        fun updateIntesity(id: Int, i: Float) {
-            intensity[id] = i
+        fun updateIntensity(id: Int, i: Float) {
+            intensityrgb[id * 4 + 0] = i
         }
 
         fun updateTilt(id: Int, tilt: Float) {

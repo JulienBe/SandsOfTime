@@ -44,7 +44,7 @@ uniform sampler2D u_normal;
 uniform sampler2D u_occlusion;
 
 uniform vec4 u_light_pos_angle_tilt[600];
-uniform float u_light_intensity[400];
+uniform vec4 u_light_intensity_rgb[600];
 uniform int u_light_count;
 
 void main() {
@@ -52,9 +52,9 @@ void main() {
     vec3 normal = texture2D(u_normal, v_texCoords).rgb * 2.0 - 1.0;
     float total_light = 0.0;
     vec2 pixel_pos = gl_FragCoord.xy / resolution.xy;
-    float r = 1.0;
-    float g = 1.0;
-    float b = 1.0;
+    float r = 0.0;
+    float g = 0.0;
+    float b = 0.0;
 
     for (int i = 0; i <= u_light_count; i++) {
         vec2 light_pos = u_light_pos_angle_tilt[i].xy / resolution.xy;
@@ -69,7 +69,7 @@ void main() {
         float normal = max(dot(nor_normal, nor_delta), 0.0);
         float attenuation = 1.0 / (falloff.x + (falloff.y * len) + (falloff.z * len * len));
 
-        float l = u_light_intensity[i] * (1.0 - len) * attenuation * angle_fitness * angle_fitness * angle_fitness * normal;
+        float l = u_light_intensity_rgb[i].x * (1.0 - len) * attenuation * angle_fitness * angle_fitness * angle_fitness * normal;
 
         for (int i = 0; i <= nb_steps; i++) {
             float lower = step(light_steps[i].x, l);
@@ -90,7 +90,11 @@ void main() {
         }
         l *= min_light;
         //*/
-        total_light += step(lvl1, l) + step(lvl2, l) + step(lvl3, l) + step(lvl4, l) + step(lvl5, l);
+        l = step(lvl1, l) + step(lvl2, l) + step(lvl3, l) + step(lvl4, l) + step(lvl5, l);
+        total_light += l;
+        r += l * u_light_intensity_rgb[i].y;
+        g += l * u_light_intensity_rgb[i].z;
+        b += l * u_light_intensity_rgb[i].w;
     }
     total_light /= 4.98;
 
@@ -102,7 +106,9 @@ void main() {
         int(418 > color) + int(459 > color) + int(491 > color) + int(496 > color);
 
     vec4 awesome_paletted_color = texture2D(u_palette, vec2(1.0 - total_light, palette_index / 15.0));
-//    awesome_paletted_color.gb /= 2.0;
+    awesome_paletted_color.r *= max(1.0 + ((r * 2.0) - (g + b)), 1.0);
+    awesome_paletted_color.g *= max(1.0 + ((g * 2.0) - (r + b)), 1.0);
+    awesome_paletted_color.b *= max(1.0 + ((b * 2.0) - (r + g)), 1.0);
     gl_FragColor = vec4(awesome_paletted_color.rgb, 1.0);
     //gl_FragColor = texture2D(u_normal, v_texCoords);
 //    vec3 dark = vec3(0.01, 0.02, 0.4);

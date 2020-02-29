@@ -8,11 +8,18 @@ sourceCompatibility = 1.11
 // texture packer stuff
 project.ext.texturePacker = [ "assets/textures/input/", "assets/textures/texture1", "atlas" ]
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
+import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings
 task texturePacker {
   doLast {
     if (project.ext.has('texturePacker')) {
       logger.info "Calling TexturePacker: "+texturePacker
-      TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+      Settings settings = new Settings()
+      settings.maxWidth = 2048
+      settings.maxHeight = 2048
+      settings.fast = false
+      settings.paddingX = 0
+      settings.paddingY = 0
+      TexturePacker.process(settings, texturePacker[0], texturePacker[1], texturePacker[2])
     }
   }
 }

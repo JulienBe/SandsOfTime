@@ -11,6 +11,9 @@ open class Setup {
     fun World.create(arch: ArchetypeBuilder): Entity {
         return getEntity(create(arch.build(this)))
     }
+    fun Entity.act(): CompAct {
+        return getComponent(CompAct::class.java)
+    }
     fun Entity.space(): CompSpace {
         return getComponent(CompSpace::class.java)
     }

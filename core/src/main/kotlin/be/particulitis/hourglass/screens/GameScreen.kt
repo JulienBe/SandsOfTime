@@ -14,6 +14,7 @@ import be.particulitis.hourglass.states.StateManager
 import be.particulitis.hourglass.system.*
 import be.particulitis.hourglass.system.graphics.SysBloomer
 import be.particulitis.hourglass.system.graphics.SysDrawer
+import be.particulitis.hourglass.system.graphics.SysUiDisplay
 import com.artemis.Aspect
 import com.artemis.EntitySubscription
 import com.artemis.World
@@ -49,7 +50,7 @@ class GameScreen(game: Game) : AbstractScreen(game) {
     companion object {
         var score = 0
 
-        val config = WorldConfigurationBuilder()
+        private val config = WorldConfigurationBuilder()
                 .with(TagManager())
                 .with(SysTime())
                 .with(SysControl())
@@ -63,10 +64,11 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                 .with(SysTtl())
                 .with(SysCollider())
                 .with(SysDamage())
-//                .with(SysClampPos())
 
+                .with(SysAct())
                 .with(SysDrawer())
                 .with(SysBloomer())
+                .with(SysUiDisplay())
 
                 .with(SysClearActions())
                 .with(SysDead())

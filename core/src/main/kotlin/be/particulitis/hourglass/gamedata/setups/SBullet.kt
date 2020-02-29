@@ -4,7 +4,6 @@ import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GPeriodicValue
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
@@ -47,13 +46,12 @@ object SBullet : Setup() {
         bullet.space().setPos(posX, posY)
         desiredDir.scl(160f)
         val space = bullet.space()
-        val draw = bullet.draw()
         val dirComp = bullet.dir()
         dirComp.set(desiredDir)
         bullet.layer().setLayer(Phases.Player)
         bullet.hp().setHp(str)
 
-        bullet.collide().setDmgToInflict(str)
+        bullet.collide().setDmgToInflict(5)
         bullet.collide().setIds(Ids.playerBullet)
         bullet.collide().addCollidingWith(Ids.enemy, Ids.propsWall, Ids.player)
         bullet.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::bounceOfWall)
@@ -63,9 +61,7 @@ object SBullet : Setup() {
         val intensityRandomness = GPeriodicValue(0.08f) {
             GRand.nextGaussian().toFloat() / 1000f
         }
-        draw.color = Colors.playerBullets
-        draw.currentImg = GGraphics.img("squares/square_cyan")
-        draw.preDraw = {
+        bullet.act().act = {
             light.updatePos(space.centerX, space.centerY)
             intensityRandomness.tick(GTime.delta)
             light.updateIntesity((0.1f + intensityRandomness.value) * (1 + (str / 5)) )
@@ -73,9 +69,8 @@ object SBullet : Setup() {
                 SParticles.lollipopShoot(world, space.centerX, space.centerY)
             SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * 12f))
             SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * -12f))
-            dirComp.dir.setLength(160f)
+            dirComp.v.setLength(160f)
         }
-        draw.layer = Data.playerBulletLayer
         val onEnd = {
             light.clear()
         }

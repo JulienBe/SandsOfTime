@@ -3,6 +3,7 @@ package be.particulitis.hourglass.common
 object GTime {
 
     var enemyPhase = true
+    var justSwitched = false
     var delta = 0f
     var playerDelta = 0f
     var enemyDelta = 0f

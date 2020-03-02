@@ -69,6 +69,7 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                 .with(SysDrawer())
                 .with(SysBloomer())
                 .with(SysUiDisplay())
+                .with(SysHourglassDisplay())
 
                 .with(SysClearActions())
                 .with(SysDead())

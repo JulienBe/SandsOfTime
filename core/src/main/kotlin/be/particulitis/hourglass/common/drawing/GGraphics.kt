@@ -43,24 +43,6 @@ class GGraphics : SpriteBatch(8191) {
         draw(tr, space.x, space.y)
     }
 
-    fun drawOccCenteredOnBox(draw: CompDraw, space: CompSpace) {
-        drawCenteredOnBox(draw, space, draw.currentImg.occluder)
-    }
-    fun drawFrontCenteredOnBox(draw: CompDraw, space: CompSpace) {
-        drawCenteredOnBox(draw, space, draw.currentImg.front)
-    }
-    fun drawNormalCenteredOnBox(draw: CompDraw, space: CompSpace) {
-        drawCenteredOnBox(draw, space, draw.currentImg.normal)
-    }
-    fun drawOccCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
-        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.occluder)
-    }
-    fun drawFrontCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
-        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.front)
-    }
-    fun drawNormalCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
-        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.normal)
-    }
 
     fun drawCenteredOnBox(draw: CompDraw, space: CompSpace, textureRegion: TextureRegion) {
         draw(textureRegion,
@@ -91,6 +73,24 @@ class GGraphics : SpriteBatch(8191) {
                 bloomer.tr.hw, bloomer.tr.hh,
                 bloomer.tr.w, bloomer.tr.h,
                 1f, 1f, bloomer.angle)
+    }
+    fun drawOccCenteredOnBox(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBox(draw, space, draw.currentImg.occluder)
+    }
+    fun drawFrontCenteredOnBox(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBox(draw, space, draw.currentImg.front)
+    }
+    fun drawNormalCenteredOnBox(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBox(draw, space, draw.currentImg.normal)
+    }
+    fun drawOccCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.occluder)
+    }
+    fun drawFrontCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.front)
+    }
+    fun drawNormalCenteredOnBoxSpaceStreched(draw: CompDraw, space: CompSpace) {
+        drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.normal)
     }
 
     companion object {

@@ -9,6 +9,7 @@ object Builder {
     val enemyShoot = createBuilder(Aspects.EnemyShoot)
     val score = createBuilder(Aspects.Score)
     val bloodParticle = createBuilder(Aspects.BloomParticles)
+    val trailParticle = createBuilder(Aspects.TrailParticles)
     val particle = createBuilder(Aspects.Particles)
     val prettyDisplay = createBuilder(Aspects.PrettyDisplay)
     val button = createBuilder(Aspects.Button)

@@ -8,8 +8,12 @@ class CompDraw : Comp() {
     lateinit var currentImg: GImage
     var color = Colors.explosion
     var preDraw = { }
-    var drawFront = GGraphics::drawFrontCenteredOnBox
-    var drawNormal = GGraphics::drawNormalCenteredOnBox
+    var drawFront = { batch: GGraphics, space: CompSpace ->
+        batch.drawFrontCenteredOnBox(this, space)
+    }
+    var drawNormal = { batch: GGraphics, space: CompSpace ->
+        batch.drawNormalCenteredOnBox(this, space)
+    }
     var layer = 0
     var angle = 0f
 
@@ -17,8 +21,12 @@ class CompDraw : Comp() {
         super.reset()
         preDraw = { }
         angle = 0f
-        drawFront = GGraphics::drawFrontCenteredOnBox
-        drawNormal = GGraphics::drawNormalCenteredOnBox
+        drawFront = { batch: GGraphics, space: CompSpace ->
+            batch.drawFrontCenteredOnBox(this, space)
+        }
+        drawNormal = { batch: GGraphics, space: CompSpace ->
+            batch.drawNormalCenteredOnBox(this, space)
+        }
     }
 
 }

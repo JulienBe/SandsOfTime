@@ -43,7 +43,7 @@ class SysBloomer : BaseEntitySystem(Aspect.all(CompBloomer::class.java)) {
             entityIds.forEach {
                 val bloomer = mBloomer[it]
                 bloomer.preDraw.invoke()
-                bloomer.draw.invoke(batch, bloomer, mSpace[it])
+                bloomer.draw.invoke(batch, mSpace[it])
             }
         }
         vfxManager.endCapture()

@@ -15,6 +15,9 @@ class CompBloomer : Comp() {
         super.reset()
         preDraw = { }
         angle = 0f
+        draw = { batch: GGraphics, space: CompSpace ->
+            batch.drawFront(this, space)
+        }
     }
 
 }

@@ -17,6 +17,7 @@ object Builder {
     val wall = createBuilder(Aspects.Wall)
     val dent = createBuilder(Aspects.Dent)
     val occluderProp = createBuilder(Aspects.OccluderProp)
+    val beacon = createBuilder(Aspects.Beacon)
 
     private fun createBuilder(aspects: Aspects): ArchetypeBuilder {
         val builder = ArchetypeBuilder()

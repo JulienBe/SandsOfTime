@@ -99,5 +99,10 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompTimePhase::class.java,
             CompTtl::class.java,
             CompDir::class.java
+    )),
+    Beacon(listOf(
+            CompTimePhase::class.java,
+            CompSpace::class.java,
+            CompTtl::class.java
     ))
 }

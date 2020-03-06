@@ -1,12 +1,8 @@
 package be.particulitis.hourglass.screens
 
-import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.gamedata.setups.SEnemy
-import be.particulitis.hourglass.gamedata.setups.SParticles
-import be.particulitis.hourglass.gamedata.setups.SPlayer
-import be.particulitis.hourglass.gamedata.setups.SUi
+import be.particulitis.hourglass.gamedata.setups.*
 import be.particulitis.hourglass.system.*
 import be.particulitis.hourglass.system.graphics.SysBloomer
 import be.particulitis.hourglass.system.graphics.SysDrawer
@@ -45,8 +41,6 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             switchScreen(GameScreen(game))
         }
         SPlayer.player(world)
-        SParticles.spawn(world, GHelper.x, GHelper.y)
-        SEnemy.enemySlug(world, 30f, 30f)
     }
 
     override fun render(delta: Float) {

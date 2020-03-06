@@ -24,6 +24,7 @@ object SEnemy : Setup() {
 
     fun enemySlug(world: World, baseX: Float, baseY: Float) {
         val enemy = world.create(Builder.enemyCpu)
+        SParticles.spawnTransition(world, baseX + 6, baseY + 6, enemy.hp())
         val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag)
         val space = enemy.space()
         val draw = enemy.draw()
@@ -36,22 +37,27 @@ object SEnemy : Setup() {
         draw.color = Colors.enemy
         draw.layer = Data.enemyLayer
         enemy.collide().setDmgToInflict(2)
+        val spawn = GAnimN("cpu_spawn")
         val idle = GAnimN("cpu")
         val walk = GAnimN("cpu_walk")
         val jump = GAnimN("cpu_jumping")
         val attack = GAnimN("cpu_attack")
-        val animController = GAnimController(idle, idle)
+        val animController = GAnimController(spawn, spawn)
         val lightId = if (light) GLight(space.centerX, space.centerY + 1f, baseLightIntensity).id else -1
         val lightOffsetIdleF0F2 = Vector2(0f, 0f)
         val lightOffsetIdleF1 = Vector2(0f, 0f)
         val lightOffsetIdleF3 = Vector2(0f, 0f)
+        blinkCpu(world, space, dir.angle())
 
-        enemy.hp().setHp(10)
+        enemy.hp().setHp(30)
         enemy.hp().onDead = {
-            GLight.clearCheck(lightId)
+            GLight.clear(lightId)
         }
         enemy.collide().setDmgToInflict(3)
 
+        spawn.frames.last().onFrame = {
+            animController.forceCurrent(idle)
+        }
         setupIdle(idle, lightOffsetIdleF0F2, dir, lightId, space, walk, animController, player, lightOffsetIdleF1, lightOffsetIdleF3)
         setupWalk(walk, world, space, dir, lightOffsetIdleF0F2, lightId, jump, animController, player, idle)
         setupJump(jump, animController, attack, dir, world, space)
@@ -66,6 +72,12 @@ object SEnemy : Setup() {
         enemy.emitter().emit = {
             for (i in 0..40)
                 SParticles.explosionParticle(world, space.centerX, space.centerY, 28f)
+        }
+    }
+
+    private fun setupSpawn(spawn: GAnimN, animController: GAnimController, idle: GAnimN) {
+        spawn.frames.last().onFrame = {
+            animController.forceCurrent(idle)
         }
     }
 
@@ -95,9 +107,9 @@ object SEnemy : Setup() {
             dir.setAngle(easeAttackRotation.apply(originalAngle, originalAngle + 1080f, attack.time / 2f))
             val angle = dir.angle()
             if (attack.time < 1f)
-                GLight.updateIntensityCheck(lightId, easeAttackRotation.apply(baseLightIntensity + 0.2f, highLightIntensity + 0.2f, attack.time))
+                GLight.updateIntensity(lightId, easeAttackRotation.apply(baseLightIntensity + 0.2f, highLightIntensity + 0.2f, attack.time))
             else
-                GLight.updateIntensityCheck(lightId, easeAttackRotation.apply(highLightIntensity + 0.2f, baseLightIntensity + 0.2f, attack.time - 1f))
+                GLight.updateIntensity(lightId, easeAttackRotation.apply(highLightIntensity + 0.2f, baseLightIntensity + 0.2f, attack.time - 1f))
             when (attackEmitCpt) {
                 1 -> {
                     spawnParticle(11f, 13f, angle, space, world)
@@ -163,7 +175,7 @@ object SEnemy : Setup() {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
-            GLight.updateIntensityCheck(lightId, highLightIntensity)
+            GLight.updateIntensity(lightId, highLightIntensity)
             testWalkToJump(jump, animController, player, space)
             testWalkToJump(jump, animController, player, space)
             spawnFootstep(-7f, 26f, angle, space, world)
@@ -173,7 +185,7 @@ object SEnemy : Setup() {
         }
         walk.frames[1].onFrame = {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
-            GLight.updateIntensityCheck(lightId, baseLightIntensity)
+            GLight.updateIntensity(lightId, baseLightIntensity)
             if (!testWalkToJump(jump, animController, player, space))
                 testWalkToIdle(idle, animController, player, dir, space)
         }
@@ -189,7 +201,7 @@ object SEnemy : Setup() {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
-            GLight.updateIntensityCheck(lightId, highLightIntensity)
+            GLight.updateIntensity(lightId, highLightIntensity)
             testWalkToJump(jump, animController, player, space)
             spawnFootstep(7f, 26f, angle, space, world)
             spawnFootstep(8f, 25f, angle, space, world)

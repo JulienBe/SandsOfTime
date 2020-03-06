@@ -115,10 +115,6 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     }
 
     private fun setLights(lightShader: ShaderProgram) {
-//        println("Number of lights: ${GLight.numberOfLights()}")
-//        GLight.intensityrgb.forEach { i, fl ->
-//            println("$i: \t$fl")
-//        }
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
         lightShader.setUniform4fv("u_light_intensity_rgb", GLight.intensityrgb.values.toFloatArray(), 0, GLight.intensityrgb.size)
         lightShader.setUniform4fv("u_light_pos_angle_tilt", GLight.xyat.values.toFloatArray(), 0, GLight.xyat.size)

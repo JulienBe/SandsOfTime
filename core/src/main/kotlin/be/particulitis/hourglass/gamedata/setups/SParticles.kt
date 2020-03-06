@@ -6,11 +6,11 @@ import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GAnim
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Phases
 import com.artemis.World
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.min
@@ -25,6 +25,7 @@ object SParticles : Setup() {
     val yellow = GGraphics.img("squares/square_yellow")
     val pinkSkin = GGraphics.img("squares/square_pink_skin")
     val pink = GGraphics.img("squares/square_pink")
+    val cpuAnim = GAnim("cpu_spawn_f", 0.1f)
 
     init {
         fireAnim.addFrame(red)
@@ -44,10 +45,10 @@ object SParticles : Setup() {
         val p = world.create(Builder.trailParticle)
         p.space().setPos(x, y)
         val ttl = p.ttl()
-        ttl.remaining = GRand.absGauss(.8f)
+        ttl.remaining = 0.1f + GRand.absGauss(0.2f)
         val bloomer = p.bloomer()
         bloomer.preDraw = {
-            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
+            bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
         }
         bloomer.draw = { batch: GGraphics, space: CompSpace ->
             batch.draw(bloomer.tr, space.x, space.y, 1f, 1f)
@@ -55,31 +56,41 @@ object SParticles : Setup() {
         p.layer().setLayer(Phases.Other)
     }
 
+    fun spawnTransition(world: World, x: Float, y: Float, hp: CompHp) {
+        val p = world.create(Builder.trailParticle)
+        val space = p.space()
+        space.setPos(x, y)
+        val ttl = p.ttl()
+        ttl.remaining = 8f
+        val bloomer = p.bloomer()
+        var time = 0f
+        bloomer.preDraw = {
+            time += GTime.enemyDelta
+            bloomer.angle = 90f
+            bloomer.tr = cpuAnim.getKeyFrame(time).front
+            if (cpuAnim.isFinished(time) || hp.hp <= 0)
+                ttl.remaining = -1f
+        }
+        p.layer().setLayer(Phases.Other)
+    }
     private val moveVector = Vector2()
-    fun spawn(world: World, x: Float, y: Float) {
+    fun spawnAnim(world: World, x: Float, y: Float) {
         val p = world.create(Builder.trailParticle)
         val space = p.space()
         space.setPos(x + GRand.gauss(20f), y + GRand.gauss(20f))
         val ttl = p.ttl()
         ttl.remaining = 8f
         val bloomer = p.bloomer()
+        val speed = Vector2.dst(space.x, space.y, x, y) / 2f
         bloomer.tr = yellow.front
         bloomer.preDraw = {
             moveVector.set(0f, 0f)
-            if (((space.x * space.y) / 10f) % 2 < 1f) {
-                moveVector.x = getXMove(space, x)
-                moveVector.y = getYMove(space, y)
-            } else {
-                if (Gdx.graphics.frameId * 10 % 2 == 0L)
-                    moveVector.x = getXMove(space, x)
-                else
-                    moveVector.y = getYMove(space, y)
-            }
-            if (moveVector.len2() > 1f)
-                moveVector.nor()
-            else
+            moveVector.x = getXMove(space, x)
+            moveVector.y = getYMove(space, y)
+            moveVector.nor()
+            if (Vector2.dst2(space.x, space.y, x, y) < 1.2f)
                 ttl.remaining = 0f
-            space.move(moveVector.x, moveVector.y, GTime.delta * 20f)
+            space.move(moveVector.x, moveVector.y, GTime.delta * speed)
             trail(world, space.x, space.y, fireAnim)
         }
         bloomer.draw = { batch: GGraphics, space: CompSpace ->

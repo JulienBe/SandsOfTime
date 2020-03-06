@@ -73,45 +73,43 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
             idPool.clear()
         }
 
-        fun clearCheck(id: Int) {
-            if (id != -1)
-                clear(id)
-        }
-
         fun clear(id: Int) {
-            xyat.remove(id * 4 + 0)
-            xyat.remove(id * 4 + 1)
-            xyat.remove(id * 4 + 2)
-            xyat.remove(id * 4 + 3)
-            intensityrgb.remove(id * 4 + 0)
-            intensityrgb.remove(id * 4 + 1)
-            intensityrgb.remove(id * 4 + 2)
-            intensityrgb.remove(id * 4 + 3)
-            idPool.add(id)
+            if (id != -1) {
+                xyat.remove(id * 4 + 0)
+                xyat.remove(id * 4 + 1)
+                xyat.remove(id * 4 + 2)
+                xyat.remove(id * 4 + 3)
+                intensityrgb.remove(id * 4 + 0)
+                intensityrgb.remove(id * 4 + 1)
+                intensityrgb.remove(id * 4 + 2)
+                intensityrgb.remove(id * 4 + 3)
+                idPool.add(id)
+            }
         }
 
         fun updatePos(id: Int, x: Float, y: Float) {
-            xyat[id * 4 + 0] = x
-            xyat[id * 4 + 1] = y
+            if (id != -1) {
+                xyat[id * 4 + 0] = x
+                xyat[id * 4 + 1] = y
+            }
         }
 
         fun updatePosAngle(id: Int, x: Float, y: Float, angle: Float) {
-            xyat[id * 4 + 0] = x
-            xyat[id * 4 + 1] = y
-            xyat[id * 4 + 2] = angle / MathUtils.radiansToDegrees
+            if (id != -1) {
+                xyat[id * 4 + 0] = x
+                xyat[id * 4 + 1] = y
+                xyat[id * 4 + 2] = angle / MathUtils.radiansToDegrees
+            }
         }
 
-        fun updateIntensityCheck(id: Int, i: Float) {
+        fun updateIntensity(id: Int, i: Float) {
             if (id != -1)
                 intensityrgb[id * 4 + 0] = i
         }
 
-        fun updateIntensity(id: Int, i: Float) {
-            intensityrgb[id * 4 + 0] = i
-        }
-
         fun updateTilt(id: Int, tilt: Float) {
-            xyat[id * 4 + 3] = tilt
+            if (id != -1)
+                xyat[id * 4 + 3] = tilt
         }
 
     }

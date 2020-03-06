@@ -36,13 +36,15 @@ class GAnim(val name: String, val frameTime: Float) {
         return getKeyFrame()
     }
 
-
     fun getKeyFrame(t: Float = time): GImage {
         return frames[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
     }
 
     fun finish() {
         time = totalTime + 1f
+    }
+    fun isFinished(time: Float): Boolean {
+        return totalTime <= time
     }
 
     fun addFrame(img: GImage) {

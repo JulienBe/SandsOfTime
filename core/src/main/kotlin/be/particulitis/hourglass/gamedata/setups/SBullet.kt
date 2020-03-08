@@ -40,6 +40,7 @@ object SBullet : Setup() {
         return bullet
     }
 
+    var globalPink = true
     fun playerBullet(world: World, posX: Float, posY: Float, desiredDir: Vector2, str: Int): Entity {
         val bullet = world.create(Builder.bullet)
         bullet.space().setDim(Dim.Bullet)
@@ -57,7 +58,9 @@ object SBullet : Setup() {
         bullet.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::bounceOfWall)
 
         bullet.ttl().remaining = 2f
-        val light = GLight(posX, posY, 0.06f, 0f, 0f, 0f, 1f, 1f)
+        globalPink = !globalPink
+        val pink = globalPink
+        val light = GLight(posX, posY, 0.06f, 0f, 0f, if (pink) 1f else 0f, if (pink) 0f else 1f, if (pink) 0f else 1f)
         val intensityRandomness = GPeriodicValue(0.08f) {
             GRand.nextGaussian().toFloat() / 1000f
         }
@@ -66,9 +69,9 @@ object SBullet : Setup() {
             intensityRandomness.tick(GTime.delta)
             light.updateIntesity((0.1f + intensityRandomness.value) * (1 + (str / 5)) )
             for (i in 0..20)
-                SParticles.lollipopShoot(world, space.centerX, space.centerY)
-            SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * 12f))
-            SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * -12f))
+                SParticles.lollipopShoot(world, space.centerX, space.centerY, pink)
+            SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * 12f), pink)
+            SParticles.lollipopTrail(world, space.centerX, space.centerY, (GTime.time * -12f), pink)
             dirComp.v.setLength(160f)
         }
         val onEnd = {

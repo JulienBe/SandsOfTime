@@ -119,10 +119,6 @@ class GGraphics : SpriteBatch(8191) {
             return GImage(imgMan.tr(s), imgMan.nor(s), imgMan.occ(s))
         }
 
-        fun anim(shoot: String, timePerFrame: Float): GAnim {
-            return GAnim(shoot, timePerFrame)
-        }
-
         val batch: GGraphics = GGraphics()
         val imgMan = ImgMan()
         val cam = OrthographicCamera(GResolution.areaW, GResolution.areaH)

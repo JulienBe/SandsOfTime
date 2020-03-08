@@ -4,8 +4,9 @@ import be.particulitis.hourglass.common.GKeyGlobalState
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.common.drawing.GAnim
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.puppet.Frames
+import be.particulitis.hourglass.common.puppet.GAnimN
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
@@ -18,34 +19,18 @@ import kotlin.math.min
 object SParticles : Setup() {
 
     // yes one for all
-    val fireAnim = GAnim("fire", 0.3f)
-    val blueAnim = GAnim("blue", 0.3f)
-    val pinkAnim = GAnim("pink", 0.3f)
     val red = GGraphics.img("squares/square_red")
     val yellow = GGraphics.img("squares/square_yellow")
-    val pinkSkin = GGraphics.img("squares/square_pink_skin")
-    val pink = GGraphics.img("squares/square_pink")
-    val cpuAnim = GAnim("cpu_spawn_f", 0.1f)
+    val cpuSpawn = GAnimN(Frames.CPU_SPAWN)
+    val fireAnim = GAnimN(Frames.FIRE)
+    val blueAnim = GAnimN(Frames.BLUE)
+    val pinkAnim = GAnimN(Frames.PINK)
 
-    init {
-        fireAnim.addFrame(red)
-        fireAnim.addFrame(GGraphics.img("squares/square_orange"))
-        fireAnim.addFrame(yellow)
-
-        blueAnim.addFrame(GGraphics.img("squares/square_purple"))
-        blueAnim.addFrame(GGraphics.img("squares/square_blue"))
-        blueAnim.addFrame(GGraphics.img("squares/square_cyan"))
-
-        pinkAnim.addFrame(red)
-        pinkAnim.addFrame(pink)
-        pinkAnim.addFrame(pinkSkin)
-    }
-
-    fun trail(world: World, x: Float, y: Float, anim: GAnim) {
+    fun trail(world: World, x: Float, y: Float, anim: GAnimN) {
         val p = world.create(Builder.trailParticle)
         p.space().setPos(x, y)
         val ttl = p.ttl()
-        ttl.remaining = 0.1f + GRand.absGauss(0.2f)
+        ttl.remaining = 0.07f + GRand.absGauss(0.1f)
         val bloomer = p.bloomer()
         bloomer.preDraw = {
             bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
@@ -65,10 +50,10 @@ object SParticles : Setup() {
         val bloomer = p.bloomer()
         var time = 0f
         bloomer.preDraw = {
-            time += GTime.enemyDelta
+            time += GTime.enemyDelta * 1.5f
             bloomer.angle = 90f
-            bloomer.tr = cpuAnim.getKeyFrame(time).front
-            if (cpuAnim.isFinished(time) || hp.hp <= 0)
+            bloomer.tr = cpuSpawn.getKeyFrame(time).front
+            if (cpuSpawn.isFinished(time) || hp.hp <= 0)
                 ttl.remaining = -1f
         }
         p.layer().setLayer(Phases.Other)
@@ -81,7 +66,7 @@ object SParticles : Setup() {
         val ttl = p.ttl()
         ttl.remaining = 8f
         val bloomer = p.bloomer()
-        val speed = Vector2.dst(space.x, space.y, x, y) / 2f
+        val speed = Vector2.dst(space.x, space.y, x, y) / 0.8f
         bloomer.tr = yellow.front
         bloomer.preDraw = {
             moveVector.set(0f, 0f)
@@ -161,7 +146,7 @@ object SParticles : Setup() {
     }
 
     val angleV = Vector2()
-    fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float, anim: GAnim = fireAnim) {
+    fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float, anim: GAnimN = fireAnim) {
         val p = world.create(Builder.bloodParticle)
         val bloomer = p.bloomer()
         val space = p.space()

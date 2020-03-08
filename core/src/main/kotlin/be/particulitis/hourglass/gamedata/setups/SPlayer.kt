@@ -1,11 +1,11 @@
 package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
-import be.particulitis.hourglass.ImgMan
 import be.particulitis.hourglass.common.*
-import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
+import be.particulitis.hourglass.common.puppet.Frames
+import be.particulitis.hourglass.common.puppet.GAnimN
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
@@ -40,12 +40,9 @@ object SPlayer : Setup() {
         player.hp().setHp(100)
         player.space().setDim(Dim.Player)
         player.space().setPos(offsetX + GResolution.areaHW - Dim.Player.hw, offsetY + GResolution.areaHH - Dim.Player.hw)
-        val shootAnim = GGraphics.anim(ImgMan.animPlayerShootBoth, 0.04f)
-        val shootLeftAnim = GGraphics.anim(ImgMan.animPlayerShootLeft, 0.04f)
-        val shootRightAnim = GGraphics.anim(ImgMan.animPlayerShootRight, 0.04f)
-        val defaultAnim = GGraphics.anim(ImgMan.player, .3f)
+        val shootAnim = GAnimN(Frames.PLAYER_SHOOT)
+        val defaultAnim = GAnimN(Frames.PLAYER_IDLE)
         var currentAnim = defaultAnim
-        shootAnim.finish()
         shoot.setFirerate(0.25f)
         shoot.setOffset(Dim.PlayerSprite.hw - Dim.Bullet.hw, Dim.PlayerSprite.hh - Dim.Bullet.hw)
         shoot.setKey(Input.Keys.SPACE)
@@ -57,10 +54,6 @@ object SPlayer : Setup() {
             val position = getShootOffsetFromCenter(GHelper.x, GHelper.y, space)
             shoot.dir.set(GHelper.x - space.centerX, GHelper.y - space.centerY)
             shoot.dir.nor()
-            currentAnim = if (shootLeft)
-                shootLeftAnim
-            else
-                shootRightAnim
             shootLeft = !shootLeft
             val bulletEntity = shoot.bullet.second.invoke(world, space.centerX + position.x, space.centerY +  position.y, shoot.dir, 1)
             for (i in 0..15)
@@ -99,9 +92,9 @@ object SPlayer : Setup() {
                 angleRandomness.tick(GTime.playerDelta)
                 intensityRandomness.tick(GTime.playerDelta)
                 if (GKeyGlobalState.justTouched) {
-                    currentAnim = shootAnim.start()
+                    currentAnim = shootAnim
                 }
-                draw.currentImg = currentAnim.frame(GTime.playerDelta)
+                draw.currentImg = currentAnim.update(GTime.playerDelta)
                 bdfLight.updateIntesity(0f)
             }
             mainLight.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f)

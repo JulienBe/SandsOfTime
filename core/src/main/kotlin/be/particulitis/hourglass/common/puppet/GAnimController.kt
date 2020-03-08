@@ -2,9 +2,7 @@ package be.particulitis.hourglass.common.puppet
 
 import be.particulitis.hourglass.common.drawing.GImage
 
-class GAnimController(var current: GAnimN, var next: GAnimN) {
-
-    var goNext = false
+class GAnimController(var current: GAnimN) {
 
     fun getFrame(): GImage {
         return current.getFrame()

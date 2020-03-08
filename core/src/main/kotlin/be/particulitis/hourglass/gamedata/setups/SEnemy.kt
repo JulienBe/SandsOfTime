@@ -4,6 +4,7 @@ import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.puppet.GAnimController
+import be.particulitis.hourglass.common.puppet.Frames
 import be.particulitis.hourglass.common.puppet.GAnimN
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.*
@@ -37,12 +38,12 @@ object SEnemy : Setup() {
         draw.color = Colors.enemy
         draw.layer = Data.enemyLayer
         enemy.collide().setDmgToInflict(2)
-        val spawn = GAnimN("cpu_spawn")
-        val idle = GAnimN("cpu")
-        val walk = GAnimN("cpu_walk")
-        val jump = GAnimN("cpu_jumping")
-        val attack = GAnimN("cpu_attack")
-        val animController = GAnimController(spawn, spawn)
+        val spawn = GAnimN(Frames.CPU_SPAWN)
+        val idle = GAnimN(Frames.CPU_IDLE)
+        val walk = GAnimN(Frames.CPU_WALK)
+        val jump = GAnimN(Frames.CPU_JUMPING)
+        val attack = GAnimN(Frames.CPU_ATTACK)
+        val animController = GAnimController(spawn)
         val lightId = if (light) GLight(space.centerX, space.centerY + 1f, baseLightIntensity).id else -1
         val lightOffsetIdleF0F2 = Vector2(0f, 0f)
         val lightOffsetIdleF1 = Vector2(0f, 0f)
@@ -55,7 +56,7 @@ object SEnemy : Setup() {
         }
         enemy.collide().setDmgToInflict(3)
 
-        spawn.frames.last().onFrame = {
+        spawn.lastOnFunction {
             animController.forceCurrent(idle)
         }
         setupIdle(idle, lightOffsetIdleF0F2, dir, lightId, space, walk, animController, player, lightOffsetIdleF1, lightOffsetIdleF3)
@@ -75,28 +76,22 @@ object SEnemy : Setup() {
         }
     }
 
-    private fun setupSpawn(spawn: GAnimN, animController: GAnimController, idle: GAnimN) {
-        spawn.frames.last().onFrame = {
-            animController.forceCurrent(idle)
-        }
-    }
-
     private fun setupJump(jump: GAnimN, animController: GAnimController, attack: GAnimN, dir: Vector2, world: World, space: CompSpace) {
         jump.playMode = Animation.PlayMode.NORMAL
-        jump.frames.last().onFrame = {
+        jump.lastOnFunction {
             animController.forceCurrent(attack)
         }
-        jump.frames[1].onFrame = { blinkCpu(world, space, dir.angle()) }
-        jump.frames[11].onFrame = { blinkCpu(world, space, dir.angle()) }
+        jump.onFrame.set(1) { blinkCpu(world, space, dir.angle()) }
+        jump.onFrame.set(11) { blinkCpu(world, space, dir.angle()) }
     }
 
     private fun setupAttack(attack: GAnimN, dir: Vector2, lightId: Int, space: CompSpace, world: World, animController: GAnimController, walk: GAnimN) {
-        attack.frames[0].onFrame = { blinkCpu(world, space, dir.angle()) }
-        attack.frames[5].onFrame = { blinkCpu(world, space, dir.angle()) }
-        attack.frames[14].onFrame = { blinkCpu(world, space, dir.angle()) }
-        attack.frames[16].onFrame = { blinkCpu(world, space, dir.angle()) }
-        attack.frames[18].onFrame = { blinkCpu(world, space, dir.angle()) }
-        attack.frames[20].onFrame = { blinkCpu(world, space, dir.angle()) }
+        attack.onFrame.set(0) { blinkCpu(world, space, dir.angle()) }
+        attack.onFrame.set(5) { blinkCpu(world, space, dir.angle()) }
+        attack.onFrame.set(14) { blinkCpu(world, space, dir.angle()) }
+        attack.onFrame.set(16) { blinkCpu(world, space, dir.angle()) }
+        attack.onFrame.set(18) { blinkCpu(world, space, dir.angle()) }
+        attack.onFrame.set(20) { blinkCpu(world, space, dir.angle()) }
         val easeAttackRotation = Interpolation.circle
         var attackEmitCpt = 0
         var originalAngle = 0f
@@ -152,26 +147,26 @@ object SEnemy : Setup() {
     }
 
     private fun setupIdle(idle: GAnimN, lightOffsetIdleF0F2: Vector2, dir: Vector2, lightId: Int, space: CompSpace, walk: GAnimN, animController: GAnimController, player: Entity, lightOffsetIdleF1: Vector2, lightOffsetIdleF3: Vector2) {
-        idle.frames[0].onFrame = {
+        idle.onFrame.set(0) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             testIdleToWalk(walk, animController, player, dir, space)
         }
-        idle.frames[1].onFrame = {
+        idle.onFrame.set(1) {
             updateMainLight(lightOffsetIdleF1, dir, lightId, space)
             turnTowardPlayer(space, dir, player.space())
         }
-        idle.frames[2].onFrame = {
+        idle.onFrame.set(2) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             testIdleToWalk(walk, animController, player, dir, space)
         }
-        idle.frames[3].onFrame = {
+        idle.onFrame.set(3) {
             turnTowardPlayer(space, dir, player.space())
             updateMainLight(lightOffsetIdleF3, dir, lightId, space)
         }
     }
 
     private fun setupWalk(walk: GAnimN, world: World, space: CompSpace, dir: Vector2, lightOffsetIdleF0F2: Vector2, lightId: Int, jump: GAnimN, animController: GAnimController, player: Entity, idle: GAnimN) {
-        walk.frames[0].onFrame = {
+        walk.onFrame.set(0) {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
@@ -183,13 +178,13 @@ object SEnemy : Setup() {
             spawnFootstep(-8f, 24f, angle, space, world)
             spawnFootstep(-8f, 23f, angle, space, world)
         }
-        walk.frames[1].onFrame = {
+        walk.onFrame.set(1) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             GLight.updateIntensity(lightId, baseLightIntensity)
             if (!testWalkToJump(jump, animController, player, space))
                 testWalkToIdle(idle, animController, player, dir, space)
         }
-        walk.frames[5].onFrame = {
+        walk.onFrame.set(5) {
             val angle = dir.angle()
             spawnFootstep(7f, 31f, angle, space, world)
             spawnFootstep(7f, 30f, angle, space, world)
@@ -197,7 +192,7 @@ object SEnemy : Setup() {
             spawnFootstep(7f, 28f, angle, space, world)
             spawnFootstep(8f, 28f, angle, space, world)
         }
-        walk.frames[6].onFrame = {
+        walk.onFrame.set(6) {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
@@ -208,28 +203,28 @@ object SEnemy : Setup() {
             spawnFootstep(8f, 24f, angle, space, world)
             spawnFootstep(8f, 23f, angle, space, world)
         }
-        walk.frames[2].inFrame = {
+        walk.inFrame.set(2) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             space.move(dir.x, dir.y, GTime.enemyDelta)
         }
-        walk.frames[3].inFrame = {
+        walk.inFrame.set(3) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             space.move(dir.x, dir.y, GTime.enemyDelta * 2f)
         }
-        walk.frames[4].inFrame = {
+        walk.inFrame.set(4) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             space.move(dir.x, dir.y, GTime.enemyDelta * 7f)
         }
-        walk.frames[5].inFrame = {
+        walk.inFrame.set(5) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             space.move(dir.x, dir.y, GTime.enemyDelta * 2f)
         }
-        walk.frames[7].onFrame = walk.frames[1].onFrame
-        walk.frames[8].inFrame = walk.frames[2].inFrame
-        walk.frames[9].inFrame = walk.frames[3].inFrame
-        walk.frames[10].inFrame = walk.frames[4].inFrame
-        walk.frames[11].inFrame = walk.frames[5].inFrame
-        walk.frames[11].onFrame = {
+        walk.onFrame[7] = walk.onFrame[1]
+        walk.inFrame[8] = walk.inFrame[2]
+        walk.inFrame[9] = walk.inFrame[3]
+        walk.inFrame[10] = walk.inFrame[4]
+        walk.inFrame[11] = walk.inFrame[5]
+        walk.onFrame[11] = {
             val angle = dir.angle()
             spawnFootstep(-7f, 31f, angle, space, world)
             spawnFootstep(-7f, 30f, angle, space, world)

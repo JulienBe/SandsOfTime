@@ -57,9 +57,6 @@ class ImgMan {
         const val atlasPath = "textures/texture1/atlas.atlas"
         const val wall = "wall1"
         const val player = "gunner_idle"
-        const val animPlayerShootBoth = "gunner_shoot"
-        const val animPlayerShootLeft = "gunner_shoot_left"
-        const val animPlayerShootRight = "gunner_shoot_right"
         val manager = AssetManager()
     }
 }

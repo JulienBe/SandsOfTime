@@ -1,39 +1,39 @@
 package be.particulitis.hourglass.common.puppet
 
-import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GImage
 import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.math.MathUtils
 import ktx.collections.GdxArray
 
-class GAnimN(name: String, var playMode: Animation.PlayMode = Animation.PlayMode.LOOP) {
+class GAnimN(private val frames: Frames, var playMode: Animation.PlayMode = Animation.PlayMode.LOOP) {
 
-    private var totalTime = 0f
     private var frameTime = 0f
+    private var frameExpiration = 0.1f
     private var currentFrame = 0
-    val frames = GdxArray<GFrame>()
     var time = 0f
     var onStart = {}
+    val inFrame = GdxArray<() -> Unit>(frames.size)
+    val onFrame = GdxArray<() -> Unit>(frames.size)
+    val totalTime = frames.size * frameExpiration
 
     init {
-        for (i in 1..hugeMaxFrameNumberThatWillNeverEverBeReachedByOneAnimation) {
-            if (GGraphics.imgMan.regions.containsKey("${name}_f$i")) {
-                frames.add(GFrame(0.1f, GImage("${name}_f$i")))
-                totalTime += 0.1f
-            } else
-                break
+        for (i in 0 until frames.size) {
+            inFrame.add {}
+            onFrame.add {}
         }
     }
 
     fun getFrame(): GImage {
-        return frames[currentFrame].img
+        return frames[currentFrame]
     }
 
-    fun update(delta: Float) {
+    fun update(delta: Float): GImage {
         time += delta
         frameTime += delta
-        if (frameTime > frames[currentFrame].frameTime)
+        if (frameTime > frameExpiration)
             nextFrame()
-        frames[currentFrame].inFrame.invoke()
+        inFrame[currentFrame].invoke()
+        return getFrame()
     }
 
     fun nextFrame() {
@@ -45,7 +45,7 @@ class GAnimN(name: String, var playMode: Animation.PlayMode = Animation.PlayMode
                 else -> currentFrame = frames.size - 1
             }
         }
-        frames[currentFrame].onFrame.invoke()
+        onFrame[currentFrame].invoke()
     }
 
     fun start() {
@@ -56,9 +56,21 @@ class GAnimN(name: String, var playMode: Animation.PlayMode = Animation.PlayMode
     }
 
     fun inEachFrame(function: () -> Unit) {
-        frames.forEach {
-            it.inFrame = function
-        }
+        for (i in 0 until inFrame.size)
+            inFrame[i] = function
+    }
+
+    fun lastInFunction(function: () -> Unit) {
+        inFrame[inFrame.size - 1] = function
+    }
+    fun lastOnFunction(function: () -> Unit) {
+        onFrame[onFrame.size - 1] = function
+    }
+    fun isFinished(time: Float): Boolean {
+        return totalTime <= time
+    }
+    fun getKeyFrame(t: Float): GImage {
+        return frames[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
     }
 
     companion object {

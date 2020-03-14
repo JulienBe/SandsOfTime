@@ -5,8 +5,8 @@ import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.common.puppet.Frames
-import be.particulitis.hourglass.common.puppet.GAnimN
+import be.particulitis.hourglass.gamedata.graphics.Frames
+import be.particulitis.hourglass.common.puppet.GAnim
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
@@ -21,12 +21,12 @@ object SParticles : Setup() {
     // yes one for all
     val red = GGraphics.img("squares/square_red")
     val yellow = GGraphics.img("squares/square_yellow")
-    val cpuSpawn = GAnimN(Frames.CPU_SPAWN)
-    val fireAnim = GAnimN(Frames.FIRE)
-    val blueAnim = GAnimN(Frames.BLUE)
-    val pinkAnim = GAnimN(Frames.PINK)
+    val cpuSpawn = GAnim(Frames.CPU_SPAWN)
+    val fireAnim = GAnim(Frames.FIRE)
+    val blueAnim = GAnim(Frames.BLUE)
+    val pinkAnim = GAnim(Frames.PINK)
 
-    fun trail(world: World, x: Float, y: Float, anim: GAnimN) {
+    fun trail(world: World, x: Float, y: Float, anim: GAnim) {
         val p = world.create(Builder.trailParticle)
         p.space().setPos(x, y)
         val ttl = p.ttl()
@@ -50,7 +50,7 @@ object SParticles : Setup() {
         val bloomer = p.bloomer()
         var time = 0f
         bloomer.preDraw = {
-            time += GTime.enemyDelta * 1.5f
+            time += GTime.delta * 1.5f
             bloomer.angle = 90f
             bloomer.tr = cpuSpawn.getKeyFrame(time).front
             if (cpuSpawn.isFinished(time) || hp.hp <= 0)
@@ -58,6 +58,7 @@ object SParticles : Setup() {
         }
         p.layer().setLayer(Phases.Other)
     }
+
     private val moveVector = Vector2()
     fun spawnAnim(world: World, x: Float, y: Float) {
         val p = world.create(Builder.trailParticle)
@@ -146,7 +147,7 @@ object SParticles : Setup() {
     }
 
     val angleV = Vector2()
-    fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float, anim: GAnimN = fireAnim) {
+    fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float, anim: GAnim = fireAnim) {
         val p = world.create(Builder.bloodParticle)
         val bloomer = p.bloomer()
         val space = p.space()

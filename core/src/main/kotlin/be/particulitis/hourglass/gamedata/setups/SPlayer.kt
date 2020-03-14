@@ -4,8 +4,9 @@ import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
-import be.particulitis.hourglass.common.puppet.Frames
-import be.particulitis.hourglass.common.puppet.GAnimN
+import be.particulitis.hourglass.gamedata.graphics.Frames
+import be.particulitis.hourglass.common.puppet.GAnim
+import be.particulitis.hourglass.common.puppet.GAnimController
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
@@ -22,7 +23,6 @@ object SPlayer : Setup() {
 
     private const val playerSpeed = 150f
     private const val playerLayer = 10
-    private var shootLeft = true
 
     fun player(world: World, offsetX: Float = 0f, offsetY: Float = 0f) {
         val player = world.create(Builder.player)
@@ -31,6 +31,7 @@ object SPlayer : Setup() {
         val draw = player.draw()
         val space = player.space()
         val shoot = player.shooter()
+        var shootLeft = true
 
         player.control().addAction(listOf(Input.Keys.Q, Input.Keys.A,      Input.Keys.LEFT),   GAction.LEFT)
         player.control().addAction(listOf(Input.Keys.D, Input.Keys.RIGHT),                     GAction.RIGHT)
@@ -40,9 +41,11 @@ object SPlayer : Setup() {
         player.hp().setHp(100)
         player.space().setDim(Dim.Player)
         player.space().setPos(offsetX + GResolution.areaHW - Dim.Player.hw, offsetY + GResolution.areaHH - Dim.Player.hw)
-        val shootAnim = GAnimN(Frames.PLAYER_SHOOT)
-        val defaultAnim = GAnimN(Frames.PLAYER_IDLE)
-        var currentAnim = defaultAnim
+
+        val shootAnim = GAnim(Frames.PLAYER_SHOOT, 0.05f)
+        val defaultAnim = GAnim(Frames.PLAYER_IDLE)
+        val animController = GAnimController(defaultAnim)
+
         shoot.setFirerate(0.25f)
         shoot.setOffset(Dim.PlayerSprite.hw - Dim.Bullet.hw, Dim.PlayerSprite.hh - Dim.Bullet.hw)
         shoot.setKey(Input.Keys.SPACE)
@@ -50,14 +53,24 @@ object SPlayer : Setup() {
             !shoot.keyCheck || (shoot.keyCheck && GKeyGlobalState.touched)
         }
 
+        val wizLight = GLight(space.centerX, space.centerY, 0.15f)
+        val mainLight = GLight(space.x + 1f, space.centerY + 6f, 0.2f)
+        val leftLight = GLight(space.x + 1f, space.centerY + 6f, 0.0f, 0f, 1.1f, 0.2f, 1f, 1f)
+        val rightLight = GLight(space.x + 1f, space.centerY + 6f, 0.0f, 0f, 1.1f, 1f, 0.2f, 0.2f)
+        var leftIntensity = 0f
+        var rightIntensity = 0f
         shoot.shootingFunc = {
-            val position = getShootOffsetFromCenter(GHelper.x, GHelper.y, space)
+            val position = getShootOffsetFromCenter(GHelper.x, GHelper.y, space, shootLeft)
             shoot.dir.set(GHelper.x - space.centerX, GHelper.y - space.centerY)
             shoot.dir.nor()
-            shootLeft = !shootLeft
             val bulletEntity = shoot.bullet.second.invoke(world, space.centerX + position.x, space.centerY +  position.y, shoot.dir, 1)
             for (i in 0..15)
                 SParticles.muzzle(world, space.centerX + position.x, space.centerY +  position.y, shoot.dir)
+            if (shootLeft)
+                leftIntensity = .20f
+            else
+                rightIntensity = .20f
+            shootLeft = !shootLeft
         }
         shoot.setBullet(Builder.bullet, SBullet::playerBullet)
 
@@ -80,10 +93,8 @@ object SPlayer : Setup() {
         val tiltRandomness = GPeriodicValue(0.09f) {
             GRand.nextGaussian().toFloat() / 40f
         }
-        val wizLight = GLight(space.centerX, space.centerY, 0.15f)
-        val bdfLight = GLight(space.centerX, space.centerY, 0.0f)
-        val mainLight = GLight(space.x + 1f, space.centerY + 6f, 0.2f)
         draw.preDraw = {
+            animController.update(GTime.playerDelta)
             if (!GTime.enemyPhase) {
                 draw.angle = angleVector.set(space.centerX - GHelper.x, space.centerY - GHelper.y).angle() + 90f
                 angleVector.nor()
@@ -91,25 +102,35 @@ object SPlayer : Setup() {
                 mainLight.updateTilt(2f + tiltRandomness.value)
                 angleRandomness.tick(GTime.playerDelta)
                 intensityRandomness.tick(GTime.playerDelta)
+                draw.currentImg = animController.getFrame()
+
+                leftIntensity = updateShootLight(space, leftLight, draw.angle - 90f, leftIntensity, true)
+                rightIntensity = updateShootLight(space, rightLight, draw.angle - 90f, rightIntensity, false)
                 if (GKeyGlobalState.justTouched) {
-                    currentAnim = shootAnim
+                    animController.forceCurrent(shootAnim)
                 }
-                draw.currentImg = currentAnim.update(GTime.playerDelta)
-                bdfLight.updateIntesity(0f)
             }
             mainLight.updatePosAngle(space.centerX - angleVector.x * 20f, space.centerY - angleVector.y * 20f, draw.angle + angleRandomness.value - 90f)
             mainLight.updateIntesity(0.2f + intensityRandomness.value)
-            if (!GKeyGlobalState.touched) {
-                currentAnim = defaultAnim
+            wizLight.updateIntesity(0.15f + intensityRandomness.value)
+            if (!GKeyGlobalState.touched && animController.current == shootAnim) {
+                animController.forceCurrent(defaultAnim)
             }
         }
     }
 
+    private fun updateShootLight(space: CompSpace, light: GLight, angle: Float, intensity: Float, left: Boolean): Float {
+        val pos = getShootOffsetFromCenter(GHelper.x, GHelper.y, space, left)
+        light.updatePosAngle(space.centerX + pos.x, space.centerY + pos.y, angle)
+        light.updateIntesity(intensity)
+        return (intensity / 1.2f)
+    }
+
     val shootOffset = Vector2(0f, 18f)
     val angleCompute = Vector2()
-    fun getShootOffsetFromCenter(targetX: Float, targetY: Float, space: CompSpace): Vector2 {
+    fun getShootOffsetFromCenter(targetX: Float, targetY: Float, space: CompSpace, left: Boolean): Vector2 {
         val angle = angleCompute.set(targetX - space.centerX, targetY - space.centerY).angleRad()
-        return if (shootLeft)
+        return if (left)
             shootOffset.setAngleRad(angle - .22f)
         else
             shootOffset.setAngleRad(angle + .22f)

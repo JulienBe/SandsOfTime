@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2
 
 object SSpawns : Setup() {
 
-    val cpuOffset = Array(9 * 9) {i ->
+    private val cpuOffset = Array(9 * 9) { i ->
         Vector2(((i / 9) - 4).toFloat(), ((i % 9) - 4).toFloat())
     }
     fun cpuSpawn(world: World, x: Float, y: Float) {
@@ -17,7 +17,7 @@ object SSpawns : Setup() {
         cpuOffset.forEach {
             SParticles.spawnAnim(world, x + it.x, y + it.y)
         }
-        s.ttl().remaining = 2.5f
+        s.ttl().remaining = 1.4f
         s.ttl().onEnd = {
             val spawnX = x - 6
             val spawnY = y - 6

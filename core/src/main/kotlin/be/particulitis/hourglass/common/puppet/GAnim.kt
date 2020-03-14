@@ -1,48 +1,54 @@
 package be.particulitis.hourglass.common.puppet
 
 import be.particulitis.hourglass.common.drawing.GImage
+import be.particulitis.hourglass.gamedata.graphics.Frames
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.MathUtils
 import ktx.collections.GdxArray
+import ktx.collections.gdxArrayOf
 
-class GAnimN(private val frames: Frames, var playMode: Animation.PlayMode = Animation.PlayMode.LOOP) {
+class GAnim(val initFrames: Frames, val timePerFrame: Float = 0.1f, var playMode: Animation.PlayMode = Animation.PlayMode.LOOP) {
 
+    private val frames: GdxArray<Frames> = gdxArrayOf(initFrames)
     private var frameTime = 0f
-    private var frameExpiration = 0.1f
     private var currentFrame = 0
     var time = 0f
     var onStart = {}
     val inFrame = GdxArray<() -> Unit>(frames.size)
     val onFrame = GdxArray<() -> Unit>(frames.size)
-    val totalTime = frames.size * frameExpiration
+    val totalTime = frames.size * timePerFrame
 
     init {
-        for (i in 0 until frames.size) {
+        for (i in 0 until frames.first().size) {
             inFrame.add {}
             onFrame.add {}
         }
     }
 
+    fun getFrame(number: Int): GImage {
+        return frames[number][currentFrame]
+    }
+
     fun getFrame(): GImage {
-        return frames[currentFrame]
+        return frames.first()[currentFrame]
     }
 
     fun update(delta: Float): GImage {
         time += delta
         frameTime += delta
-        if (frameTime > frameExpiration)
+        if (frameTime > timePerFrame)
             nextFrame()
         inFrame[currentFrame].invoke()
         return getFrame()
     }
 
-    fun nextFrame() {
+    private fun nextFrame() {
         frameTime = 0f
         currentFrame++
-        if (currentFrame >= frames.size) {
+        if (currentFrame >= frames.first().size) {
             when (playMode) {
                 Animation.PlayMode.LOOP -> currentFrame = 0
-                else -> currentFrame = frames.size - 1
+                else -> currentFrame = frames.first().size - 1
             }
         }
         onFrame[currentFrame].invoke()
@@ -70,7 +76,7 @@ class GAnimN(private val frames: Frames, var playMode: Animation.PlayMode = Anim
         return totalTime <= time
     }
     fun getKeyFrame(t: Float): GImage {
-        return frames[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
+        return frames.first()[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
     }
 
     companion object {

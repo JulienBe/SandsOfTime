@@ -1,12 +1,13 @@
-package be.particulitis.hourglass.common.puppet
+package be.particulitis.hourglass.gamedata.graphics
 
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GImage
+import be.particulitis.hourglass.common.puppet.GAnim
 
 enum class Frames {
 
     PLAYER_IDLE("running_girl"),
-    PLAYER_SHOOT("running_girl"),
+    PLAYER_SHOOT("shooting_girl"),
     CPU_SPAWN("cpu_spawn"),
     CPU_IDLE("cpu"),
     CPU_WALK("cpu_walk"),
@@ -30,7 +31,7 @@ enum class Frames {
 
     constructor(name: String) {
         val desFesses = mutableListOf<GImage>()
-        for (i in 1..GAnimN.hugeMaxFrameNumberThatWillNeverEverBeReachedByOneAnimation) {
+        for (i in 1..GAnim.hugeMaxFrameNumberThatWillNeverEverBeReachedByOneAnimation) {
             if (GGraphics.imgMan.regions.containsKey("${name}_f$i")) {
                 desFesses.add(GImage("${name}_f$i"))
             } else
@@ -41,7 +42,6 @@ enum class Frames {
     constructor(vararg names: String) {
         val deBus = mutableListOf<GImage>()
         names.forEach {
-            println("create img with $it")
             deBus.add(GImage(it))
         }
         frames = deBus.toTypedArray()

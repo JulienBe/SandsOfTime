@@ -2,7 +2,7 @@ package be.particulitis.hourglass.common.puppet
 
 import be.particulitis.hourglass.common.drawing.GImage
 
-class GAnimController(var current: GAnimN) {
+class GAnimController(var current: GAnim) {
 
     fun getFrame(): GImage {
         return current.getFrame()
@@ -12,7 +12,7 @@ class GAnimController(var current: GAnimN) {
         current.update(delta)
     }
 
-    fun forceCurrent(anim: GAnimN) {
+    fun forceCurrent(anim: GAnim) {
         current = anim
         current.start()
     }

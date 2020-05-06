@@ -12,10 +12,9 @@ enum class Frames {
     CPU_IDLE("cpu"),
     CPU_WALK("cpu_walk"),
     CPU_JUMPING("cpu_jumping"),
-    CPU_ATTACK("cpu_attack"),
-    FIRE("squares/square_red", "squares/square_orange", "squares/square_yellow"),
-    BLUE("squares/square_purple", "squares/square_blue", "squares/square_cyan"),
-    PINK("squares/square_red", "squares/square_pink", "squares/square_pink_skin")
+    FIRE("squares/square_yellow", "squares/square_orange", "squares/square_red"),
+    BLUE("squares/square_dark_purple", "squares/square_dark_blue", "squares/square_blue"),
+    PINK("squares/square_pink_skin", "squares/square_pink", "squares/square_red")
     ;
 
     val size: Int get() = frames.size
@@ -45,6 +44,7 @@ enum class Frames {
             deBus.add(GImage(it))
         }
         frames = deBus.toTypedArray()
+        println("Frames: ${frames.size} $name")
     }
 
 }

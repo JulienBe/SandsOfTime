@@ -6,13 +6,15 @@ import be.particulitis.hourglass.gamedata.graphics.Colors
 
 class CompDraw : Comp() {
     lateinit var currentImg: GImage
-    var color = Colors.explosion
     var preDraw = { }
     var drawFront = { batch: GGraphics, space: CompSpace ->
-        batch.drawFrontCenteredOnBox(this, space)
+        batch.drawFrontCenteredOnBoxSpaceStreched(this, space)
     }
     var drawNormal = { batch: GGraphics, space: CompSpace ->
-        batch.drawNormalCenteredOnBox(this, space)
+        batch.drawNormalCenteredOnBoxSpaceStreched(this, space)
+    }
+    var drawOcc = { batch: GGraphics, space: CompSpace ->
+        batch.drawOccCenteredOnBoxSpaceStreched(this, space)
     }
     var layer = 0
     var angle = 0f
@@ -22,10 +24,13 @@ class CompDraw : Comp() {
         preDraw = { }
         angle = 0f
         drawFront = { batch: GGraphics, space: CompSpace ->
-            batch.drawFrontCenteredOnBox(this, space)
+            batch.drawFrontCenteredOnBoxSpaceStreched(this, space)
         }
         drawNormal = { batch: GGraphics, space: CompSpace ->
-            batch.drawNormalCenteredOnBox(this, space)
+            batch.drawNormalCenteredOnBoxSpaceStreched(this, space)
+        }
+        drawOcc = { batch: GGraphics, space: CompSpace ->
+            batch.drawOccCenteredOnBoxSpaceStreched(this, space)
         }
     }
 

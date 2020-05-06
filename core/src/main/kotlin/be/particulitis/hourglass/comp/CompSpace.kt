@@ -59,4 +59,10 @@ class CompSpace : Comp() {
     fun move(dir: CompDir, delta: Float) {
         setPos(x + dir.x * delta, y + dir.y * delta)
     }
+
+    override fun toString(): String {
+        return "CompSpace(pos=$pos, w=$w, h=$h)"
+    }
+
+
 }

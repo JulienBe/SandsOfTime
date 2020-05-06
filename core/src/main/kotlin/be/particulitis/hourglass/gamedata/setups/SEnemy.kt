@@ -2,20 +2,25 @@ package be.particulitis.hourglass.gamedata.setups
 
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GTime
+import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.puppet.GAnimController
-import be.particulitis.hourglass.common.puppet.Frames
-import be.particulitis.hourglass.common.puppet.GAnimN
+import be.particulitis.hourglass.gamedata.graphics.Frames
+import be.particulitis.hourglass.common.puppet.GAnim
+import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.*
 import be.particulitis.hourglass.gamedata.graphics.Colors
+import be.particulitis.hourglass.gamedata.setups.SEnemy.draw
+import be.particulitis.hourglass.gamedata.setups.SEnemy.space
 import com.artemis.Entity
 import com.artemis.World
 import com.artemis.managers.TagManager
 import com.badlogic.gdx.graphics.g2d.Animation
-import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 object SEnemy : Setup() {
 
@@ -23,26 +28,39 @@ object SEnemy : Setup() {
     val highLightIntensity = 0.1f
     var light = false
 
-    fun enemySlug(world: World, baseX: Float, baseY: Float) {
-        val enemy = world.create(Builder.enemyCpu)
-        SParticles.spawnTransition(world, baseX + 6, baseY + 6, enemy.hp())
+    fun enemyShoot(world: World, baseX: Float, baseY: Float) {
+        val enemy = world.create(Builder.enemyShoot)
         val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag)
         val space = enemy.space()
         val draw = enemy.draw()
-        val dir = Vector2(5f, 0f)
+        baseSetup(space, baseX, baseY, enemy, draw)
+        val shooter = enemy.shooter()
+        enemy.hp().setHp(30)
+        shooter.setBullet(Builder.bullet, SBullet::enemyBullet)
+    }
+
+    private fun baseSetup(space: CompSpace, baseX: Float, baseY: Float, enemy: Entity, draw: CompDraw) {
         space.setDim(Dim.Enemy.w, Dim.Enemy.w)
         space.setPos(baseX, baseY)
         enemy.collide().setIds(Ids.enemy)
         enemy.collide().addCollidingWith(Ids.player, Ids.playerBullet)
-        enemy.layer().setLayer(Phases.Enemy)
-        draw.color = Colors.enemy
         draw.layer = Data.enemyLayer
         enemy.collide().setDmgToInflict(2)
-        val spawn = GAnimN(Frames.CPU_SPAWN)
-        val idle = GAnimN(Frames.CPU_IDLE)
-        val walk = GAnimN(Frames.CPU_WALK)
-        val jump = GAnimN(Frames.CPU_JUMPING)
-        val attack = GAnimN(Frames.CPU_ATTACK)
+        enemy.layer().setLayer(Phases.Enemy)
+    }
+
+    fun enemySlug(world: World, baseX: Float, baseY: Float) {
+        val enemy = world.create(Builder.enemyCpu)
+//        SParticles.spawnTransition(world, baseX + 6, baseY + 6, enemy.hp())
+        val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag)
+        val space = enemy.space()
+        val draw = enemy.draw()
+        val dir = Vector2(5f, 0f)
+        baseSetup(space, baseX, baseY, enemy, draw)
+        val spawn = GAnim(Frames.CPU_SPAWN, 0.1f, Animation.PlayMode.NORMAL)
+        val idle = GAnim(Frames.CPU_IDLE)
+        val walk = GAnim(Frames.CPU_WALK)
+        val jump = GAnim(Frames.CPU_JUMPING)
         val animController = GAnimController(spawn)
         val lightId = if (light) GLight(space.centerX, space.centerY + 1f, baseLightIntensity).id else -1
         val lightOffsetIdleF0F2 = Vector2(0f, 0f)
@@ -61,13 +79,16 @@ object SEnemy : Setup() {
         }
         setupIdle(idle, lightOffsetIdleF0F2, dir, lightId, space, walk, animController, player, lightOffsetIdleF1, lightOffsetIdleF3)
         setupWalk(walk, world, space, dir, lightOffsetIdleF0F2, lightId, jump, animController, player, idle)
-        setupJump(jump, animController, attack, dir, world, space)
-        setupAttack(attack, dir, lightId, space, world, animController, walk)
+        setupJump(jump, enemy, dir, world, space, player)
 
+        draw.currentImg = GGraphics.red
         draw.preDraw = {
-            draw.currentImg = animController.getFrame()
+//            draw.currentImg = animController.getFrame()
             draw.angle = dir.angle() + 90f
-            animController.update(GTime.enemyDelta)
+            if (animController.current == spawn)
+                animController.update(GTime.delta)
+            else
+                animController.update(GTime.enemyDelta)
         }
 
         enemy.emitter().emit = {
@@ -76,77 +97,25 @@ object SEnemy : Setup() {
         }
     }
 
-    private fun setupJump(jump: GAnimN, animController: GAnimController, attack: GAnimN, dir: Vector2, world: World, space: CompSpace) {
+    private fun setupJump(jump: GAnim, entity: Entity, dir: Vector2, world: World, space: CompSpace, player: Entity) {
         jump.playMode = Animation.PlayMode.NORMAL
         jump.lastOnFunction {
-            animController.forceCurrent(attack)
+            for (i in 0..50) {
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 10f)
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 20f)
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 30f)
+            }
+            val playerPos = player.space()
+            val dst = Vector2.dst(playerPos.centerX, playerPos.centerY, space.centerX, space.centerY).toInt()
+            println("dst: $dst")
+            player.hp().addHp(min(0, dst - 50))
+            world.deleteEntity(entity)
         }
         jump.onFrame.set(1) { blinkCpu(world, space, dir.angle()) }
         jump.onFrame.set(11) { blinkCpu(world, space, dir.angle()) }
     }
 
-    private fun setupAttack(attack: GAnimN, dir: Vector2, lightId: Int, space: CompSpace, world: World, animController: GAnimController, walk: GAnimN) {
-        attack.onFrame.set(0) { blinkCpu(world, space, dir.angle()) }
-        attack.onFrame.set(5) { blinkCpu(world, space, dir.angle()) }
-        attack.onFrame.set(14) { blinkCpu(world, space, dir.angle()) }
-        attack.onFrame.set(16) { blinkCpu(world, space, dir.angle()) }
-        attack.onFrame.set(18) { blinkCpu(world, space, dir.angle()) }
-        attack.onFrame.set(20) { blinkCpu(world, space, dir.angle()) }
-        val easeAttackRotation = Interpolation.circle
-        var attackEmitCpt = 0
-        var originalAngle = 0f
-        attack.onStart = {
-            originalAngle = dir.angle()
-        }
-        attack.inEachFrame {
-            dir.setAngle(easeAttackRotation.apply(originalAngle, originalAngle + 1080f, attack.time / 2f))
-            val angle = dir.angle()
-            if (attack.time < 1f)
-                GLight.updateIntensity(lightId, easeAttackRotation.apply(baseLightIntensity + 0.2f, highLightIntensity + 0.2f, attack.time))
-            else
-                GLight.updateIntensity(lightId, easeAttackRotation.apply(highLightIntensity + 0.2f, baseLightIntensity + 0.2f, attack.time - 1f))
-            when (attackEmitCpt) {
-                1 -> {
-                    spawnParticle(11f, 13f, angle, space, world)
-                    spawnParticle(12f, 13f, angle, space, world)
-                    spawnParticle(12f, 14f, angle, space, world)
-                    spawnParticle(12f, 15f, angle, space, world)
-
-                    spawnParticle(19f, 25f, angle, space, world)
-                }
-                2 -> {
-                    spawnParticle(13f, 15f, angle, space, world)
-                    spawnParticle(13f, 16f, angle, space, world)
-                    spawnParticle(13f, 17f, angle, space, world)
-                    spawnParticle(14f, 17f, angle, space, world)
-                }
-                3 -> {
-                    spawnParticle(14f, 18f, angle, space, world)
-                    spawnParticle(14f, 19f, angle, space, world)
-                    spawnParticle(15f, 19f, angle, space, world)
-                    spawnParticle(15f, 20f, angle, space, world)
-                }
-                4 -> {
-                    spawnParticle(15f, 21f, angle, space, world)
-                    spawnParticle(16f, 21f, angle, space, world)
-                    spawnParticle(16f, 22f, angle, space, world)
-                    spawnParticle(16f, 23f, angle, space, world)
-
-                    spawnParticle(19f, 25f, angle, space, world)
-                }
-            }
-
-            spawnParticle(17f, 23f, angle, space, world)
-            spawnParticle(17f, 24f, angle, space, world)
-            spawnParticle(20f, 26f, angle, space, world)
-            spawnParticle(18f, 24f, angle, space, world)
-            attackEmitCpt = ++attackEmitCpt % 9
-            if (animController.current.time > 1.9f)
-                animController.forceCurrent(walk)
-        }
-    }
-
-    private fun setupIdle(idle: GAnimN, lightOffsetIdleF0F2: Vector2, dir: Vector2, lightId: Int, space: CompSpace, walk: GAnimN, animController: GAnimController, player: Entity, lightOffsetIdleF1: Vector2, lightOffsetIdleF3: Vector2) {
+    private fun setupIdle(idle: GAnim, lightOffsetIdleF0F2: Vector2, dir: Vector2, lightId: Int, space: CompSpace, walk: GAnim, animController: GAnimController, player: Entity, lightOffsetIdleF1: Vector2, lightOffsetIdleF3: Vector2) {
         idle.onFrame.set(0) {
             updateMainLight(lightOffsetIdleF0F2, dir, lightId, space)
             testIdleToWalk(walk, animController, player, dir, space)
@@ -165,7 +134,7 @@ object SEnemy : Setup() {
         }
     }
 
-    private fun setupWalk(walk: GAnimN, world: World, space: CompSpace, dir: Vector2, lightOffsetIdleF0F2: Vector2, lightId: Int, jump: GAnimN, animController: GAnimController, player: Entity, idle: GAnimN) {
+    private fun setupWalk(walk: GAnim, world: World, space: CompSpace, dir: Vector2, lightOffsetIdleF0F2: Vector2, lightId: Int, jump: GAnim, animController: GAnimController, player: Entity, idle: GAnim) {
         walk.onFrame.set(0) {
             val angle = dir.angle()
             blinkCpu(world, space, angle)
@@ -249,12 +218,12 @@ object SEnemy : Setup() {
     }
     private fun spawnFootstep(x: Float, y: Float, angle: Float, space: CompSpace, world: World) {
         offset.set(-y, x).rotate(angle)
-        SParticles.cpuFootstep(world, space.centerX + offset.x, space.centerY + offset.y)
-        SParticles.cpuFootstep(world, space.centerX - offset.x, space.centerY - offset.y)
+//        SParticles.cpuFootstep(world, space.centerX + offset.x, space.centerY + offset.y)
+//        SParticles.cpuFootstep(world, space.centerX - offset.x, space.centerY - offset.y)
     }
 
     private val dstVector = Vector2()
-    private fun testWalkToJump(anim: GAnimN, animController: GAnimController, player: Entity, space: CompSpace): Boolean {
+    private fun testWalkToJump(anim: GAnim, animController: GAnimController, player: Entity, space: CompSpace): Boolean {
         if (dstVector.set(player.space().centerX - space.centerX, player.space().centerY - space.centerY).len2() < 1500f) {
             animController.forceCurrent(anim)
             return true
@@ -262,12 +231,12 @@ object SEnemy : Setup() {
         return false
     }
 
-    private fun testIdleToWalk(walk: GAnimN, animController: GAnimController, player: Entity, dir: Vector2, space: CompSpace) {
+    private fun testIdleToWalk(walk: GAnim, animController: GAnimController, player: Entity, dir: Vector2, space: CompSpace) {
         if (abs(getAngleToPlayer(player.space(), dir, space)) < 5)
             animController.forceCurrent(walk)
     }
 
-    private fun testWalkToIdle(idle: GAnimN, animController: GAnimController, player: Entity, dir: Vector2, space: CompSpace) {
+    private fun testWalkToIdle(idle: GAnim, animController: GAnimController, player: Entity, dir: Vector2, space: CompSpace) {
         if (abs(getAngleToPlayer(player.space(), dir, space)) > 5)
             animController.forceCurrent(idle)
     }
@@ -292,7 +261,7 @@ object SEnemy : Setup() {
         if (turnVector.len2() > 1f) {
             turnVector.nor()
         }
-        dir.add(turnVector.x * GTime.enemyDelta * 16f, turnVector.y * GTime.enemyDelta)
+        dir.add(turnVector.x * GTime.enemyDelta * 8f, turnVector.y * GTime.enemyDelta)
         dir.setLength2(dirPreviousLen2)
     }
 

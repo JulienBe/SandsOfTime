@@ -6,6 +6,8 @@ import be.particulitis.hourglass.gamedata.setups.*
 import be.particulitis.hourglass.system.*
 import be.particulitis.hourglass.system.graphics.SysBloomer
 import be.particulitis.hourglass.system.graphics.SysDrawer
+import be.particulitis.hourglass.system.graphics.SysHourglassDisplay
+import be.particulitis.hourglass.system.graphics.SysHpDisplay
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.artemis.managers.TagManager
@@ -28,6 +30,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
 
             .with(SysDrawer())
             .with(SysBloomer())
+            .with(SysHpDisplay())
             .with(SysHourglassDisplay())
             .with(SysClearActions())
             .build()
@@ -36,10 +39,10 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
     override fun show() {
         Gdx.input.inputProcessor = GInput
 
-        SUi.prettyDisplay(world, "Hourglass", 20f, 150f)
-        SUi.button(world, "Play!", 0f, 0f) {
-            switchScreen(GameScreen(game))
-        }
+//        SUi.prettyDisplay(world, "Hourglass", 20f, 150f)
+//        SUi.button(world, "Play!", 0f, 0f) {
+//            switchScreen(GameScreen(game))
+//        }
         SPlayer.player(world)
     }
 

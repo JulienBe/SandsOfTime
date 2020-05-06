@@ -10,6 +10,7 @@ class SysTime : BaseSystem() {
     private var currentPhaseTimer = 0f
 
     override fun processSystem() {
+        GTime.alternate = !GTime.alternate
         GTime.delta = Gdx.graphics.deltaTime
         GTime.playerDelta = computeDeltas(GTime.enemyPhase)
         GTime.enemyDelta = computeDeltas(!GTime.enemyPhase)

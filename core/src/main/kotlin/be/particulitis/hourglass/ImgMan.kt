@@ -1,5 +1,6 @@
 package be.particulitis.hourglass
 
+import be.particulitis.hourglass.common.drawing.GImage
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -21,6 +22,7 @@ class ImgMan {
     private val atlas: TextureAtlas
     val regions = GdxMap<String, TextureRegion>()
 
+
     private fun getTexture(path: String): Texture {
         manager.load<Texture>("$path.png")
         manager.finishLoading()
@@ -30,6 +32,7 @@ class ImgMan {
     }
 
     fun tr(name: String): TextureRegion {
+        println("get tr: $name")
         return regions[name]
     }
     fun nor(name: String): TextureRegion {
@@ -37,13 +40,14 @@ class ImgMan {
     }
 
     fun occ(name: String): TextureRegion {
+        println("get occ ${name}_occluder")
         return regions[name + "_occluder"]
     }
 
     init {
         manager.load<TextureAtlas>(atlasPath)
         manager.finishLoading()
-        atlas = manager.get<TextureAtlas>(atlasPath)
+        atlas = manager.get(atlasPath)
         atlas.regions.forEach {
             regions.put(it.name, it)
         }
@@ -56,7 +60,6 @@ class ImgMan {
     companion object {
         const val atlasPath = "textures/texture1/atlas.atlas"
         const val wall = "wall1"
-        const val player = "gunner_idle"
         val manager = AssetManager()
     }
 }

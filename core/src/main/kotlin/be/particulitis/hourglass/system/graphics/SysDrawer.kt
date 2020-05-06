@@ -47,13 +47,13 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         val occluders = DrawerTools.drawToFb(fboOccluders) {
             sortedEntities.forEach {
                 mDraw[it].preDraw.invoke()
-                batch.drawOccCenteredOnBox(mDraw[it], mSpace[it])
+                mDraw[it].drawOcc.invoke(batch, mSpace[it])
             }
         }
 
         val front = DrawerTools.drawToFb(fboCurrent) {
             sortedEntities.forEach {
-                batch.drawFrontCenteredOnBox(mDraw[it], mSpace[it])
+                mDraw[it].drawFront.invoke(batch, mSpace[it])
             }
         }
         batch.shader = normalShader
@@ -66,7 +66,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
                     normalShader.setUniformf("u_angle", draw.angle * MathUtils.degreesToRadians)
                     previousAngle = draw.angle
                 }
-                batch.drawNormalCenteredOnBox(draw, mSpace[it])
+                mDraw[it].drawNormal.invoke(batch, mSpace[it])
             }
         }
         batch.shader = lightShader
@@ -118,10 +118,6 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
         lightShader.setUniform4fv("u_light_intensity_rgb", GLight.intensityrgb.values.toFloatArray(), 0, GLight.intensityrgb.size)
         lightShader.setUniform4fv("u_light_pos_angle_tilt", GLight.xyat.values.toFloatArray(), 0, GLight.xyat.size)
-    }
-
-    fun getCurrentTexture(): Texture {
-        return mergedTexture
     }
 
 }

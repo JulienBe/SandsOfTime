@@ -10,7 +10,7 @@ precision mediump float;
 varying LOWP vec4 v_color;
 varying vec2 v_texCoords;
 
-const vec2 resolution = vec2(456.0, 256.0);
+const vec2 resolution = vec2(320.0, 200.0);
 const float light_default_z = 0.5;
 const vec3 falloff = vec3(0.2, 6.0, 20.0);
 
@@ -36,7 +36,7 @@ const float[9] dither_pattern = float[](
     -0.1, 0.0, +0.1,
     -0.02, 0.0, +0.02,
     -0.05, 0.0, +0.05);
-const float ratio = 456.0 / 256.0;
+const float ratio = 320.0 / 200.0;
 
 uniform sampler2D u_texture;
 uniform sampler2D u_palette;

@@ -11,6 +11,7 @@ object GTime {
     var playerTime = 0f
     var enemyTime = 0f
     var phaseTime = 0f
+    var alternate = true
 
     fun reset() {
         enemyPhase = true

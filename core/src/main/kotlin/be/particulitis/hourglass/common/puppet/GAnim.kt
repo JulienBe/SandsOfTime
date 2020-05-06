@@ -5,12 +5,11 @@ import be.particulitis.hourglass.gamedata.graphics.Frames
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.MathUtils
 import ktx.collections.GdxArray
-import ktx.collections.gdxArrayOf
 
 class GAnim(val initFrames: Frames, val timePerFrame: Float = 0.1f, var playMode: Animation.PlayMode = Animation.PlayMode.LOOP) {
 
-    private val frames: GdxArray<Frames> = gdxArrayOf(initFrames)
-    private var frameTime = 0f
+    private val frames: Array<GImage> = initFrames.frames
+    private var frameTime = frames.size * timePerFrame
     private var currentFrame = 0
     var time = 0f
     var onStart = {}
@@ -19,18 +18,14 @@ class GAnim(val initFrames: Frames, val timePerFrame: Float = 0.1f, var playMode
     val totalTime = frames.size * timePerFrame
 
     init {
-        for (i in 0 until frames.first().size) {
+        for (i in frames.indices) {
             inFrame.add {}
             onFrame.add {}
         }
     }
 
-    fun getFrame(number: Int): GImage {
-        return frames[number][currentFrame]
-    }
-
     fun getFrame(): GImage {
-        return frames.first()[currentFrame]
+        return frames[currentFrame]
     }
 
     fun update(delta: Float): GImage {
@@ -45,10 +40,10 @@ class GAnim(val initFrames: Frames, val timePerFrame: Float = 0.1f, var playMode
     private fun nextFrame() {
         frameTime = 0f
         currentFrame++
-        if (currentFrame >= frames.first().size) {
+        if (currentFrame >= frames.size) {
             when (playMode) {
                 Animation.PlayMode.LOOP -> currentFrame = 0
-                else -> currentFrame = frames.first().size - 1
+                else -> currentFrame = frames.size - 1
             }
         }
         onFrame[currentFrame].invoke()
@@ -76,7 +71,8 @@ class GAnim(val initFrames: Frames, val timePerFrame: Float = 0.1f, var playMode
         return totalTime <= time
     }
     fun getKeyFrame(t: Float): GImage {
-        return frames.first()[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
+//        println("frames ${frames.size} : ${(t / frameTime).toInt()} $frameTime $t")
+        return frames[MathUtils.clamp((t / frameTime).toInt(), 0, frames.size - 1)]
     }
 
     companion object {

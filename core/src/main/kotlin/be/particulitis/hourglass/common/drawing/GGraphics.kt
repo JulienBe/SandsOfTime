@@ -38,6 +38,9 @@ class GGraphics : SpriteBatch(8191) {
     fun draw(region: TextureRegion, space: CompSpace, angle: Float) {
         draw(region, space.x.roundToInt().toFloat(), space.y.roundToInt().toFloat(), space.hw, space.hh, space.w, space.h, 1f, 1f, angle)
     }
+    fun draw(region: TextureRegion, x: Float, y: Float, angle: Float) {
+        draw(region, x.roundToInt().toFloat(), y.roundToInt().toFloat(), region.hw, region.hh, region.w, region.h, 1f, 1f, angle)
+    }
 
     fun draw(tr: TextureRegion, space: CompSpace) {
         draw(tr, space.x, space.y)
@@ -107,6 +110,7 @@ class GGraphics : SpriteBatch(8191) {
         }
 
         fun nor(s: String): TextureRegion {
+            println("get nor $s")
             return imgMan.nor(s)
         }
         fun tr(s: String): TextureRegion {
@@ -122,6 +126,22 @@ class GGraphics : SpriteBatch(8191) {
         val batch: GGraphics = GGraphics()
         val imgMan = ImgMan()
         val cam = OrthographicCamera(GResolution.areaW, GResolution.areaH)
+
+        val black = GImage("squares/square_black")
+        val blue = GImage("squares/square_blue")
+        val brown = GImage("squares/square_brown")
+        val dark_blue = GImage("squares/square_dark_blue")
+        val dark_green = GImage("squares/square_dark_green")
+        val dark_grey = GImage("squares/square_dark_grey")
+        val dark_purple = GImage("squares/square_dark_purple")
+        val green = GImage("squares/square_green")
+        val light_grey = GImage("squares/square_light_grey")
+        val orange = GImage("squares/square_orange")
+        val pink = GImage("squares/square_pink")
+        val pink_skin = GImage("squares/square_pink_skin")
+        val red = GImage("squares/square_red")
+        val white = GImage("squares/square_white")
+        val yellow = GImage("squares/square_yellow")
 
     }
 

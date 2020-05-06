@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx
 import kotlin.math.max
 
 object GResolution {
-    const val areaH = 256f
-    const val areaW = 456f
+    const val areaH = 200f
+    const val areaW = 320f
     const val areaHH = areaH / 2f
     const val areaHW = areaW / 2f
     var ratio = 0f

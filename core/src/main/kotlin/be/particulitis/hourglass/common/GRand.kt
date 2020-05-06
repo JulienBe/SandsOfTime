@@ -50,4 +50,7 @@ object GRand: Random() {
     }
 
     fun bool() = nextBoolean()
+    fun bool(i: Int): Boolean {
+        return next(i) == 0
+    }
 }

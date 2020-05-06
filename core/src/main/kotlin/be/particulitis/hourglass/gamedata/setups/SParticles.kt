@@ -12,6 +12,8 @@ import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Phases
 import com.artemis.World
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.min
@@ -22,15 +24,76 @@ object SParticles : Setup() {
     val red = GGraphics.img("squares/square_red")
     val yellow = GGraphics.img("squares/square_yellow")
     val cpuSpawn = GAnim(Frames.CPU_SPAWN)
-    val fireAnim = GAnim(Frames.FIRE)
-    val blueAnim = GAnim(Frames.BLUE)
-    val pinkAnim = GAnim(Frames.PINK)
+    val fireAnim = GAnim(Frames.FIRE, .1f, Animation.PlayMode.NORMAL)
+    val blueAnim = GAnim(Frames.BLUE, .1f, Animation.PlayMode.NORMAL)
+    val pinkAnim = GAnim(Frames.PINK, .1f, Animation.PlayMode.NORMAL)
 
-    fun trail(world: World, x: Float, y: Float, anim: GAnim) {
+
+    fun trailTarget(world: World, x: Float, y: Float, anim: GAnim, targetX: Float, targetY: Float, ttlMul: Float = 1f) {
+        val p = world.create(Builder.trailParticle)
+        val space = p.space()
+        space.setPos(x, y)
+        val ttl = p.ttl()
+        val originalTtl = (0.07f + GRand.absGauss(0.1f)) * ttlMul
+        ttl.remaining = originalTtl
+        val bloomer = p.bloomer()
+
+        bloomer.preDraw = {
+            bloomer.tr = anim.getKeyFrame(ttl.remaining * 16f).front
+            space.move((targetX - space.x), (targetY - space.y), GTime.delta * 2f)
+            trailCrowler(world, space.x, space.y, anim, originalTtl / 4f)
+        }
+        bloomer.draw = { batch: GGraphics, space: CompSpace ->
+            batch.draw(bloomer.tr, space)
+        }
+        p.layer().setLayer(Phases.Other)
+    }
+
+    fun trailCrowler(world: World, x: Float, y: Float, anim: GAnim, ttlMul: Float = 1f) {
+        val p = world.create(Builder.trailParticle)
+        val space = p.space()
+        space.setPos(x, y)
+        val ttl = p.ttl()
+        ttl.remaining = (0.07f + GRand.absGauss(0.1f)) * ttlMul
+        val bloomer = p.bloomer()
+
+        val growH = GRand.int(-1, 1).toFloat() * 5f
+        val growW = if (growH == 0f)
+                        if (GRand.nextBoolean())
+                            5f else -5f
+                    else
+                        0f
+
+        bloomer.preDraw = {
+            bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
+            space.setDim(space.w + GTime.delta * growW, space.h + GTime.delta * growH)
+        }
+        bloomer.draw = { batch: GGraphics, space: CompSpace ->
+            batch.draw(bloomer.tr, space)
+        }
+        p.layer().setLayer(Phases.Other)
+    }
+
+    fun trailFixed(world: World, x: Float, y: Float, anim: GAnim, ttlToSet: Float = .5f) {
         val p = world.create(Builder.trailParticle)
         p.space().setPos(x, y)
         val ttl = p.ttl()
-        ttl.remaining = 0.07f + GRand.absGauss(0.1f)
+        ttl.remaining = ttlToSet
+        val bloomer = p.bloomer()
+        bloomer.preDraw = {
+            bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
+        }
+        bloomer.draw = { batch: GGraphics, space: CompSpace ->
+            batch.draw(bloomer.tr, space.x, space.y, 1f, 1f)
+        }
+        p.layer().setLayer(Phases.Other)
+    }
+
+    fun trail(world: World, x: Float, y: Float, anim: GAnim, ttlMul: Float = 1f) {
+        val p = world.create(Builder.trailParticle)
+        p.space().setPos(x, y)
+        val ttl = p.ttl()
+        ttl.remaining = (0.07f + GRand.absGauss(0.1f)) * ttlMul
         val bloomer = p.bloomer()
         bloomer.preDraw = {
             bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
@@ -289,7 +352,7 @@ object SParticles : Setup() {
 
         val dim1 = GRand.absGauss(2f)
         val dim2 = GRand.absGauss(2f)
-        space.setDim(if (dim1 > dim2) dim1 else dim2, if (dim1 < dim2) dim1 else dim2)
+        space.setDim(if (dim1 > dim2) dim1 else dim2, if (dim1 < dim2) dim1 / 2f else dim2 / 2f)
 
         ttl.remaining = GRand.absGauss(.5f)
 
@@ -300,6 +363,10 @@ object SParticles : Setup() {
         bloomer.preDraw = {
             bloomer.angle = dir.angle
             bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
+            trail(world, space.centerX, space.centerY, fireAnim)
+        }
+        bloomer.draw = { batch: GGraphics, space: CompSpace ->
+            batch.drawFrontStreched(bloomer, space)
         }
         GSounds.explosion1.play()
 

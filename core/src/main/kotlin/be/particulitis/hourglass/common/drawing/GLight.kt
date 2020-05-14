@@ -46,6 +46,10 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
         updateIntensity(id, i)
     }
 
+    fun updateIntesityRGB(i: Float, r: Float, g: Float, b: Float) {
+        updateIntensityRGB(id, i, r, g, b)
+    }
+
     fun updateTilt(tilt: Float) {
         updateTilt(id, tilt)
     }
@@ -105,6 +109,15 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
         fun updateIntensity(id: Int, i: Float) {
             if (id != -1)
                 intensityrgb[id * 4 + 0] = i
+        }
+
+        fun updateIntensityRGB(id: Int, i: Float, r: Float, g: Float, b: Float) {
+            if (id != -1) {
+                intensityrgb[id * 4 + 0] = i
+                intensityrgb[id * 4 + 1] = r
+                intensityrgb[id * 4 + 2] = g
+                intensityrgb[id * 4 + 3] = b
+            }
         }
 
         fun updateTilt(id: Int, tilt: Float) {

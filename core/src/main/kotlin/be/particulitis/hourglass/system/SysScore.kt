@@ -24,7 +24,7 @@ class SysScore : BaseEntitySystem(Aspect.all(CompScore::class.java)) {
         for (it in actives.size() - 1 downTo 0) {
             val id = ids[it]
             if (mTxt.has(id)) {
-                mTxt.get(id).set(GameScreen.score.toString())
+                mTxt.get(id).set(GameScreen.score.toString(), 2)
             }
         }
     }

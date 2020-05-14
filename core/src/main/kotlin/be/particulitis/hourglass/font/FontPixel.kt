@@ -1,63 +1,58 @@
 package be.particulitis.hourglass.font
 
-import be.particulitis.hourglass.common.*
-import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.common.drawing.GResolution
-import be.particulitis.hourglass.gamedata.graphics.Colors
+import be.particulitis.hourglass.common.GHistoryFloat
+import be.particulitis.hourglass.common.GRand
+import be.particulitis.hourglass.common.drawing.GPalette
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.utils.Array
 import ktx.collections.GdxArray
-import kotlin.math.*
+import kotlin.math.abs
 
-class FontPixel private constructor(var desiredX: Float, var desiredY: Float, var tr: TextureRegion) {
+class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, var primary: Boolean, var initDelay: Float) {
 
-    var x = desiredX + GRand.gauss(5)
-    var y = desiredY + GRand.gauss(5)
-    var oldX = x
-    var oldY = y
-    var shade = Colors.scoreFont
-    var couldBeRemoved = false
-    var scale = 1
-    var snapped = false
+    val x = GHistoryFloat(trailSize)
+    val y = GHistoryFloat(trailSize)
+    private var speed = 1f
+    private var snapped = false
     var boost = false
-    var dirX = 0f
-    var dirY = 0f
-    var speed = 1f
-    var lightId = -1
+    var tr = if (primary) mainColor else secondaryColor
 
-    fun act(delta: Float) {
-        if ((GTime.time * 3f).roundToInt() % 2 == 0) {
-            oldX = x
-            dirX += (x - desiredX) / 2f
-            dirX *= 0.9f
-            x -= dirX * delta * speed
-            x -= (x - desiredX) * delta * 2 * speed
+    init {
+        if (GRand.bool()) {
+            x.fill(desiredX + GRand.gauss(25f))
+            y.fill(desiredY + GRand.gauss(25f))
         } else {
-            oldY = y
-            dirY += (y - desiredY) / 2f
-            dirY *= 0.9f
-            y -= dirY * delta * speed
-            y -= (y - desiredY) * delta * 2 * speed
-        }
-        if (!snapped && abs(x - desiredX) + abs(y - desiredY) < 0.1f) {
-            snapped = true
-            boost = true
-            GSounds.pixelSnap.play(0.1f, 1 + ((x / GResolution.areaW) / 2f), 1f)
+            x.fill(desiredX + GRand.gauss(5f))
+            y.fill(desiredY + GRand.gauss(5f))
         }
     }
 
-    fun move(futureX: Float, futureY: Float) {
-        desiredX = futureX
-        desiredY = futureY
-        snapped = false
-        boost = false
+    fun act(delta: Float): Boolean {
+        initDelay -= delta
+        if (initDelay > 0)
+            return false
+        mvtDiag(delta)
+        if (!snapped && abs(x.get() - desiredX) + abs(y.get() - desiredY) < 0.1f) {
+            snapped = true
+            boost = true
+            x.fill(desiredX)
+            y.fill(desiredY)
+        }
+        return true
+    }
+
+    private fun mvtDiag(delta: Float) {
+        if (abs(x.get() - desiredX) > abs(y.get() - desiredY))
+            x.add(x.get() - ((x.get() - desiredX) * delta * 3 * speed))
+        else
+            y.add(y.get() - ((y.get() - desiredY) * delta * 3 * speed))
     }
 
     companion object {
 
-        const val fontWidth = 3f
-        const val charWidth = 4 * fontWidth
-        const val charHeight = 5 * fontWidth
+        const val trailSize = 3
+        val mainColor = GPalette.DARK_GREY.tr
+        val secondaryColor = GPalette.LIGHT_GREY.tr
 
         private val instantiate: Map<Char, List<Pair<Int, Offsets>>> = Gdx.files.internal("fonts")
                 .readString()
@@ -74,24 +69,9 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float, va
                         }
                 )
 
-        fun get(index: Int, c: Char, offsetX: Float, offsetY: Float): FontChar {
-            val char = FontChar(get(index, c))
-            char.pixels.forEach { p ->
-                p.desiredX += offsetX
-                p.desiredY += offsetY
-                if (GRand.bool()) {
-                    p.x = p.desiredX + GRand.gauss(70f)
-                    p.y = p.desiredY + GRand.gauss(1f)
-                } else {
-                    p.x = p.desiredX + GRand.gauss(1f)
-                    p.y = p.desiredY + GRand.gauss(70f)
-                }
-            }
-            return char
-        }
-
         fun get(index: Int, c: Char, width: Int = 1, existingPool: GdxArray<FontPixel> = GdxArray()): List<FontPixel> {
             val list = instantiate[c] ?: error("Char $c isn't present")
+            var delay = 0f
             return list.mapIndexed { i, pair ->
                 val pixel = mutableListOf<FontPixel>()
                 // keeping -1 around so it's easier to reason about where the pixel is in the car
@@ -110,97 +90,76 @@ class FontPixel private constructor(var desiredX: Float, var desiredY: Float, va
                     val _8 = isPresent(list, i + 4)
 
                     val offset = pair.second
-                    for (x in 0 until width) {
-                        for (y in 0 until width) {
-                            val p = initFontPixel(index, width, offset, x, y, existingPool, getTr(
-                                    _0, _1, _2,
-                                    _3,     _5,
-                                    _6, _7, _8))
-                            pixel.add(p)
-                            p.snapped = false
-                            p.couldBeRemoved = false
-                            if (_7 && _3 && _5 && _1 && GRand.nextInt(100) == 0)
-                                p.couldBeRemoved
-                            when ((x * width) + y) {
-                                // bottom left
-                                0 -> if (!_7 && !_3 && !_6 && !_0 && _1)
-                                    p.couldBeRemoved = true
-                                // top left
-                                width - 1 -> if (!_1 && !_3 && !_0 && !_6)
-                                    p.couldBeRemoved = true
-                                // bottom right
-                                width -> if (!_7 && !_5 && !_8 && !_6 && _3 && _1)
-                                    p.couldBeRemoved = true
-                                // top right
-                                (width * width) - 1 -> if (!_5 && _3 && !_1 && !_2)
-                                    p.couldBeRemoved = true
-                            }
-                            // 2 2 2
-                            // 4   4
-                            // 3 6 3
-                            // 2   2
-                            /**
-                             *  000
-                                111
-                                101
-                                111
-                                101
-                             */
-
-                        }
-                    }
+                    val p = initFontPixel(index, width, offset, existingPool, _1, _2, _5, delay)
+                    delay += p.size * 0.0015f
+                    pixel.addAll(p)
                 }
                 pixel
             }.filter { it.isNotEmpty() }.flatten()
         }
 
-        // TODO find something pretty with these fonts
-        private fun getTr(_0: Boolean, _1: Boolean, _2: Boolean, _3: Boolean, _5: Boolean, _6: Boolean, _7: Boolean, _8: Boolean): TextureRegion {
-//            println(" ")
-//            println(" ")
-//            println("\nGetting ================ ===============  ")
-//            println("Getting ================ ===============  ")
-//            println("Getting \n$_0\t $_1\t $_2 \n$_3 \t\t $_5\n$_6\t $_7\t $_8")
-//            println(" ")
-            var name = ""
-//            name +=    if (_0) "0" else ""
-            name +=    if (_1) "1" else ""
-//            name +=    if (_2) "2" else ""
-            name +=    if (_3) "3" else ""
-            name +=            "4"
-            name +=    if (_5) "5" else ""
-//            name +=    if (_6) "6" else ""
-            name +=    if (_7) "7" else ""
-//            name +=    if (_8) "8" else ""
-            return if (name.length > 4)
-                GGraphics.tr("font_pixel_4_not_frame")
-            else
-                GGraphics.tr("font_pixel_${name}_not_frame")
+        // 0 1 2
+        // 3   5
+        // 6 7 8
+        private val tmpPixelList = GdxArray<FontPixel>(9)
+        private fun initFontPixel(index: Int, width: Int, offset: Offsets, existingPool: Array<FontPixel>, _1: Boolean, _2: Boolean, _5: Boolean, delay: Float): GdxArray<FontPixel> {
+            var pixelDelay = 0f
+            tmpPixelList.clear()
+            val desiredX = (index * width * 3) + (offset.xF * width) + (index) // base + char place + space between chars
+            val desiredY = offset.yF * width
+            for (y in 0 until width) {
+                for (x in 0 until width) {
+                    val p: FontPixel = if (existingPool.isEmpty)
+                        FontPixel(desiredX, desiredY, true, 0f)
+                    else
+                        existingPool.pop()
+                    p.desiredX = desiredX + x
+                    p.desiredY = desiredY - y
+                    p.tr = mainColor
+                    p.primary = true
+                    p.initDelay = (index / 4f) + delay + pixelDelay
+                    pixelDelay += 0.01f
+                    tmpPixelList.add(p)
+                }
+            }
+            // **.
+            // **.
+            // **.
+            if (!_5)
+                for (i in 0 until width * width)
+                    if (i % width == (width - 1)) {
+                        tmpPixelList[i].tr = secondaryColor
+                        tmpPixelList[i].primary = false
+                    }
+            // ...
+            // ***
+            // ***
+            if (!_1)
+                for (i in 0 until width * width)
+                    if (i < width) {
+                        tmpPixelList[i].tr = secondaryColor
+                        tmpPixelList[i].primary = false
+                    }
+            // **.
+            // ***
+            // ***
+            if (!_2) {
+                tmpPixelList[width - 1].tr = secondaryColor
+                tmpPixelList[width - 1].primary = false
+            }
+            return tmpPixelList
         }
 
         private fun isPresent(list: List<Pair<Int, Offsets>>, i: Int): Boolean {
             return i >= 0 && i < list.size && list[i].first != -1
         }
 
-        private fun initFontPixel(index: Int, width: Int, offset: Offsets, x: Int, y: Int, existingPool: GdxArray<FontPixel>, tr: TextureRegion): FontPixel {
-            val desiredX = (index * charWidth * width) + (((offset.xF * width) + x) * fontWidth)
-            val desiredY = ((offset.yF * width) + y) * fontWidth
-            val p: FontPixel = if (existingPool.isEmpty)
-                FontPixel(desiredX, desiredY, tr)
-            else
-                existingPool.pop()
-            p.desiredX = desiredX
-            p.desiredY = desiredY
-            p.tr = tr
-            return p
-        }
-
         fun width(text: String, w: Int): Float {
-            return text.length * w * charWidth
+            return text.length * w * 4f
         }
 
         fun height(w: Int): Float {
-            return charHeight * w
+            return 5f * w
         }
     }
 }

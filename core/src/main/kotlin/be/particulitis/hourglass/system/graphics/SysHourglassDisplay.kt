@@ -4,13 +4,9 @@ import be.particulitis.hourglass.common.GHistoryFloat
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
-import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.drawing.GShader
-import be.particulitis.hourglass.comp.CompSpace
-import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.setups.SParticles
 import com.artemis.*
-import com.artemis.managers.TagManager
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
@@ -93,7 +89,7 @@ class SysHourglassDisplay : BaseSystem() {
             nextDrop = GTime.time + dropFreq
             drop(gravity)
         }
-        val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).getComponent(CompSpace::class.java)
+//        val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).getComponent(CompSpace::class.java)
         if (transitionTime > 0f) {
             if (GTime.enemyPhase) {
                 val dst = interpolation.apply(0.75f, 0f, transitionTime) * 440f
@@ -116,14 +112,6 @@ class SysHourglassDisplay : BaseSystem() {
         }
         previousPhase = GTime.enemyPhase
         batch.end()
-//        batch.shader = shader
-
-//        shader.begin()
-//        shader.setUniform1fv("u_centers_x", sand.values().map { x + it.x.toFloat() }.toFloatArray(), 0, sand.size)
-//        shader.setUniform1fv("u_centers_y", sand.values().map { y + it.y.toFloat() }.toFloatArray(), 0, sand.size)
-//        shader.setUniformf("u_transition_time", transitionTime)
-//        shader.setUniformi("u_phase", if (GTime.enemyPhase) 1 else 0)
-//        shader.setUniformf("u_time", GTime.time)
         batch.shader = null
     }
 

@@ -110,7 +110,6 @@ class GGraphics : SpriteBatch(8191) {
         }
 
         fun nor(s: String): TextureRegion {
-            println("get nor $s")
             return imgMan.nor(s)
         }
         fun tr(s: String): TextureRegion {

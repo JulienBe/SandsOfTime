@@ -1,6 +1,5 @@
 package be.particulitis.hourglass
 
-import be.particulitis.hourglass.common.drawing.GImage
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -32,7 +31,6 @@ class ImgMan {
     }
 
     fun tr(name: String): TextureRegion {
-        println("get tr: $name")
         return regions[name]
     }
     fun nor(name: String): TextureRegion {
@@ -40,7 +38,6 @@ class ImgMan {
     }
 
     fun occ(name: String): TextureRegion {
-        println("get occ ${name}_occluder")
         return regions[name + "_occluder"]
     }
 

@@ -1,54 +1,41 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
-import be.particulitis.hourglass.font.FontAnim
 import be.particulitis.hourglass.font.FontPixel
 import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 
 @Wire(failOnNull = false)
 class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPrettyUi::class.java)) {
 
-    private lateinit var mSpace: ComponentMapper<CompSpace>
     private lateinit var mUi: ComponentMapper<CompPrettyUi>
+    private lateinit var mSpace: ComponentMapper<CompSpace>
 
     override fun process(entityId: Int) {
-        val space = mSpace[entityId]
         val ui = mUi[entityId]
+        val space = mSpace[entityId]
 
-        if (Gdx.input.justTouched()) {
-            val xTouch = GHelper.x - space.x
-            val yTouch = GHelper.y - space.y
-            ui.anims.add(FontAnim(ui.pixels.sortedBy { Vector2.dst(xTouch, yTouch, it.x, it.y) }.toMutableList()))
-        }
         ui.time += GTime.delta
         ui.currentIndex = ((ui.time * 5f) * ui.pixels.size / 12f).roundToInt()
+        ui.phases.forEach {
+            it.trigger(ui)
+            if (it.active && !it.finished)
+                it.act(ui, space)
+        }
         onEachPixel(ui) { pixel: FontPixel ->
             pixel.act(GTime.delta)
         }
         onEachPixel(ui) { pixel: FontPixel ->
             pixel.boost = false
-            //GLight.updatePos(pixel.lightId, pixel.x + space.x, pixel.y + space.y)
         }
 
-        ui.anims.removeIf { it.act() }
-        if (ui.time > ui.currentPhase.endTime) {
-            ui.currentIndex = ui.pixels.size
-            ui.time = 1f
-            ui.changePhase(ui.phase + 1)
-        }
-        if (ui.time > 15f)
-            chopPixels(ui)
-        if (GRand.nextInt(300) == 0 && ui.currentIndex > ui.pixels.size)
+        if (GRand.nextInt(600) == 0 && ui.currentIndex > ui.pixels.size)
             swapPixel(ui)
     }
 
@@ -63,16 +50,14 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
     private fun swapPixel(ui: CompPrettyUi) {
         val one = ui.pixels.random()
         val two = ui.pixels.random()
+        if (one.primary != two.primary)
+            return
         val oneFutureX = two.desiredX
         val oneFutureY = two.desiredY
-        two.move(one.desiredX, one.desiredY)
-        one.move(oneFutureX, oneFutureY)
-    }
-
-    private fun chopPixels(ui: CompPrettyUi) {
-        val candidate = ui.pixels.random()
-        if (candidate.couldBeRemoved)
-            ui.pixels.removeValue(candidate, true)
+        two.desiredX = one.desiredX
+        two.desiredY = one.desiredY
+        one.desiredX = oneFutureX
+        one.desiredY = oneFutureY
     }
 
 }

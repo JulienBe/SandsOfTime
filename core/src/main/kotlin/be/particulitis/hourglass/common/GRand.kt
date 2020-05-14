@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.common
 
+import be.particulitis.hourglass.common.drawing.GResolution
 import java.util.*
 
 object GRand: Random() {
@@ -52,5 +53,12 @@ object GRand: Random() {
     fun bool() = nextBoolean()
     fun bool(i: Int): Boolean {
         return next(i) == 0
+    }
+
+    fun randX(): Float {
+        return float(0f, GResolution.areaW)
+    }
+    fun randY(): Float {
+        return float(0f, GResolution.areaH)
     }
 }

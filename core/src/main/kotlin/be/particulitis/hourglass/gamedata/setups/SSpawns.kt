@@ -21,7 +21,7 @@ object SSpawns : Setup() {
         s.ttl().onEnd = {
             val spawnX = x - 6
             val spawnY = y - 6
-            SEnemy.enemySlug(world, spawnX, spawnY)
+            SCentralCrabUnit.setup(world, spawnX, spawnY)
         }
     }
 

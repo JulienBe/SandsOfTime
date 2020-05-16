@@ -10,7 +10,6 @@ import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.Dim
 import be.particulitis.hourglass.gamedata.Phases
-import be.particulitis.hourglass.gamedata.graphics.Colors
 import be.particulitis.hourglass.system.SysCollider
 import com.artemis.World
 import com.artemis.managers.TagManager
@@ -75,6 +74,7 @@ object SPlayer : Setup() {
         player.collide().setIds(Ids.player)
         player.collide().addCollidingWith(Ids.enemy, Ids.enemyBullet, Ids.propsWall)
         player.collide().collidingMap.put(Ids.propsWall.id, world.getSystem(SysCollider::class.java)::rollback)
+        player.collide().setDmgToInflict(4)
 
         player.charMvt().speed = playerSpeed
         player.layer().setLayer(Phases.Player)

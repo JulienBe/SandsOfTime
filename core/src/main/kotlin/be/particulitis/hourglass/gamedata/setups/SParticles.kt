@@ -181,15 +181,17 @@ object SParticles : Setup() {
     }
 
     fun cpuFootstep(world: World, x: Float, y: Float) {
-        val p = world.create(Builder.particle)
+        val p = world.create(Builder.bloodParticle)
         val space = p.space()
         space.setDim(1f, 1f)
         space.setPos(x, y)
         p.layer().setLayer(Phases.Other)
         val ttl = p.ttl()
-        ttl.remaining = GRand.absGauss(0.5f)
-        val draw = p.draw()
-        draw.currentImg = yellow
+        ttl.remaining = GRand.absGauss(0.25f)
+//        val draw = p.draw()
+//        draw.currentImg = yellow
+        val bloom = p.bloomer()
+        bloom.tr = yellow.front
     }
 
     fun cpuAttackParticle(world: World, x: Float, y: Float) {

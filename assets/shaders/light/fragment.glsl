@@ -12,7 +12,7 @@ varying vec2 v_texCoords;
 
 const vec2 resolution = vec2(320.0, 200.0);
 const float light_default_z = 0.5;
-const vec3 falloff = vec3(0.2, 6.0, 20.0);
+const vec3 falloff = vec3(0.15, 5.0, 18.0);
 
 const int nb_steps = 7;
 const float dither_width = 3.0;
@@ -78,7 +78,7 @@ void main() {
             l += mul * dither_pattern[int(mod(gl_FragCoord.x * gl_FragCoord.y, 9))] * 0.1;
         }
 
-        //**
+        /**
         float shadow_total_steps = len * 100;
         vec2 shadow_sample_step = delta_pixel_pos.xy / shadow_total_steps;
         shadow_sample_step.x /= ratio;

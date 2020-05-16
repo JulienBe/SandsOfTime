@@ -30,6 +30,9 @@ class CompCollide : Comp() {
         this.dmgToInflict = dmg
     }
 
+    /**
+     * Sets how much dmg you will take
+     */
     fun setDmgToTake(dmg: Int) {
         this.dmgToTake = dmg
     }

@@ -54,6 +54,10 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
         updateTilt(id, tilt)
     }
 
+    fun updateIntesityRGB(intensity: Float, color: GPalette) {
+        updateIntesityRGB(intensity, color.r, color.g, color.b)
+    }
+
     companion object {
         val xyat = LinkedHashMap<Int, Float>()
         val intensityrgb = LinkedHashMap<Int, Float>()

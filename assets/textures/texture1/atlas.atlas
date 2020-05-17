@@ -214,6 +214,34 @@ cpu_jumping_f11_occluder
   orig: 18, 18
   offset: 0, 0
   index: -1
+cpu_jumping_f12_occluder
+  rotate: false
+  xy: 1641, 46
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+cpu_land_f1_occluder
+  rotate: false
+  xy: 1641, 46
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+cpu_land_f2_occluder
+  rotate: false
+  xy: 1641, 46
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+cpu_land_f3_occluder
+  rotate: false
+  xy: 1641, 46
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
 cpu_jumping_f12
   rotate: false
   xy: 1569, 46
@@ -242,20 +270,6 @@ cpu_land_f1_normal
   orig: 18, 18
   offset: 0, 0
   index: -1
-cpu_jumping_f12_occluder
-  rotate: false
-  xy: 1677, 46
-  size: 18, 18
-  orig: 18, 18
-  offset: 0, 0
-  index: -1
-cpu_land_f1_occluder
-  rotate: false
-  xy: 1677, 46
-  size: 18, 18
-  orig: 18, 18
-  offset: 0, 0
-  index: -1
 cpu_jumping_f2
   rotate: false
   xy: 1407, 46
@@ -265,14 +279,14 @@ cpu_jumping_f2
   index: -1
 cpu_jumping_f2_normal
   rotate: false
-  xy: 1695, 46
+  xy: 1677, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f2_occluder
   rotate: false
-  xy: 1713, 46
+  xy: 1695, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -286,14 +300,14 @@ cpu_jumping_f3
   index: -1
 cpu_jumping_f3_normal
   rotate: false
-  xy: 1731, 46
+  xy: 1713, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f3_occluder
   rotate: false
-  xy: 1749, 46
+  xy: 1731, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -307,56 +321,49 @@ cpu_jumping_f4
   index: -1
 cpu_jumping_f4_normal
   rotate: false
-  xy: 1767, 46
+  xy: 1749, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f5_normal
   rotate: false
-  xy: 1767, 46
+  xy: 1749, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f7_normal
   rotate: false
-  xy: 1767, 46
+  xy: 1749, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f9_normal
   rotate: false
-  xy: 1767, 46
+  xy: 1749, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f4_occluder
   rotate: false
-  xy: 1785, 46
+  xy: 1767, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f5_occluder
   rotate: false
-  xy: 1785, 46
+  xy: 1767, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f7_occluder
   rotate: false
-  xy: 1785, 46
-  size: 18, 18
-  orig: 18, 18
-  offset: 0, 0
-  index: -1
-cpu_jumping_f9_occluder
-  rotate: false
-  xy: 1785, 46
+  xy: 1767, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -377,14 +384,14 @@ cpu_jumping_f6
   index: -1
 cpu_jumping_f6_normal
   rotate: false
-  xy: 1803, 46
+  xy: 1785, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f6_occluder
   rotate: false
-  xy: 1821, 46
+  xy: 1803, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -412,12 +419,19 @@ cpu_jumping_f8
   index: -1
 cpu_jumping_f8_normal
   rotate: false
-  xy: 1839, 46
+  xy: 1821, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_jumping_f8_occluder
+  rotate: false
+  xy: 1839, 46
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+cpu_jumping_f9_occluder
   rotate: false
   xy: 1857, 46
   size: 18, 18
@@ -438,13 +452,6 @@ cpu_land_f2_normal
   orig: 18, 18
   offset: 0, 0
   index: -1
-cpu_land_f2_occluder
-  rotate: false
-  xy: 2001, 46
-  size: 18, 18
-  orig: 18, 18
-  offset: 0, 0
-  index: -1
 cpu_land_f3
   rotate: false
   xy: 1893, 46
@@ -454,14 +461,7 @@ cpu_land_f3
   index: -1
 cpu_land_f3_normal
   rotate: false
-  xy: 2019, 46
-  size: 18, 18
-  orig: 18, 18
-  offset: 0, 0
-  index: -1
-cpu_land_f3_occluder
-  rotate: false
-  xy: 200, 26
+  xy: 2001, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -475,14 +475,14 @@ cpu_land_f4
   index: -1
 cpu_land_f4_normal
   rotate: false
-  xy: 218, 26
+  xy: 2019, 46
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_land_f4_occluder
   rotate: false
-  xy: 236, 26
+  xy: 200, 26
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -496,14 +496,14 @@ cpu_land_f5
   index: -1
 cpu_land_f5_normal
   rotate: false
-  xy: 254, 26
+  xy: 218, 26
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_land_f5_occluder
   rotate: false
-  xy: 272, 26
+  xy: 236, 26
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -517,14 +517,14 @@ cpu_land_f6
   index: -1
 cpu_land_f6_normal
   rotate: false
-  xy: 200, 8
+  xy: 254, 26
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_land_f6_occluder
   rotate: false
-  xy: 218, 8
+  xy: 272, 26
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -538,287 +538,287 @@ cpu_land_f7
   index: -1
 cpu_spawn_f1
   rotate: false
-  xy: 236, 8
+  xy: 200, 8
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f1_normal
   rotate: false
-  xy: 362, 22
+  xy: 326, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f1_occluder
   rotate: false
-  xy: 380, 22
+  xy: 344, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f2
   rotate: false
-  xy: 254, 8
+  xy: 218, 8
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f2_normal
   rotate: false
-  xy: 398, 22
+  xy: 362, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f2_occluder
   rotate: false
-  xy: 416, 22
+  xy: 380, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f3
   rotate: false
-  xy: 272, 8
+  xy: 236, 8
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f3_normal
   rotate: false
-  xy: 434, 22
+  xy: 398, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f3_occluder
   rotate: false
-  xy: 452, 22
+  xy: 416, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f4
   rotate: false
-  xy: 290, 22
+  xy: 254, 8
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f4_normal
   rotate: false
-  xy: 470, 22
+  xy: 434, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f4_occluder
   rotate: false
-  xy: 488, 22
+  xy: 452, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f5
   rotate: false
-  xy: 308, 22
+  xy: 272, 8
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f5_normal
   rotate: false
-  xy: 506, 22
+  xy: 470, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f5_occluder
   rotate: false
-  xy: 524, 22
+  xy: 488, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f6
   rotate: false
-  xy: 326, 22
+  xy: 290, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f6_normal
   rotate: false
-  xy: 542, 22
+  xy: 506, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f7_normal
   rotate: false
-  xy: 542, 22
+  xy: 506, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f6_occluder
   rotate: false
-  xy: 560, 22
+  xy: 524, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f7_occluder
   rotate: false
-  xy: 560, 22
+  xy: 524, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_spawn_f7
   rotate: false
-  xy: 344, 22
+  xy: 308, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f1
   rotate: false
-  xy: 578, 22
+  xy: 542, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f2
   rotate: false
-  xy: 596, 22
+  xy: 560, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f2_normal
   rotate: false
-  xy: 722, 22
+  xy: 686, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f2_occluder
   rotate: false
-  xy: 740, 22
+  xy: 704, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f3
   rotate: false
-  xy: 614, 22
+  xy: 578, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f3_normal
   rotate: false
-  xy: 758, 22
+  xy: 722, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f3_occluder
   rotate: false
-  xy: 776, 22
+  xy: 740, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f4
   rotate: false
-  xy: 632, 22
+  xy: 596, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f4_normal
   rotate: false
-  xy: 794, 22
+  xy: 758, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f4_occluder
   rotate: false
-  xy: 812, 22
+  xy: 776, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f5
   rotate: false
-  xy: 650, 22
+  xy: 614, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f6
   rotate: false
-  xy: 668, 22
+  xy: 632, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f6_normal
   rotate: false
-  xy: 830, 22
+  xy: 794, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f6_occluder
   rotate: false
-  xy: 848, 22
+  xy: 812, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f7
   rotate: false
-  xy: 686, 22
+  xy: 650, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f7_normal
   rotate: false
-  xy: 866, 22
+  xy: 830, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f7_occluder
   rotate: false
-  xy: 884, 22
+  xy: 848, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f8
   rotate: false
-  xy: 704, 22
+  xy: 668, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f8_normal
   rotate: false
-  xy: 902, 22
+  xy: 866, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 cpu_walk_f8_occluder
   rotate: false
-  xy: 920, 22
+  xy: 884, 22
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
@@ -1357,21 +1357,21 @@ wall_normal
   index: -1
 wandwiz_shoot_left
   rotate: false
-  xy: 938, 23
+  xy: 902, 23
   size: 17, 17
   orig: 17, 17
   offset: 0, 0
   index: 1
 wandwiz_shoot_right
   rotate: false
-  xy: 955, 23
+  xy: 919, 23
   size: 17, 17
   orig: 17, 17
   offset: 0, 0
   index: 1
 wandwiz_still
   rotate: false
-  xy: 972, 23
+  xy: 936, 23
   size: 17, 17
   orig: 17, 17
   offset: 0, 0

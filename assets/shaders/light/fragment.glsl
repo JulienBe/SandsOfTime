@@ -78,7 +78,7 @@ void main() {
             l += mul * dither_pattern[int(mod(gl_FragCoord.x * gl_FragCoord.y, 9))] * 0.1;
         }
 
-        /**
+        //**
         float shadow_total_steps = len * 100;
         vec2 shadow_sample_step = delta_pixel_pos.xy / shadow_total_steps;
         shadow_sample_step.x /= ratio;

@@ -60,7 +60,7 @@ object SCentralCrabUnit : Setup() {
         }
 
         setupSpawn(light, spawn, idle, animController)
-        setupIdle(idle, dir, light, space, walk, animController, player)
+        setupIdle(idle, dir, light, space, walk, animController, player, world)
         setupWalk(walk, world, space, dir, light, jump, animController, player, idle)
         setupJump(jump, dir, world, space, player, light, land, animController)
         setupLand(land, idle, animController, light)
@@ -152,7 +152,7 @@ object SCentralCrabUnit : Setup() {
         light.updateIntesityRGB(baseLightIntensity, baseLightColor)
     }
 
-    private fun setupIdle(idle: GAnim, dir: Vector2, light: GLight, space: CompSpace, walk: GAnim, animController: GAnimController, player: Entity) {
+    private fun setupIdle(idle: GAnim, dir: Vector2, light: GLight, space: CompSpace, walk: GAnim, animController: GAnimController, player: Entity, world: World) {
         idle.onFrame.set(0) {
             normalLight(light)
             testIdleToWalk(walk, animController, player, dir, space)
@@ -160,6 +160,9 @@ object SCentralCrabUnit : Setup() {
         idle.onFrame.set(1) {
             normalLight(light)
             turnTowardPlayer(space, dir, player.space())
+            val angle = dir.angle()
+            spawnFootstep(2f, -6f, angle, space, world)
+            spawnFootstep(-2f, 5f, angle, space, world)
         }
         idle.onFrame.set(2) {
             normalLight(light)
@@ -168,6 +171,9 @@ object SCentralCrabUnit : Setup() {
         idle.onFrame.set(3) {
             normalLight(light)
             turnTowardPlayer(space, dir, player.space())
+            val angle = dir.angle()
+            spawnFootstep(-2f, -6f, angle, space, world)
+            spawnFootstep(2f, 5f, angle, space, world)
         }
     }
 
@@ -207,6 +213,7 @@ object SCentralCrabUnit : Setup() {
     private fun spawnFootstep(x: Float, y: Float, angle: Float, space: CompSpace, world: World) {
         offset.set(-y, x).rotate(angle)
         SParticles.cpuFootstep(world, space.centerX + offset.x, space.centerY + offset.y)
+        SParticles.randomNormal(world, space.centerX + offset.x, space.centerY + offset.y)
     }
 
     private val dstVector = Vector2()

@@ -26,7 +26,8 @@ enum class GPalette(red: Int, green: Int, blue: Int) {
     val b = (1f / 255f) * blue
     val color = Color(r, g, b, 1f)
     val f = color.toFloatBits()
-    val tr = GGraphics.img("squares/square_${name.toLowerCase()}").front
+    val img = GGraphics.img("squares/square_${name.toLowerCase()}")
+    val tr = img.front
 
     fun next(): GPalette {
         return values()[(ordinal + 1) % values().size]

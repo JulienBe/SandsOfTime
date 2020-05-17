@@ -3,6 +3,8 @@ package be.particulitis.hourglass.gamedata.setups
 import be.particulitis.hourglass.Ids
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GPalette
+import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.gamedata.Builder
 import com.artemis.ArchetypeBuilder
 import com.artemis.Entity
@@ -10,8 +12,25 @@ import com.artemis.World
 import ktx.collections.GdxArray
 
 object SProps : Setup() {
-    fun ground(world: World, tilesWidth: Int, tilesHeight: Int, offsetX: Float = 0f, offsetY: Float = 0f) {
-        createTiled(tilesWidth, tilesHeight, world, offsetX, offsetY, Builder.tiled) { "floor1" }
+    fun ground(world: World, tilesHeight: Int, tilesWidth: Int) {
+        createTiled(tilesWidth, tilesHeight, world, 0f, 0f, Builder.tiled) { "floor1" }
+    }
+
+    fun ground(world: World) {
+        val tile = world.create(Builder.tiled)
+        val space = tile.space()
+        val draw = tile.draw()
+        draw.drawFront = { batch, space ->
+            batch.draw(GPalette.DARK_BLUE.tr, 0f, 0f, GResolution.areaW, GResolution.areaH)
+        }
+        draw.drawOcc = { batch, space ->
+            batch.draw(GPalette.DARK_BLUE.img.occluder, 0f, 0f, GResolution.areaW, GResolution.areaH)
+        }
+        draw.drawNormal = { batch, space ->
+            batch.draw(GPalette.DARK_BLUE.img.normal, 0f, 0f, GResolution.areaW, GResolution.areaH)
+        }
+        space.setPos(0f, 0f)
+        space.setDim(GResolution.areaW, GResolution.areaH)
     }
 
     fun wall(world: World, tilesWidth: Int, tilesHeight: Int, exposedSide: GSide, offsetX: Float = 0f, offsetY: Float = 0f) {

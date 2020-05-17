@@ -60,7 +60,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
         SUi.button(world, "Exit", 135f, 50f, 3) {
             Gdx.app.exit()
         }
-        SProps.ground(world, 18, 14)
+        SProps.ground(world)
     }
 
     override fun render(delta: Float) {

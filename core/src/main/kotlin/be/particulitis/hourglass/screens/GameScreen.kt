@@ -90,7 +90,7 @@ class GameScreen(game: Game) : AbstractScreen(game) {
         }
 
         private fun stageSetup() {
-            SProps.ground(world, 18, 14)
+            SProps.ground(world)
 
             SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaH - Dim.WallSprite.h + 7f)
             SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, -7f)

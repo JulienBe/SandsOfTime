@@ -12,7 +12,6 @@ import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Phases
 import com.artemis.World
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
@@ -27,10 +26,14 @@ object SParticles : Setup() {
     val fireAnim = GAnim(Frames.FIRE, .1f, Animation.PlayMode.NORMAL)
     val blueAnim = GAnim(Frames.BLUE, .1f, Animation.PlayMode.NORMAL)
     val pinkAnim = GAnim(Frames.PINK, .1f, Animation.PlayMode.NORMAL)
-
+    val normalUp = GGraphics.tr("normal_up")
+    val normalRight = GGraphics.tr("normal_right")
+    val normalDown = GGraphics.tr("normal_down")
+    val normalLeft = GGraphics.tr("normal_left")
+    val normals = arrayListOf(normalUp, normalRight, normalDown, normalLeft)
 
     fun trailTarget(world: World, x: Float, y: Float, anim: GAnim, targetX: Float, targetY: Float, ttlMul: Float = 1f) {
-        val p = world.create(Builder.trailParticle)
+        val p = world.create(Builder.trailParticleBloomer)
         val space = p.space()
         space.setPos(x, y)
         val ttl = p.ttl()
@@ -50,7 +53,7 @@ object SParticles : Setup() {
     }
 
     fun trailCrowler(world: World, x: Float, y: Float, anim: GAnim, ttlMul: Float = 1f) {
-        val p = world.create(Builder.trailParticle)
+        val p = world.create(Builder.trailParticleBloomer)
         val space = p.space()
         space.setPos(x, y)
         val ttl = p.ttl()
@@ -75,7 +78,7 @@ object SParticles : Setup() {
     }
 
     fun trailFixed(world: World, x: Float, y: Float, anim: GAnim, ttlToSet: Float = .5f) {
-        val p = world.create(Builder.trailParticle)
+        val p = world.create(Builder.trailParticleBloomer)
         p.space().setPos(x, y)
         val ttl = p.ttl()
         ttl.remaining = ttlToSet
@@ -90,7 +93,7 @@ object SParticles : Setup() {
     }
 
     fun trail(world: World, x: Float, y: Float, anim: GAnim, ttlMul: Float = 1f) {
-        val p = world.create(Builder.trailParticle)
+        val p = world.create(Builder.trailParticleBloomer)
         p.space().setPos(x, y)
         val ttl = p.ttl()
         ttl.remaining = (0.07f + GRand.absGauss(0.1f)) * ttlMul
@@ -105,7 +108,7 @@ object SParticles : Setup() {
     }
 
     fun spawnTransition(world: World, x: Float, y: Float, hp: CompHp) {
-        val p = world.create(Builder.trailParticle)
+        val p = world.create(Builder.trailParticleBloomer)
         val space = p.space()
         space.setPos(x, y)
         val ttl = p.ttl()
@@ -122,9 +125,22 @@ object SParticles : Setup() {
         p.layer().setLayer(Phases.Other)
     }
 
+    fun randomNormal(world: World, x: Float, y: Float) {
+        val p = world.create(Builder.trailParticle)
+        p.space().setDim(1f, 1f)
+        p.space().setPos(x, y)
+        p.ttl().remaining = 50f + GRand.absGauss(10f)
+        p.draw().drawFront = { batch, space -> }
+        p.draw().drawOcc = { batch, space -> }
+        val normal = normals.random()
+        p.draw().drawNormal = { batch, space ->
+            batch.draw(normal, space)
+        }
+    }
+
     private val moveVector = Vector2()
     fun spawnAnim(world: World, x: Float, y: Float) {
-        val p = world.create(Builder.trailParticle)
+        val p = world.create(Builder.trailParticleBloomer)
         val space = p.space()
         space.setPos(x + GRand.gauss(20f), y + GRand.gauss(20f))
         val ttl = p.ttl()

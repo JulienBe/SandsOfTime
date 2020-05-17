@@ -963,6 +963,34 @@ hourglass_shade_______
   orig: 18, 32
   offset: 0, 0
   index: -1
+normal_down
+  rotate: false
+  xy: 199, 43
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+normal_left
+  rotate: false
+  xy: 199, 42
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+normal_up
+  rotate: false
+  xy: 199, 42
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+normal_right
+  rotate: false
+  xy: 199, 41
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
 running_girl_f1
   rotate: false
   xy: 295, 40

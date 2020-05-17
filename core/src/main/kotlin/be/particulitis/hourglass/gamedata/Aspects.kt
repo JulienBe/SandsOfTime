@@ -85,8 +85,15 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompTtl::class.java,
             CompDir::class.java
     )),
-    TrailParticles(listOf(
+    TrailParticlesBloomer(listOf(
             CompBloomer::class.java,
+            CompSpace::class.java,
+            CompParticle::class.java,
+            CompTimePhase::class.java,
+            CompTtl::class.java
+    )),
+    TrailParticles(listOf(
+            CompDraw::class.java,
             CompSpace::class.java,
             CompParticle::class.java,
             CompTimePhase::class.java,

@@ -9,6 +9,7 @@ import be.particulitis.hourglass.common.drawing.GPalette
 import be.particulitis.hourglass.common.puppet.GAnimController
 import be.particulitis.hourglass.gamedata.graphics.Frames
 import be.particulitis.hourglass.common.puppet.GAnim
+import be.particulitis.hourglass.comp.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.*
 import com.artemis.Entity
@@ -24,6 +25,7 @@ object SCentralCrabUnit : Setup() {
     private const val slugTrailSize = 5
     private const val baseLightIntensity = 0.03f
     private const val highLightIntensity = 0.075f
+    private const val airMaxTime = 1.3f
     private val baseLightColor = GPalette.WHITE
     private val highLightColor = GPalette.RED
 
@@ -34,6 +36,7 @@ object SCentralCrabUnit : Setup() {
         val space = enemy.space()
         val draw = enemy.draw()
         val dir = Vector2(5f, 0f)
+
         space.setDim(Dim.Enemy.w, Dim.Enemy.w)
         space.setPos(baseX, baseY)
         enemy.collide().setIds(Ids.enemy)
@@ -41,10 +44,12 @@ object SCentralCrabUnit : Setup() {
         enemy.collide().setDmgToInflict(2)
         draw.layer = Data.enemyLayer
         enemy.layer().setLayer(Phases.Enemy)
+
         val spawn = GAnim(Frames.CPU_SPAWN, 0.1f, Animation.PlayMode.NORMAL)
         val idle = GAnim(Frames.CPU_IDLE)
         val walk = GAnim(Frames.CPU_WALK)
         val jump = GAnim(Frames.CPU_JUMPING)
+        val land = GAnim(Frames.CPU_LAND)
         val animController = GAnimController(spawn)
         val light = GLight(space.centerX, space.centerY + 1f, baseLightIntensity)
         blinkCpu(world, space, dir.angle(), light)
@@ -57,8 +62,27 @@ object SCentralCrabUnit : Setup() {
         setupSpawn(light, spawn, idle, animController)
         setupIdle(idle, dir, light, space, walk, animController, player)
         setupWalk(walk, world, space, dir, light, jump, animController, player, idle)
-        setupJump(jump, enemy, dir, world, space, player, light)
+        setupJump(jump, dir, world, space, player, light, land, animController)
+        setupLand(land, idle, animController, light)
 
+        setupDraw(draw, light, space, animController, dir, spawn)
+
+        enemy.emitter().emit = {
+            for (i in 0..40)
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 28f)
+        }
+    }
+
+    private fun setupLand(land: GAnim, idle: GAnim, animController: GAnimController, light: GLight) {
+        land.onFrame[0] = {
+            normalLight(light)
+        }
+        land.lastOnFunction {
+            animController.forceCurrent(idle)
+        }
+    }
+
+    private fun setupDraw(draw: CompDraw, light: GLight, space: CompSpace, animController: GAnimController, dir: Vector2, spawn: GAnim) {
         val posX = GHistoryFloat(slugTrailSize)
         val posY = GHistoryFloat(slugTrailSize)
         draw.currentImg = GGraphics.red
@@ -82,11 +106,6 @@ object SCentralCrabUnit : Setup() {
         draw.drawOcc = { batch, space ->
             batch.drawCenteredOnBox(draw, space, draw.currentImg.occluder)
         }
-
-        enemy.emitter().emit = {
-            for (i in 0..40)
-                SParticles.explosionParticle(world, space.centerX, space.centerY, 28f)
-        }
     }
 
     private fun setupSpawn(light: GLight, spawn: GAnim, idle: GAnim, animController: GAnimController) {
@@ -99,8 +118,10 @@ object SCentralCrabUnit : Setup() {
         }
     }
 
-    private fun setupJump(jump: GAnim, entity: Entity, dir: Vector2, world: World, space: CompSpace, player: Entity, light: GLight) {
+    private fun setupJump(jump: GAnim, dir: Vector2, world: World, space: CompSpace, player: Entity, light: GLight, land: GAnim, animController: GAnimController) {
+        var airTime = 0f
         jump.playMode = Animation.PlayMode.NORMAL
+        jump.inEachFrame {  }
         jump.onFrame.set(0) { blinkCpu(world, space, dir.angle(), light) }
         jump.onFrame.set(1) { normalLight(light) }
         jump.onFrame.set(2) { blinkCpu(world, space, dir.angle(), light) }
@@ -111,13 +132,20 @@ object SCentralCrabUnit : Setup() {
         jump.onFrame.set(7) { normalLight(light) }
         jump.onFrame.set(8) { blinkCpu(world, space, dir.angle(), light) }
         jump.onFrame.set(9) {
+            airTime = 0f
             space.move(dir.x, dir.y, GTime.enemyDelta * 10f)
         }
         jump.inFrame[9] = {
+            airTime += GTime.enemyDelta
             space.move(dir.x, dir.y, GTime.enemyDelta * 10f)
         }
         jump.inFrame[10] = jump.inFrame[9]
         jump.inFrame[11] = jump.inFrame[10]
+        jump.onFrame.set(10) {
+            if (airTime >= airMaxTime)
+                animController.forceCurrent(land)
+        }
+        jump.onFrame[11] = jump.onFrame[10]
     }
 
     private fun normalLight(light: GLight) {

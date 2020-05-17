@@ -12,6 +12,7 @@ enum class Frames {
     CPU_IDLE("cpu"),
     CPU_WALK("cpu_walk"),
     CPU_JUMPING("cpu_jumping"),
+    CPU_LAND("cpu_land"),
     FIRE("squares/square_yellow", "squares/square_orange", "squares/square_red"),
     BLUE("squares/square_dark_purple", "squares/square_dark_blue", "squares/square_blue"),
     PINK("squares/square_pink_skin", "squares/square_pink", "squares/square_red")

@@ -4,6 +4,7 @@ import be.particulitis.hourglass.common.GHistoryFloat
 import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.drawing.GPalette
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Array
 import ktx.collections.GdxArray
 import kotlin.math.abs
@@ -16,6 +17,8 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
     private var snapped = false
     var boost = false
     var tr = if (primary) mainColor else secondaryColor
+    var myMainColor = mainColor
+    var mySecondaryColor = secondaryColor
 
     init {
         if (GRand.bool()) {
@@ -48,6 +51,24 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
             y.add(y.get() - ((y.get() - desiredY) * delta * 3 * speed))
     }
 
+    fun copyFrom(fontPixel: FontPixel) {
+        desiredY = fontPixel.desiredY
+        desiredX = fontPixel.desiredX
+        snapped = false
+        boost = false
+        tr = fontPixel.tr
+        primary = fontPixel.primary
+    }
+
+    fun updateColor(mainColor: TextureRegion, secondaryColor: TextureRegion) {
+        tr = if (primary)
+            mainColor
+        else
+            secondaryColor
+        myMainColor = mainColor
+        mySecondaryColor = secondaryColor
+    }
+
     companion object {
 
         const val trailSize = 3
@@ -56,6 +77,7 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
 
         private val instantiate: Map<Char, List<Pair<Int, Offsets>>> = Gdx.files.internal("fonts")
                 .readString()
+                .replace("SPACE", " ")
                 .split("---")
                 .map { it.filter { char -> char.category != CharCategory.CONTROL } }
                 // so far it looks like : $111110011111010, %101001010100101, *101010111010101, +000010111010000, ...
@@ -70,27 +92,16 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
                 )
 
         fun get(index: Int, c: Char, width: Int = 1, existingPool: GdxArray<FontPixel> = GdxArray()): List<FontPixel> {
-            val list = instantiate[c] ?: error("Char $c isn't present")
+            val list = instantiate[c] ?: error("Char '$c' isn't present")
             var delay = 0f
             return list.mapIndexed { i, pair ->
                 val pixel = mutableListOf<FontPixel>()
                 // keeping -1 around so it's easier to reason about where the pixel is in the car
                 if (pair.first != -1) {
-                            // left side
-                    val _0 = if (i % 3 == 0) false else isPresent(list, i - 4)
                     val _1 = isPresent(list, i - 3)
-                            // right side
                     val _2 = if (i % 3 == 2) false else isPresent(list, i - 2)
-
-                    val _3 = if (i % 3 == 0) false else isPresent(list, i - 1)
                     val _5 = if (i % 3 == 2) false else isPresent(list, i + 1)
-
-                    val _6 = if (i % 3 == 0) false else isPresent(list, i + 2)
-                    val _7 = isPresent(list, i + 3)
-                    val _8 = isPresent(list, i + 4)
-
-                    val offset = pair.second
-                    val p = initFontPixel(index, width, offset, existingPool, _1, _2, _5, delay)
+                    val p = initPixel(index, width, pair.second, existingPool, _1, _2, _5, delay)
                     delay += p.size * 0.0015f
                     pixel.addAll(p)
                 }
@@ -102,7 +113,7 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
         // 3   5
         // 6 7 8
         private val tmpPixelList = GdxArray<FontPixel>(9)
-        private fun initFontPixel(index: Int, width: Int, offset: Offsets, existingPool: Array<FontPixel>, _1: Boolean, _2: Boolean, _5: Boolean, delay: Float): GdxArray<FontPixel> {
+        private fun initPixel(index: Int, width: Int, offset: Offsets, existingPool: Array<FontPixel>, _1: Boolean, _2: Boolean, _5: Boolean, delay: Float): GdxArray<FontPixel> {
             var pixelDelay = 0f
             tmpPixelList.clear()
             val desiredX = (index * width * 3) + (offset.xF * width) + (index) // base + char place + space between chars

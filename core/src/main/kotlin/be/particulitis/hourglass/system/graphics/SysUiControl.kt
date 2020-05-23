@@ -21,9 +21,11 @@ class SysUiControl : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompButt
 
     override fun processSystem() {
         GGraphics.batch.shader = null
+        val entities = entityIds
+        if (entities.size() == 0)
+            return
         DrawerTools.draw {
             GGraphics.batch.setColor(1f, 1f, 1f, 1f)
-            val entities = entityIds
             for (i in 0 until entities.size()) {
                 val entityId = entities[i]
                 val button = mButton[entityId]

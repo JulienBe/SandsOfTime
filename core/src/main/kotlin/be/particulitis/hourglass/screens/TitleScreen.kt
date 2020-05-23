@@ -7,10 +7,13 @@ import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GPalette
+import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
+import be.particulitis.hourglass.prettyUi
 import be.particulitis.hourglass.system.*
 import be.particulitis.hourglass.system.graphics.*
+import com.artemis.Entity
 import com.artemis.World
 import com.artemis.WorldConfigurationBuilder
 import com.artemis.managers.TagManager
@@ -37,7 +40,6 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             .with(SysUiPrettyAct())
             .with(SysUiControl())
             .with(SysUiDisplay())
-            .with(SysHourglassDisplay())
             .with(SysClearActions())
             .build()
     val world = World(config)
@@ -46,24 +48,47 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
     var previousY = 0f
     var lightIntensity = 0.1f
     var colorIndex: Int = GRand.int(0, 16)
+    var uppercaseIndex = 0
+    lateinit var supercomputer: CompPrettyUi
+    val supercomputerSources = arrayListOf(
+            "supercomputer",
+            "Supercomputer",
+            "sUpercomputer",
+            "suPercomputer",
+            "supErcomputer",
+            "supeRcomputer",
+            "superComputer",
+            "supercOmputer",
+            "supercoMputer",
+            "supercomPuter",
+            "supercompUter",
+            "supercompuTer",
+            "supercomputEr",
+            "supercomputeR"
+    )
 
     override fun show() {
         Gdx.input.inputProcessor = GInput
 
-        SUi.prettyDisplay(world, "Hourglass", 80f, 150f, 6)
-        SUi.button(world, "Play", 135f, 100f, 3) {
+        SUi.prettyDisplay(world, "8-BIT", 110f, 160f, 6)
+        supercomputer = SUi.prettyDisplay(world, "supercomputer", 40f, 120f, 6).prettyUi()
+        SUi.button(world, "Play", 135f, 80f, 3) {
             switchScreen(GameScreen(game))
         }
-        SUi.button(world, "Options", 120f, 75f, 3) {
+        SUi.button(world, "Options", 120f, 60f, 3) {
             Gdx.app.exit()
         }
-        SUi.button(world, "Exit", 135f, 50f, 3) {
+        SUi.button(world, "Exit", 135f, 40f, 3) {
             Gdx.app.exit()
         }
         SProps.ground(world)
     }
 
     override fun render(delta: Float) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            uppercaseIndex++
+            supercomputer.updateText(supercomputerSources[uppercaseIndex % supercomputerSources.size], 6)
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             switchScreen(GameScreen(game))
         }

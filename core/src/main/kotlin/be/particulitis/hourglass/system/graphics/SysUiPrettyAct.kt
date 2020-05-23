@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.common.GRand
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
@@ -22,7 +21,7 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
         val space = mSpace[entityId]
 
         ui.time += GTime.delta
-        ui.currentIndex = ((ui.time * 5f) * ui.pixels.size / 12f).roundToInt()
+        ui.currentIndex = ((ui.time * 5f) * ui.allFontPixels.size / 12f).roundToInt()
         ui.phases.forEach {
             it.trigger(ui)
             if (it.active && !it.finished)
@@ -35,29 +34,14 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
             pixel.boost = false
         }
 
-        if (GRand.nextInt(600) == 0 && ui.currentIndex > ui.pixels.size)
-            swapPixel(ui)
     }
 
     private fun onEachPixel(ui: CompPrettyUi, inside: (pixel: FontPixel) -> Unit) {
-        ui.pixels.filterIndexed { index, _ ->
+        ui.allFontPixels.filterIndexed { index, _ ->
             index < ui.currentIndex
         }.forEach {
             inside.invoke(it)
         }
-    }
-
-    private fun swapPixel(ui: CompPrettyUi) {
-        val one = ui.pixels.random()
-        val two = ui.pixels.random()
-        if (one.primary != two.primary)
-            return
-        val oneFutureX = two.desiredX
-        val oneFutureY = two.desiredY
-        two.desiredX = one.desiredX
-        two.desiredY = one.desiredY
-        one.desiredX = oneFutureX
-        one.desiredY = oneFutureY
     }
 
 }

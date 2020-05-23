@@ -1,25 +1,29 @@
 package be.particulitis.hourglass.gamedata.setups
 
+import be.particulitis.hourglass.button
+import be.particulitis.hourglass.create
 import be.particulitis.hourglass.font.FlipColorAnim
 import be.particulitis.hourglass.font.FontPixel
 import be.particulitis.hourglass.gamedata.Builder
+import be.particulitis.hourglass.prettyUi
+import be.particulitis.hourglass.space
+import com.artemis.Entity
 import com.artemis.World
 
-object SUi : Setup() {
+object SUi {
 
     val buttonPadding = 2
 
     fun score(id: Int, world: World) {
         world.getEntity(id).space().setPos(90f, 170f)
     }
-    fun prettyDisplay(world: World, text: String, x: Float, y: Float, w: Int = 1) {
+    fun prettyDisplay(world: World, text: String, x: Float, y: Float, w: Int = 1): Entity {
         val e = world.create(Builder.prettyDisplay)
         val space = e.space()
         space.setPos(x, y)
         e.prettyUi().changeText(text, w)
-        e.prettyUi().phases.add(
-                FlipColorAnim()
-        )
+        e.prettyUi().phases.add(FlipColorAnim())
+        return e
     }
 
     fun button(world: World, text: String, x: Float, y: Float, w: Int = 1, onClick: () -> Unit) {

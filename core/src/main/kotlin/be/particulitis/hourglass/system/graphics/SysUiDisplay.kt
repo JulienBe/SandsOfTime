@@ -37,7 +37,7 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
                 val entityId = entities[i]
                 val space = mSpace[entityId]
                 val txt = getTxt(entityId)
-                txt.pixels.forEach {
+                txt.allFontPixels.forEach {
                     drawPixel(it, space)
                 }
                 if (mButton.has(entityId)) {

@@ -43,21 +43,19 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
                 if (mButton.has(entityId)) {
                     val button = mButton[entityId]
                     button.outline.forEach {
-                        if (it.act(GTime.delta))
+                        if (it.act(Gdx.graphics.deltaTime))
                             for (i in 0..FontPixel.trailSize)
                                 GGraphics.batch.draw(it.tr, (space.x + it.x.get(i)).roundToInt().toFloat(), (space.y + it.y.get(i)).roundToInt().toFloat(), 1f, 1f)
                     }
                     if (button.selected)
                         displaySelectionOnButton(button, space)
                 }
-                if (Gdx.input.justTouched() && txt is CompButton && GHelper.isClicked(space.x, space.y, FontPixel.width(txt.text, 1), FontPixel.height(1)))
-                    txt.onClick.invoke()
             }
         }
     }
 
     private fun drawPixel(it: FontPixel, space: CompSpace) {
-        if (it.act(GTime.delta)) {
+        if (it.act(Gdx.graphics.deltaTime)) {
             for (i in 0..FontPixel.trailSize step 2)
                 GGraphics.batch.draw(it.tr, (space.x + it.x.get(i)).roundToInt().toFloat(), (space.y + it.y.get(i)).roundToInt().toFloat(), 1f, 1f)
             it.boost = false
@@ -66,11 +64,11 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
 
     private fun displaySelectionOnButton(button: CompButton, space: CompSpace) {
         leftSelected.forEach {
-            if (it.act(GTime.delta))
+            if (it.act(Gdx.graphics.deltaTime))
                 GGraphics.batch.draw(it.tr, (space.x + it.x.get() - 10).roundToInt().toFloat(), (space.y + it.y.get()).roundToInt().toFloat(), 1f, 1f)
         }
         rightSelected.forEach {
-            if (it.act(GTime.delta))
+            if (it.act(Gdx.graphics.deltaTime))
                 GGraphics.batch.draw(it.tr, (button.w + space.x + it.x.get() + 3).roundToInt().toFloat(), (space.y + it.y.get()).roundToInt().toFloat(), 1f, 1f)
         }
         for (i in 0..button.outline.size / 80) {
@@ -83,6 +81,8 @@ class SysUiDisplay : BaseEntitySystem(Aspect.all(CompSpace::class.java).one(Comp
     }
 
     private fun hightButton(button: CompButton, space: CompSpace, index: Int) {
+        if (button.outline.isEmpty)
+            return
         val highlight = button.outline[abs(index % button.outline.size)]
         highlight.x.add(highlight.desiredX)
         highlight.y.add(highlight.desiredY)

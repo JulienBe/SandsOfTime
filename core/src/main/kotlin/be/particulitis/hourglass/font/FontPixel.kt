@@ -35,7 +35,7 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
         if (initDelay > 0)
             return false
         mvtDiag(delta)
-        if (!snapped && abs(x.get() - desiredX) + abs(y.get() - desiredY) < 0.1f) {
+        if (!snapped && abs(x.get() - desiredX) + abs(y.get() - desiredY) < 0.2f) {
             snapped = true
             boost = true
             x.fill(desiredX)
@@ -46,9 +46,9 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
 
     private fun mvtDiag(delta: Float) {
         if (abs(x.get() - desiredX) > abs(y.get() - desiredY))
-            x.add(x.get() - ((x.get() - desiredX) * delta * 3 * speed))
+            x.add(x.get() - ((x.get() - desiredX) * delta * 6 * speed))
         else
-            y.add(y.get() - ((y.get() - desiredY) * delta * 3 * speed))
+            y.add(y.get() - ((y.get() - desiredY) * delta * 6 * speed))
     }
 
     fun copyFrom(fontPixel: FontPixel) {
@@ -71,7 +71,7 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
 
     companion object {
 
-        const val trailSize = 3
+        const val trailSize = 4
         val mainColor = GPalette.DARK_GREY.tr
         val secondaryColor = GPalette.LIGHT_GREY.tr
 
@@ -102,7 +102,7 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
                     val _2 = if (i % 3 == 2) false else isPresent(list, i - 2)
                     val _5 = if (i % 3 == 2) false else isPresent(list, i + 1)
                     val p = initPixel(index, width, pair.second, existingPool, _1, _2, _5, delay)
-                    delay += p.size * 0.0015f
+                    delay += p.size * 0.0005f
                     pixel.addAll(p)
                 }
                 pixel
@@ -128,7 +128,7 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
                     p.desiredY = desiredY - y
                     p.tr = mainColor
                     p.primary = true
-                    p.initDelay = (index / 4f) + delay + pixelDelay
+                    p.initDelay = (index / 32f) + delay + pixelDelay
                     pixelDelay += 0.01f
                     tmpPixelList.add(p)
                 }

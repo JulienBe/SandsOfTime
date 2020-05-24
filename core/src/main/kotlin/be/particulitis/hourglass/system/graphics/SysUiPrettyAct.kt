@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.font.FontPixel
@@ -8,6 +7,7 @@ import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
+import com.badlogic.gdx.Gdx
 import kotlin.math.roundToInt
 
 @Wire(failOnNull = false)
@@ -20,7 +20,7 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
         val ui = mUi[entityId]
         val space = mSpace[entityId]
 
-        ui.time += GTime.delta
+        ui.time += Gdx.graphics.deltaTime
         ui.currentIndex = ((ui.time * 5f) * ui.allFontPixels.size / 12f).roundToInt()
         ui.phases.forEach {
             it.trigger(ui)
@@ -28,7 +28,7 @@ class SysUiPrettyAct : IteratingSystem(Aspect.all(CompSpace::class.java, CompPre
                 it.act(ui, space)
         }
         onEachPixel(ui) { pixel: FontPixel ->
-            pixel.act(GTime.delta)
+            pixel.act(Gdx.graphics.deltaTime)
         }
         onEachPixel(ui) { pixel: FontPixel ->
             pixel.boost = false

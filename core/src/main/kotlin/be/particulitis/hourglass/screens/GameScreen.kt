@@ -1,13 +1,15 @@
 package be.particulitis.hourglass.screens
 
 import be.particulitis.hourglass.Boombox
-import be.particulitis.hourglass.common.*
+import be.particulitis.hourglass.common.GInput
+import be.particulitis.hourglass.common.GKeyGlobalState
+import be.particulitis.hourglass.common.GSide
+import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Dim
-import be.particulitis.hourglass.gamedata.setups.SPlayer
 import be.particulitis.hourglass.gamedata.setups.SProps
 import be.particulitis.hourglass.gamedata.setups.SUi
 import be.particulitis.hourglass.states.StateManager
@@ -28,9 +30,7 @@ class GameScreen(game: Game) : AbstractScreen(game) {
 
     override fun show() {
         GTime.reset()
-        SPlayer.player(world)
         SUi.score(world.create(Builder.score.build(world)), world)
-        StateManager.endPause(world)
     }
 
     override fun render(delta: Float) {
@@ -49,6 +49,7 @@ class GameScreen(game: Game) : AbstractScreen(game) {
         var score = 0
 
         private val config = WorldConfigurationBuilder()
+                .with(SysGameState())
                 .with(TagManager())
                 .with(SysTime())
                 .with(SysControl())
@@ -67,13 +68,13 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                 .with(SysDrawer())
                 .with(SysBloomer())
                 .with(SysUiDisplay())
+                .with(SysUiPrettyAct())
+                .with(SysUiControl())
                 .with(SysHpDisplay())
-                .with(SysHourglassDisplay())
 
                 .with(SysClearActions())
                 .with(SysDead())
                 .with(SysSpawner())
-                .with(SysStartGame())
                 .build()
         val world = World(config)
         val boombox = Boombox(world)
@@ -87,10 +88,12 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                         }
                     })
             stageSetup()
+            StateManager.waitingStart(world)
+            boombox.play(boombox.mLevel1)
         }
 
         private fun stageSetup() {
-            SProps.ground(world)
+            SProps.ground(world, 14, 18)
 
             SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.BOTTOM, 0f, GResolution.areaH - Dim.WallSprite.h + 7f)
             SProps.wall(world, (GResolution.areaW / Dim.WallSprite.w).toInt() + 1, 1, GSide.TOP, 0f, -7f)

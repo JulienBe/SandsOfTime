@@ -7,10 +7,9 @@ import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.gamedata.Data
 import be.particulitis.hourglass.gamedata.setups.SParticles
 import com.artemis.BaseSystem
+import com.artemis.Entity
 import com.artemis.World
 import com.artemis.managers.TagManager
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import ktx.collections.GdxMap
 import ktx.collections.gdxMapOf
@@ -66,8 +65,10 @@ class SysHpDisplay : BaseSystem() {
     }
 
     override fun processSystem() {
-        val hp = world.getSystem(TagManager::class.java).getEntity(Data.playerTag).getComponent(CompHp::class.java).hp
-        println("hp: $hp")
+        val player = world.getPlayer()
+        if (player == null)
+            return
+        val hp = player.getComponent(CompHp::class.java).hp
 
         if (!batch.isDrawing)
             batch.begin()
@@ -124,6 +125,10 @@ class SysHpDisplay : BaseSystem() {
         val batch = GGraphics.batch
         var center = Vector2()
     }
+}
+
+private fun World.getPlayer(): Entity? {
+    return getSystem(TagManager::class.java).getEntity(Data.playerTag)
 }
 
 class Drop(var x: Int = GRand.int(1, 6), var y: Int = 28) {

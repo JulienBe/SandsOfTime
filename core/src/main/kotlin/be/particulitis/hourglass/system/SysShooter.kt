@@ -17,9 +17,7 @@ class SysShooter : IteratingSystem(Aspect.all(CompShooter::class.java, CompSpace
         val shoot = mShoot[entityId]
         shoot.justShot = false
         val player = mIsPlayer[entityId].isPlayer
-        if ((GTime.enemyPhase && !player || !GTime.enemyPhase && player) &&
-                shoot.nextShoot < GTime.myTime(player) &&
-                shoot.shouldShood.invoke()) {
+        if ((GTime.enemyPhase && !player || !GTime.enemyPhase && player) && shoot.nextShoot < GTime.myTime(player) && shoot.shouldShood.invoke() && !shoot.justShot) {
             shoot.shootingFunc.invoke()
             shoot.nextShoot = GTime.myTime(mIsPlayer.has(entityId)) + shoot.firerate
             shoot.justShot = true

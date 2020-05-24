@@ -33,9 +33,6 @@ class SysUiControl : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompButt
             }
             val selectedButton = getSelected(entities)
             selectedButton.selected = true
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                selectedButton.onClick.invoke()
-            }
             if (selectedIndex < entities.size() - 1 && (Gdx.input.isKeyJustPressed(Input.Keys.TAB) && !Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN))) {
                 selectedIndex++
                 bump(getSelected(entities))
@@ -43,6 +40,13 @@ class SysUiControl : BaseEntitySystem(Aspect.all(CompSpace::class.java, CompButt
             if (selectedIndex > 0 && (Gdx.input.isKeyJustPressed(Input.Keys.TAB) && Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.UP))) {
                 selectedIndex--
                 bump(getSelected(entities))
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                selectedButton.onClick.invoke()
+                if (selectedButton.deactivateOnClick) {
+//                    world.delete(entities[abs(selectedIndex) % entities.size()])
+                    selectedButton.activateReset()
+                }
             }
         }
     }

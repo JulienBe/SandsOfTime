@@ -1,26 +1,25 @@
 package be.particulitis.hourglass.states
 
-import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.comp.Comp
-import be.particulitis.hourglass.comp.CompHp
-import be.particulitis.hourglass.entities
-import be.particulitis.hourglass.screens.GameScreen
-import com.artemis.Aspect
 import com.artemis.World
-import kotlin.reflect.KClass
 
 object StateManager {
 
-    private var currentState = StateSystems.RUNNING
+    var currentState = StateSystems.RUNNING
+
+    fun waitingStart(world: World) {
+        changedState(world, StateSystems.WAITING_START)
+    }
 
     fun pause(world: World) {
-        currentState = StateSystems.PAUSED
-        changedState(world)
+        changedState(world, StateSystems.PAUSED)
     }
 
     fun endPause(world: World) {
-        currentState = StateSystems.RUNNING
-        changedState(world)
+        changedState(world, StateSystems.RUNNING)
+    }
+
+    fun playerDead(world: World) {
+        changedState(world, StateSystems.PLAYER_DEAD)
     }
 
     fun invertPause(world: World) {
@@ -30,28 +29,12 @@ object StateManager {
         }
     }
 
-    private fun changedState(world: World) {
+    private fun changedState(world: World, new: StateSystems) {
+        currentState = new
+
         currentState.systems.forEach {
             world.getSystem(it.first).isEnabled = it.second
         }
-    }
-
-    fun playerDead(world: World) {
-        currentState = StateSystems.PLAYER_DEAD
-
-        GTime.reset()
-        deleteAll(world, CompHp::class)
-        GameScreen.score = -1
-
-        changedState(world)
-    }
-
-    fun deleteAll(world: World, comp: KClass<out Comp>): Int {
-        val entities = world.entities(Aspect.all(comp.java))
-        for (i in 0 until entities.size()) {
-            world.delete(entities[i])
-        }
-        return entities.size()
     }
 
 }

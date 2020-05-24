@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.screens
 
+import be.particulitis.hourglass.Boombox
 import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GInput
 import be.particulitis.hourglass.common.GRand
@@ -66,6 +67,7 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             "supercomputEr",
             "supercomputeR"
     )
+    val boombox = Boombox(world)
 
     override fun show() {
         Gdx.input.inputProcessor = GInput
@@ -75,21 +77,24 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
         SUi.button(world, "Play", 135f, 80f, 3) {
             switchScreen(GameScreen(game))
         }
-        SUi.button(world, "Options", 120f, 60f, 3) {
+        SUi.button(world, "Options", 120f, 55f, 3) {
             Gdx.app.exit()
         }
-        SUi.button(world, "Exit", 135f, 40f, 3) {
+        SUi.button(world, "Exit", 135f, 30f, 3) {
             Gdx.app.exit()
         }
         SProps.ground(world)
+        boombox.play(boombox.mTitleScreen)
     }
 
     override fun render(delta: Float) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+
             uppercaseIndex++
             supercomputer.updateText(supercomputerSources[uppercaseIndex % supercomputerSources.size], 6)
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            boombox.stopAll()
             switchScreen(GameScreen(game))
         }
         light.updatePosAngle(GHelper.x, GHelper.y, GTime.time * 180f)
@@ -113,4 +118,6 @@ class TitleScreen(game: Game) : AbstractScreen(game) {
             super.render(delta)
         }
     }
+
+
 }

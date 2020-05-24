@@ -8,4 +8,18 @@ class CompButton : CompTxt() {
     val outline = GdxArray<FontPixel>()
     var selectedHighlightIndex = 0
     var selected = false
+    var deactivateOnClick = false
+
+    override fun reset() {
+        super.reset()
+        onClick = {}
+        outline.clear()
+        selectedHighlightIndex = 0
+        selected = false
+        deactivateOnClick = false
+    }
+
+    fun activateReset() {
+        reset()
+    }
 }

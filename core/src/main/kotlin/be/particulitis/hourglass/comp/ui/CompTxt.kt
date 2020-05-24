@@ -60,8 +60,10 @@ open class CompTxt : Comp() {
     }
 
     override fun reset() {
+        text = ""
+        chars.clear()
+        allFontPixels.clear()
         super.reset()
-        changeText("")
     }
 
 }

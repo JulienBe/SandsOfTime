@@ -21,7 +21,6 @@ class SysGameState : BaseSystem() {
     var playButton: Entity? = null
 
     override fun processSystem() {
-        println("SysGameState.processSystem")
         if (StateManager.currentState != previousState)
             onNewState()
         previousState = StateManager.currentState

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 
 enum class GPalette(red: Int, green: Int, blue: Int) {
 
-    BLACK(        0,   0, 0),  // 0
+    BLACK(        95,   87, 79),  // 0
     DARK_GREY(   95,  87, 79), // 182
     LIGHT_GREY( 194, 195, 199),// 389
     WHITE(      255, 241, 232),// 496

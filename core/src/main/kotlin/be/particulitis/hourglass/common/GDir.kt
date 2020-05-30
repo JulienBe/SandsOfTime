@@ -9,6 +9,7 @@ enum class GDir {
     Left, None, Right,
     DownLeft, Down, DownRight;
 
+
     companion object {
         fun get(xAxis: Float, yAxis: Float): GDir {
             val x = MathUtils.clamp(xAxis.roundToInt(), -1, 1) + 1

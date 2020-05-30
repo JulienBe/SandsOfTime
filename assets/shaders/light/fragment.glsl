@@ -46,6 +46,7 @@ uniform sampler2D u_occlusion;
 uniform vec4 u_light_pos_angle_tilt[600];
 uniform vec4 u_light_intensity_rgb[600];
 uniform int u_light_count;
+uniform float u_ambient;
 
 void main() {
     vec4 color_text = texture2D(u_texture, v_texCoords);
@@ -78,7 +79,7 @@ void main() {
             l += mul * dither_pattern[int(mod(gl_FragCoord.x * gl_FragCoord.y, 9))] * 0.1;
         }
 
-        //**
+        /**
         float shadow_total_steps = len * 100;
         vec2 shadow_sample_step = delta_pixel_pos.xy / shadow_total_steps;
         shadow_sample_step.x /= ratio;
@@ -97,7 +98,7 @@ void main() {
         b += l * u_light_intensity_rgb[i].w;
     }
     total_light /= 4.98;
-
+    total_light += u_ambient;
     int color = int((color_text.r + color_text.g) * 255.0);
     int palette_index =
         int(0 > color) + int(72 > color) + int(135 > color) + int(163 > color) +

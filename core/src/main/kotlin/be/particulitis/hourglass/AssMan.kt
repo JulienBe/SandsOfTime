@@ -69,11 +69,11 @@ class AssMan {
     companion object {
         const val atlasPath = "textures/texture1/atlas.atlas"
         const val wall = "wall1"
-        const val titleScreen = "Juhani Junkala [Retro Game Music Pack] Title Screen"
-        const val level1 = "Juhani Junkala [Retro Game Music Pack] Level 1"
-        const val level2 = "Juhani Junkala [Retro Game Music Pack] Level 2"
-        const val level3 = "Juhani Junkala [Retro Game Music Pack] Level 3"
-        const val ending = "Juhani Junkala [Retro Game Music Pack] Ending"
+        const val titleScreen = "JuhaniJunkalaRetroGameMusicPackTitleScreen"
+        const val level1 = "JuhaniJunkalaRetroGameMusicPackTitleScreen"
+        const val level2 = "JuhaniJunkalaRetroGameMusicPackTitleScreen"
+        const val level3 = "JuhaniJunkalaRetroGameMusicPackTitleScreen"
+        const val ending = "JuhaniJunkalaRetroGameMusicPackTitleScreen"
         val manager = AssetManager()
     }
 }

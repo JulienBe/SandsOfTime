@@ -8,7 +8,7 @@ object Builder {
     val enemyCpu = createBuilder(Aspects.EnemySlug)
     val enemyShoot = createBuilder(Aspects.EnemyShoot)
     val score = createBuilder(Aspects.Score)
-    val bloodParticle = createBuilder(Aspects.BloomParticles)
+    val bloomParticle = createBuilder(Aspects.BloomParticles)
     val trailParticleBloomer = createBuilder(Aspects.TrailParticlesBloomer)
     val trailParticle = createBuilder(Aspects.TrailParticles)
     val particle = createBuilder(Aspects.Particles)
@@ -19,6 +19,7 @@ object Builder {
     val dent = createBuilder(Aspects.Dent)
     val occluderProp = createBuilder(Aspects.OccluderProp)
     val beacon = createBuilder(Aspects.Beacon)
+    val underDot = createBuilder(Aspects.DotUndertrail)
 
     private fun createBuilder(aspects: Aspects): ArchetypeBuilder {
         val builder = ArchetypeBuilder()

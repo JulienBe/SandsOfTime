@@ -42,6 +42,7 @@ class FlipColorAnim: UiAnim() {
             (p1.x.get() - p2.x.get()).roundToInt()
         }
     }
+
     private fun rightLeft(ui: CompPrettyUi, space: CompSpace) {
         ui.allFontPixels.sort { p1, p2 ->
             (p2.x.get() - p1.x.get()).roundToInt()

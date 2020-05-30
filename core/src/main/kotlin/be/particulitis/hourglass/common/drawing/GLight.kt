@@ -5,6 +5,8 @@ import ktx.collections.GdxSet
 
 class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Float = 0f, r: Float = 1f, g: Float = 1f, b: Float = 1f) {
 
+    constructor(x: Float, y: Float, intensity: Float, palette: GPalette): this(x, y, intensity, r = palette.r, g = palette.g, b = palette.b)
+
     val id: Int
     var cleared = false
 
@@ -62,6 +64,7 @@ class GLight(x: Float, y: Float, intensity: Float, angle: Float = 0f, tilt: Floa
         val xyat = LinkedHashMap<Int, Float>()
         val intensityrgb = LinkedHashMap<Int, Float>()
         var globalId = 0
+        var ambient = 0.3f
 
         private var idPool = GdxSet<Int>()
 

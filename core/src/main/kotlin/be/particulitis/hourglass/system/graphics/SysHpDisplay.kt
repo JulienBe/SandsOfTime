@@ -70,9 +70,9 @@ class SysHpDisplay : BaseSystem() {
             return
         val hp = player.getComponent(CompHp::class.java).hp
 
-        if (!batch.isDrawing)
-            batch.begin()
-        batch.shader = null
+        if (!GGraphics.batch.isDrawing)
+            GGraphics.batch.begin()
+        GGraphics.batch.shader = null
         if (nextDrop < GTime.time) {
             nextDrop = GTime.time + dropFreq
             drop()
@@ -100,12 +100,12 @@ class SysHpDisplay : BaseSystem() {
                 true
             } else {
                 // just one for the 'viscosity'
-                it.ifFreeMoveThere(if (GRand.bool()) 1 else -1, gravity, grid, world, x, y)
+                it.ifFreeMoveThere(GRand.oneOrMinus(), gravity, grid, world, x, y)
             }
         }.forEach {
             // they have not moved
             if (GRand.nextInt(10) == 1)
-                it.ifFreeMoveThere(if (GRand.bool()) 1 else -1, 0, grid, world, x, y)
+                it.ifFreeMoveThere(GRand.oneOrMinus(), 0, grid, world, x, y)
             if (it.moved && !it.hasBumpedOthers &&
                     // are basically surrounded
                     !it.isFree(+0, +gravity, grid) &&
@@ -122,7 +122,6 @@ class SysHpDisplay : BaseSystem() {
         const val W = 7
         const val dropFreq = 0.024f
         const val gravity = -1
-        val batch = GGraphics.batch
         var center = Vector2()
     }
 }
@@ -158,7 +157,7 @@ class Drop(var x: Int = GRand.int(1, 6), var y: Int = 28) {
 
     fun draw(grid: ArrayList<IntArray>, sand: GdxMap<Int, Drop>, world: World, x: Float, y: Float) {
         if (justBumped) {
-            batch.draw(high, x + this.x, y + this.y, 1f, 1f)
+            GGraphics.batch.draw(high, x + this.x, y + this.y, 1f, 1f)
             if (GTime.alternate && GRand.bool()) {
                 justBumped = false
                 sand[getGridValue(grid, this.x, this.y + SysHpDisplay.gravity)]?.bump()
@@ -167,7 +166,7 @@ class Drop(var x: Int = GRand.int(1, 6), var y: Int = 28) {
             }
             SParticles.trail(world, x + this.x, y + this.y, SParticles.fireAnim, 1f)
         } else {
-            batch.draw(low, x + this.x, y + this.y, 1f, 1f)
+            GGraphics.batch.draw(low, x + this.x, y + this.y, 1f, 1f)
         }
     }
 
@@ -190,7 +189,6 @@ class Drop(var x: Int = GRand.int(1, 6), var y: Int = 28) {
     companion object {
         val high = GGraphics.img("squares/square_yellow").front
         val low = GGraphics.img("squares/square_red").front
-        val batch = GGraphics.batch
 
         fun free(x: Int, y: Int, grid: ArrayList<IntArray>): Boolean {
             return getGridValue(grid, x, y) == 0

@@ -67,6 +67,9 @@ class GAnim(val initFrames: Frames, val timePerFrame: Float = 0.1f, var playMode
     fun lastOnFunction(function: () -> Unit) {
         onFrame[onFrame.size - 1] = function
     }
+    fun isFinished(): Boolean {
+        return totalTime <= time
+    }
     fun isFinished(time: Float): Boolean {
         return totalTime <= time
     }

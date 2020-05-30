@@ -6,7 +6,7 @@ import be.particulitis.hourglass.common.drawing.GGraphics.Companion.batch
 import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.common.drawing.GShader
-import be.particulitis.hourglass.comp.CompDraw
+import be.particulitis.hourglass.comp.draw.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -39,7 +39,8 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
     override fun processSystem() {
         val sortedEntities = sortEntities()
-        batch.end()
+        if (batch.isDrawing)
+            batch.end()
         paletteIndex += GTime.delta / 2f
 
         batch.shader = null
@@ -52,6 +53,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
         }
 
         val front = DrawerTools.drawToFb(fboCurrent) {
+            batch.draw(SysUndertrail.finalTexture, 0f, GResolution.areaH, GResolution.areaW, -GResolution.areaH)
             sortedEntities.forEach {
                 mDraw[it].drawFront.invoke(batch, mSpace[it])
             }
@@ -83,7 +85,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE1)
             //GGraphics.imgMan.palettes[paletteIndex.toInt() % GGraphics.imgMan.palettes.size].bind()
-            GGraphics.imgMan.palettes[0].bind()
+            GGraphics.assMan.palettes[1].bind()
             lightShader.setUniformi("u_palette", 1)
 
             Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
@@ -115,6 +117,7 @@ class SysDrawer : BaseEntitySystem(Aspect.all(CompDraw::class.java)) {
     }
 
     private fun setLights(lightShader: ShaderProgram) {
+        lightShader.setUniformf("u_ambient", GLight.ambient)
         lightShader.setUniformi("u_light_count", GLight.numberOfLights())
         lightShader.setUniform4fv("u_light_intensity_rgb", GLight.intensityrgb.values.toFloatArray(), 0, GLight.intensityrgb.size)
         lightShader.setUniform4fv("u_light_pos_angle_tilt", GLight.xyat.values.toFloatArray(), 0, GLight.xyat.size)

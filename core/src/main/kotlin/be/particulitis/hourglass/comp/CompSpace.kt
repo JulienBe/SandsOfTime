@@ -64,5 +64,11 @@ class CompSpace : Comp() {
         return "CompSpace(pos=$pos, w=$w, h=$h)"
     }
 
+    fun addDimKeepCentered(w: Float, h: Float) {
+        this.w += w
+        this.h += h
+        pos.add(-w / 2f, -h /2f)
+    }
+
 
 }

@@ -2,7 +2,7 @@ package be.particulitis.hourglass.system.graphics
 
 import be.particulitis.hourglass.common.drawing.GGraphics.Companion.batch
 import be.particulitis.hourglass.common.drawing.GResolution
-import be.particulitis.hourglass.comp.CompBloomer
+import be.particulitis.hourglass.comp.draw.CompBloomer
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.forEach
 import com.artemis.Aspect

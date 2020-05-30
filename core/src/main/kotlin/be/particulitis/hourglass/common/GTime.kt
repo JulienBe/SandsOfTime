@@ -4,6 +4,7 @@ object GTime {
 
     var enemyPhase = true
     var justSwitched = false
+    var noPauseDelta = 0f
     var delta = 0f
     var playerDelta = 0f
     var enemyDelta = 0f

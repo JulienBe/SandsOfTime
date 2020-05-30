@@ -1,31 +1,37 @@
 package be.particulitis.hourglass.gamedata.setups
 
+import be.particulitis.hourglass.*
 import be.particulitis.hourglass.common.GKeyGlobalState
 import be.particulitis.hourglass.common.GRand
-import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
-import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.*
 import be.particulitis.hourglass.gamedata.graphics.Frames
 import be.particulitis.hourglass.common.puppet.GAnim
+import be.particulitis.hourglass.common.puppet.GAnimController
 import be.particulitis.hourglass.comp.CompHp
 import be.particulitis.hourglass.comp.CompSpace
+import be.particulitis.hourglass.comp.CompTtl
 import be.particulitis.hourglass.gamedata.Builder
 import be.particulitis.hourglass.gamedata.Phases
+import com.artemis.Entity
 import com.artemis.World
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.min
+import kotlin.math.roundToInt
 
-object SParticles : Setup() {
+object SParticles {
 
     // yes one for all
-    val red = GGraphics.img("squares/square_red")
-    val yellow = GGraphics.img("squares/square_yellow")
+    val fireAnim     = GAnim(Frames.FIRE, .1f, Animation.PlayMode.NORMAL)
+    val blueAnim     = GAnim(Frames.BLUE, .1f, Animation.PlayMode.NORMAL)
+    val pinkAnim     = GAnim(Frames.PINK, .1f, Animation.PlayMode.NORMAL)
+    val lavenderAnim = GAnim(Frames.LAVENDER, .1f, Animation.PlayMode.NORMAL)
+    val whiteAnim    = GAnim(Frames.WHITE, .1f, Animation.PlayMode.NORMAL)
+
     val cpuSpawn = GAnim(Frames.CPU_SPAWN)
-    val fireAnim = GAnim(Frames.FIRE, .1f, Animation.PlayMode.NORMAL)
-    val blueAnim = GAnim(Frames.BLUE, .1f, Animation.PlayMode.NORMAL)
-    val pinkAnim = GAnim(Frames.PINK, .1f, Animation.PlayMode.NORMAL)
+    val gunnerHearth = GGraphics.tr("gunner_hearth")
     val normalUp = GGraphics.tr("normal_up")
     val normalRight = GGraphics.tr("normal_right")
     val normalDown = GGraphics.tr("normal_down")
@@ -62,8 +68,7 @@ object SParticles : Setup() {
 
         val growH = GRand.int(-1, 1).toFloat() * 5f
         val growW = if (growH == 0f)
-                        if (GRand.nextBoolean())
-                            5f else -5f
+                        GRand.oneOrMinus() * 5f
                     else
                         0f
 
@@ -147,7 +152,7 @@ object SParticles : Setup() {
         ttl.remaining = 8f
         val bloomer = p.bloomer()
         val speed = Vector2.dst(space.x, space.y, x, y) / 0.8f
-        bloomer.tr = yellow.front
+        bloomer.tr = GPalette.YELLOW.tr
         bloomer.preDraw = {
             moveVector.set(0f, 0f)
             moveVector.x = getXMove(space, x)
@@ -180,8 +185,49 @@ object SParticles : Setup() {
         }
     }
 
+    fun gunnerSpawn(world: World, outerSpace: CompSpace, angle: Float): CompTtl {
+        val p = world.create(Builder.bloomParticle)
+        val gunnerSpawn = GAnim(Frames.GUNNER_SPAWN_PARTICLES)
+        val animController = GAnimController(gunnerSpawn)
+        val bloomer = p.bloomer()
+        p.ttl().remaining = 99f
+        bloomer.draw = { batch: GGraphics, space: CompSpace ->
+            animController.update(GTime.enemyDelta)
+            val tr = animController.getFrame().front
+            batch.draw(tr,
+                    (outerSpace.centerX - tr.hw).roundToInt().toFloat(), (outerSpace.centerY - tr.hh).roundToInt().toFloat(),
+                    tr.hw, tr.hh - 7,
+                    tr.w, tr.h,
+                    1f, 1f, angle)
+            if (animController.current.isFinished())
+                p.ttl().remaining = -1f
+        }
+        return p.ttl()
+    }
+
+    fun gunnerHearthParticle(world: World, outerSpace: CompSpace, angle: Float) {
+        val p = world.create(Builder.bloomParticle)
+        val space = p.space()
+        space.setDim(2f, 3f)
+        space.setPos(outerSpace.x, outerSpace.y)
+        p.layer().setLayer(Phases.Other)
+        val ttl = p.ttl()
+        ttl.remaining = 0.15f
+        val bloomer = p.bloomer()
+        bloomer.tr = gunnerHearth
+        bloomer.draw = { batch: GGraphics, space: CompSpace ->
+            batch.draw(gunnerHearth,
+                    (outerSpace.centerX - gunnerHearth.hw).roundToInt().toFloat(), (outerSpace.centerY - gunnerHearth.hh).roundToInt().toFloat(),
+                    gunnerHearth.hw, gunnerHearth.hh - 7,
+                    gunnerHearth.w, gunnerHearth.h,
+                    1f, 1f, angle)
+        }
+        bloomer.angle = angle
+    }
+
+
     fun cpuHearthParticle(world: World, x: Float, y: Float, w: Float, h: Float, angle: Float) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val space = p.space()
         space.setDim(w, h)
         space.setPos(x, y)
@@ -192,12 +238,12 @@ object SParticles : Setup() {
         bloomer.draw = { batch: GGraphics, space: CompSpace ->
             batch.drawFrontStreched(bloomer, space)
         }
-        bloomer.tr = red.front
+        bloomer.tr = GPalette.RED.tr
         bloomer.angle = angle
     }
 
     fun cpuFootstep(world: World, x: Float, y: Float) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val space = p.space()
         space.setDim(1f, 1f)
         space.setPos(x, y)
@@ -207,11 +253,11 @@ object SParticles : Setup() {
 //        val draw = p.draw()
 //        draw.currentImg = yellow
         val bloom = p.bloomer()
-        bloom.tr = yellow.front
+        bloom.tr = GPalette.YELLOW.tr
     }
 
     fun cpuAttackParticle(world: World, x: Float, y: Float) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val space = p.space()
         space.setDim(1f, 1f)
         space.setPos(x, y)
@@ -229,7 +275,7 @@ object SParticles : Setup() {
 
     val angleV = Vector2()
     fun chargingParticles(world: World, targetX: Float, targetY: Float, str: Float, anim: GAnim = fireAnim) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
@@ -266,7 +312,7 @@ object SParticles : Setup() {
     }
 
     fun muzzle(world: World, centerX: Float, centerY: Float, dir: Vector2, str: Float = 1f) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val ttl = p.ttl()
         val bloomer = p.bloomer()
         val space = p.space()
@@ -289,7 +335,7 @@ object SParticles : Setup() {
     }
 
     fun lollipopShoot(world: World, centerX: Float, centerY: Float, pink: Boolean, str: Float = 1f) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val ttl = p.ttl()
         val bloomer = p.bloomer()
         val space = p.space()
@@ -307,7 +353,7 @@ object SParticles : Setup() {
 
     val angleVec = Vector2(0f, 4f)
     fun lollipopTrail(world: World, centerX: Float, centerY: Float, angle: Float, pink: Boolean, str: Float = 1f) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val ttl = p.ttl()
         val bloomer = p.bloomer()
         val space = p.space()
@@ -325,7 +371,7 @@ object SParticles : Setup() {
     }
 
     fun fireParticle(world: World, centerX: Float, centerY: Float, str: Float) {
-        val p = world.create(Builder.bloodParticle)
+        val p = world.create(Builder.bloomParticle)
         val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
@@ -339,7 +385,7 @@ object SParticles : Setup() {
         val dim2 = GRand.absGauss(2f)
         space.setDim(if (dim1 > dim2) dim1 else dim2, if (dim1 < dim2) dim1 / 2f else dim2 / 2f)
 
-        ttl.remaining = 0.02f + GRand.absGauss(.1f)
+        ttl.remaining = 0.1f + GRand.absGauss(.1f)
         dir.add((space.x - centerX) * 60f * str, (space.y - centerY) * 60f * str)
 
         bloomer.draw = { batch: GGraphics, space: CompSpace ->
@@ -357,8 +403,8 @@ object SParticles : Setup() {
         }
     }
 
-    fun explosionParticle(world: World, explosionCenterX: Float, explosionCenterY: Float, str: Float) {
-        val p = world.create(Builder.bloodParticle)
+    fun explosionParticle(world: World, explosionCenterX: Float, explosionCenterY: Float, str: Float, anim: GAnim, palette: GPalette) {
+        val p = world.create(Builder.bloomParticle)
         val bloomer = p.bloomer()
         val space = p.space()
         val dir = p.dir()
@@ -366,31 +412,42 @@ object SParticles : Setup() {
 
         p.layer().setLayer(Phases.Other)
 
-        space.setPos(explosionCenterX + GRand.gauss(1f), explosionCenterY + GRand.gauss(1f))
-
         val dim1 = GRand.absGauss(2f)
         val dim2 = GRand.absGauss(2f)
+        space.setPos(explosionCenterX + GRand.gauss(1f), explosionCenterY + GRand.gauss(1f))
         space.setDim(if (dim1 > dim2) dim1 else dim2, if (dim1 < dim2) dim1 / 2f else dim2 / 2f)
 
         ttl.remaining = GRand.absGauss(.5f)
 
-
         dir.add(GRand.gauss(str * 2f), GRand.gauss(str * 2f))
+        dir.rotate(GRand.float(-10f, 10f))
 
-        bloomer.tr = GGraphics.img("squares/square_red").front
+        bloomer.tr = palette.tr
         bloomer.preDraw = {
             bloomer.angle = dir.angle
-            bloomer.tr = fireAnim.getKeyFrame(ttl.remaining * 8f).front
-            trail(world, space.centerX, space.centerY, fireAnim)
+            bloomer.tr = anim.getKeyFrame(ttl.remaining * 8f).front
+            trail(world, space.centerX, space.centerY, anim)
         }
         bloomer.draw = { batch: GGraphics, space: CompSpace ->
             batch.drawFrontStreched(bloomer, space)
         }
-        GSounds.explosion1.play()
-
 
         p.particle().update = {
             dir.mul(.97f)
         }
+    }
+
+    fun backgroundTitleParticle(world: World, x: Float, y: Float): Entity {
+        val p = world.create(Builder.trailParticle)
+        val space = p.space()
+        space.setDim(1f, 1f)
+        space.setPos(x, y)
+        p.ttl().remaining = 50f
+        p.draw().currentImg = GPalette.rand().img
+        p.particle().update = {
+            space.addDimKeepCentered(2f, 2f)
+        }
+        p.layer().setLayer(Phases.Other)
+        return p
     }
 }

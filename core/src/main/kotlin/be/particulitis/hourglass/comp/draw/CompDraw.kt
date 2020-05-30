@@ -1,7 +1,9 @@
-package be.particulitis.hourglass.comp
+package be.particulitis.hourglass.comp.draw
 
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GImage
+import be.particulitis.hourglass.comp.Comp
+import be.particulitis.hourglass.comp.CompSpace
 
 class CompDraw : Comp() {
     lateinit var currentImg: GImage

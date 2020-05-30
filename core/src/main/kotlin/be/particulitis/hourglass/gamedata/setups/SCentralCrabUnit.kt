@@ -1,7 +1,8 @@
 package be.particulitis.hourglass.gamedata.setups
 
-import be.particulitis.hourglass.Ids
+import be.particulitis.hourglass.*
 import be.particulitis.hourglass.common.GHistoryFloat
+import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
@@ -9,7 +10,7 @@ import be.particulitis.hourglass.common.drawing.GPalette
 import be.particulitis.hourglass.common.puppet.GAnimController
 import be.particulitis.hourglass.gamedata.graphics.Frames
 import be.particulitis.hourglass.common.puppet.GAnim
-import be.particulitis.hourglass.comp.CompDraw
+import be.particulitis.hourglass.comp.draw.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.*
 import com.artemis.Entity
@@ -20,10 +21,10 @@ import com.badlogic.gdx.math.Vector2
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-object SCentralCrabUnit : Setup() {
+object SCentralCrabUnit {
 
     private const val slugTrailSize = 5
-    private const val baseLightIntensity = 0.03f
+    private const val baseLightIntensity = 0.00f
     private const val highLightIntensity = 0.075f
     private const val airMaxTime = 1.3f
     private val baseLightColor = GPalette.WHITE
@@ -31,7 +32,6 @@ object SCentralCrabUnit : Setup() {
 
     fun setup(world: World, baseX: Float, baseY: Float) {
         val enemy = world.create(Builder.enemyCpu)
-//        SParticles.spawnTransition(world, baseX + 6, baseY + 6, enemy.hp())
         val player = world.getSystem(TagManager::class.java).getEntity(Data.playerTag)
         val space = enemy.space()
         val draw = enemy.draw()
@@ -68,8 +68,9 @@ object SCentralCrabUnit : Setup() {
         setupDraw(draw, light, space, animController, dir, spawn)
 
         enemy.emitter().emit = {
+            GSounds.explosion1.play()
             for (i in 0..40)
-                SParticles.explosionParticle(world, space.centerX, space.centerY, 28f)
+                SParticles.explosionParticle(world, space.centerX, space.centerY, 28f, SParticles.fireAnim, GPalette.RED)
         }
     }
 

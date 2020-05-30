@@ -1,5 +1,6 @@
 package be.particulitis.hourglass
 
+import be.particulitis.hourglass.common.GMusic
 import be.particulitis.hourglass.gamedata.Aspects
 import be.particulitis.hourglass.common.GSounds
 import be.particulitis.hourglass.common.drawing.GGraphics
@@ -18,11 +19,11 @@ class Boombox(world: World) {
     private val explosionSlug = world.aspectSubscriptionManager.get(Aspect.all(Aspects.EnemySlug.comps))
     private val explosionShooter = world.aspectSubscriptionManager.get(Aspect.all(Aspects.EnemyShoot.comps))
     private val shoot = world.aspectSubscriptionManager.get(Aspect.all(Aspects.Bullet.comps))
-    val mTitleScreen = GGraphics.assMan.music(AssMan.titleScreen)
-    val mLevel1 = GGraphics.assMan.music(AssMan.level1)
-    val mLevel2 = GGraphics.assMan.music(AssMan.level2)
-    val mLevel3 = GGraphics.assMan.music(AssMan.level3)
-    val mLevelEnd = GGraphics.assMan.music(AssMan.ending)
+    val mTitleScreen = GMusic(AssMan.titleScreen)
+    val mLevel1 = GMusic(AssMan.level1)
+    val mLevel2 = GMusic(AssMan.level2)
+    val mLevel3 = GMusic(AssMan.level3)
+    val mLevelEnd = GMusic(AssMan.ending)
     val musics = gdxArrayOf(mTitleScreen, mLevel1, mLevel2, mLevel3, mLevelEnd)
     val playerMapper = world.getMapper(CompTimePhase::class.java)
 
@@ -47,14 +48,8 @@ class Boombox(world: World) {
         })
     }
 
-    fun play(titleScreen: Music) {
-        titleScreen.play()
-        titleScreen.volume = 0.5f
-        titleScreen.isLooping = true
-    }
-
     fun stopAll() {
-        musics.filter { it.isPlaying }.forEach { it.stop() }
+        musics.forEach { it.stop() }
     }
 
 }

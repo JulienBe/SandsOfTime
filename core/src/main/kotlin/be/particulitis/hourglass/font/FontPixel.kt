@@ -133,30 +133,32 @@ class FontPixel internal constructor(var desiredX: Float, var desiredY: Float, v
                     tmpPixelList.add(p)
                 }
             }
-            // **.
-            // **.
-            // **.
-            if (!_5)
-                for (i in 0 until width * width)
-                    if (i % width == (width - 1)) {
-                        tmpPixelList[i].tr = secondaryColor
-                        tmpPixelList[i].primary = false
-                    }
-            // ...
-            // ***
-            // ***
-            if (!_1)
-                for (i in 0 until width * width)
-                    if (i < width) {
-                        tmpPixelList[i].tr = secondaryColor
-                        tmpPixelList[i].primary = false
-                    }
-            // **.
-            // ***
-            // ***
-            if (!_2) {
-                tmpPixelList[width - 1].tr = secondaryColor
-                tmpPixelList[width - 1].primary = false
+            if (width > 1) {
+                // **.
+                // **.
+                // **.
+                if (!_5)
+                    for (i in 0 until width * width)
+                        if (i % width == (width - 1)) {
+                            tmpPixelList[i].tr = secondaryColor
+                            tmpPixelList[i].primary = false
+                        }
+                // ...
+                // ***
+                // ***
+                if (!_1)
+                    for (i in 0 until width * width)
+                        if (i < width) {
+                            tmpPixelList[i].tr = secondaryColor
+                            tmpPixelList[i].primary = false
+                        }
+                // **.
+                // ***
+                // ***
+                if (!_2) {
+                    tmpPixelList[width - 1].tr = secondaryColor
+                    tmpPixelList[width - 1].primary = false
+                }
             }
             return tmpPixelList
         }

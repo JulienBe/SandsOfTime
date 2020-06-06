@@ -6,6 +6,7 @@ import be.particulitis.hourglass.common.GKeyGlobalState
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
+import be.particulitis.hourglass.common.drawing.GLight
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.CompEnemy
 import be.particulitis.hourglass.gamedata.Builder
@@ -89,7 +90,8 @@ class GameScreen(game: Game) : AbstractScreen(game) {
                     })
             stageSetup()
             StateManager.waitingStart(world)
-            boombox.play(boombox.mLevel1)
+            boombox.mLevel1.play()
+            GLight.ambient = 0f
         }
 
         private fun stageSetup() {

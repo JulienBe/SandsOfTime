@@ -1,6 +1,10 @@
 package be.particulitis.hourglass.common
 
 class GHistoryFloat(val historySize: Int = 10) {
+    constructor(fl: Float, historySize: Int) : this(historySize) {
+        fill(fl)
+    }
+
     private val numbers = FloatArray(historySize)
     private var cursor = historySize + 1
 
@@ -14,7 +18,7 @@ class GHistoryFloat(val historySize: Int = 10) {
     }
 
     fun get(i: Int): Float {
-        return numbers.safeGet(cursor + i)
+        return numbers.safeGet(cursor - i)
     }
 
     fun fill(f: Float) {

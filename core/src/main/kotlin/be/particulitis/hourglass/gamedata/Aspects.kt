@@ -1,6 +1,9 @@
 package be.particulitis.hourglass.gamedata
 
 import be.particulitis.hourglass.comp.*
+import be.particulitis.hourglass.comp.draw.CompBloomer
+import be.particulitis.hourglass.comp.draw.CompDraw
+import be.particulitis.hourglass.comp.draw.CompUndertrail
 import be.particulitis.hourglass.comp.ui.CompButton
 import be.particulitis.hourglass.comp.ui.CompPrettyUi
 import be.particulitis.hourglass.comp.ui.CompTxt
@@ -111,5 +114,9 @@ enum class Aspects(val comps: List<Class<out Comp>>) {
             CompTimePhase::class.java,
             CompSpace::class.java,
             CompTtl::class.java
+    )),
+    DotUndertrail(listOf(
+            CompUndertrail::class.java,
+            CompSpace::class.java
     ))
 }

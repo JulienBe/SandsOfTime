@@ -2,6 +2,7 @@ package be.particulitis.hourglass.comp.ui
 
 import be.particulitis.hourglass.common.drawing.GResolution
 import be.particulitis.hourglass.comp.Comp
+import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.font.FontChar
 import be.particulitis.hourglass.font.FontPixel
 import com.badlogic.gdx.math.Vector2
@@ -17,6 +18,7 @@ open class CompTxt : Comp() {
     var allFontPixels = GdxArray<FontPixel>()
     var w = 1
     var h = 1
+    var fontW = 1
 
     fun set(txt: String, w: Int) {
         if (txt != text) {
@@ -26,7 +28,7 @@ open class CompTxt : Comp() {
 
     fun changeText(txt: String, w: Int = 1) {
         this.text = txt
-
+        fontW = w
         while (chars.size > txt.length)
             chars.drop(chars.size - 1)
         txt.mapIndexed {
@@ -57,6 +59,19 @@ open class CompTxt : Comp() {
                 chars[i].changeChar(s[i], i, w)
         updatePixelArray()
         text = s
+    }
+
+    open fun x(space: CompSpace): Float {
+        return space.x
+    }
+    open fun y(space: CompSpace): Float {
+        return space.y
+    }
+    open fun displayW(): Float {
+        return w.toFloat()
+    }
+    open fun displayH(): Float {
+        return h.toFloat()
     }
 
     override fun reset() {

@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.gamedata.setups
 
-import be.particulitis.hourglass.Ids
+import be.particulitis.hourglass.*
 import be.particulitis.hourglass.common.GSide
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GPalette
@@ -11,7 +11,7 @@ import com.artemis.Entity
 import com.artemis.World
 import ktx.collections.GdxArray
 
-object SProps : Setup() {
+object SProps {
     fun ground(world: World, tilesHeight: Int, tilesWidth: Int) {
         createTiled(tilesWidth, tilesHeight, world, 0f, 0f, Builder.tiled) { "floor1" }
     }

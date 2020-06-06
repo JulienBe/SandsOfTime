@@ -1,5 +1,12 @@
 package be.particulitis.hourglass
 
+import be.particulitis.hourglass.comp.*
+import be.particulitis.hourglass.comp.draw.CompBloomer
+import be.particulitis.hourglass.comp.draw.CompDraw
+import be.particulitis.hourglass.comp.draw.CompUndertrail
+import be.particulitis.hourglass.comp.ui.CompButton
+import be.particulitis.hourglass.comp.ui.CompPrettyUi
+import be.particulitis.hourglass.comp.ui.CompTxt
 import com.artemis.*
 import com.artemis.managers.TagManager
 import com.artemis.utils.Bag
@@ -17,27 +24,9 @@ const val INVALID_ENTITY_ID = -1
 inline fun isValidEntity(entityId: Int) = entityId != INVALID_ENTITY_ID
 inline fun isInvalidEntity(entityId: Int) = entityId == INVALID_ENTITY_ID
 
-typealias OreEntityId = Int
-
-fun World.oreInject(obj: Any) {
-    this.inject(obj)
-}
-
 inline fun <reified T : BaseSystem> World.system() =
         getSystem(T::class.java)!!
 
-interface OreEntitySubscriptionListener : EntitySubscription.SubscriptionListener {
-    override fun inserted(entities: IntBag) = Unit
-    override fun removed(entities: IntBag) = Unit
-}
-
-/**
- * A marker interface that indicates that this system should only be
- * processed by the render portion of the game loop. Separating the logic
- * and the render ticks, so that we can decide how often to process them (how
- * many ms per frame, etc)
- */
-interface RenderSystemMarker
 
 /**
  * Denotes that a component property should not be copied
@@ -320,6 +309,73 @@ private class InternalExtendedComponent : ExtendedComponent<InternalExtendedComp
             throw TODO("function not yet implemented")
 }
 
+
+fun World.create(arch: ArchetypeBuilder): Entity {
+    return getEntity(create(arch.build(this)))
+}
+fun Entity.act(): CompAct {
+    return getComponent(CompAct::class.java)
+}
+fun Entity.space(): CompSpace {
+    return getComponent(CompSpace::class.java)
+}
+fun Entity.bloomer(): CompBloomer {
+    return getComponent(CompBloomer::class.java)
+}
+fun Entity.draw(): CompDraw {
+    return getComponent(CompDraw::class.java)
+}
+fun Entity.collide(): CompCollide {
+    return getComponent(CompCollide::class.java)
+}
+fun Entity.emitter(): CompParticleEmitter {
+    return getComponent(CompParticleEmitter::class.java)
+}
+fun Entity.targetSeek(): CompTargetSeek {
+    return getComponent(CompTargetSeek::class.java)
+}
+fun Entity.targetFollow(): CompTargetFollow {
+    return getComponent(CompTargetFollow::class.java)
+}
+fun Entity.dir(): CompDir {
+    return getComponent(CompDir::class.java)
+}
+fun Entity.layer(): CompTimePhase {
+    return getComponent(CompTimePhase::class.java)
+}
+fun Entity.shooter(): CompShooter {
+    return getComponent(CompShooter::class.java)
+}
+fun Entity.hp(): CompHp {
+    return getComponent(CompHp::class.java)
+}
+fun Entity.ttl(): CompTtl {
+    return getComponent(CompTtl::class.java)
+}
+fun Entity.particle(): CompParticle {
+    return getComponent(CompParticle::class.java)
+}
+fun Entity.prettyUi(): CompPrettyUi {
+    return getComponent(CompPrettyUi::class.java)
+}
+fun Entity. button(): CompButton {
+    return getComponent(CompButton::class.java)
+}
+fun Entity. txt(): CompTxt {
+    return getComponent(CompTxt::class.java)
+}
+fun Entity. control(): CompControl {
+    return getComponent(CompControl::class.java)
+}
+fun Entity. charMvt(): CompCharMovement {
+    return getComponent(CompCharMovement::class.java)
+}
+fun Entity. side(): CompSide {
+    return getComponent(CompSide::class.java)
+}
+fun Entity. undertrail(): CompUndertrail {
+    return getComponent(CompUndertrail::class.java)
+}
 // TODO: Might want to introduce PrintableComponent interface
 //fun <T : Component> T.printString(): String {
 //    this

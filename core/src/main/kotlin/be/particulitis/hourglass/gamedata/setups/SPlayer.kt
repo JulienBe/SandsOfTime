@@ -1,6 +1,6 @@
 package be.particulitis.hourglass.gamedata.setups
 
-import be.particulitis.hourglass.Ids
+import be.particulitis.hourglass.*
 import be.particulitis.hourglass.common.*
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GLight
@@ -16,7 +16,7 @@ import com.artemis.managers.TagManager
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 
-object SPlayer : Setup() {
+object SPlayer {
 
     private const val playerSpeed = 150f
     private const val playerLayer = 10

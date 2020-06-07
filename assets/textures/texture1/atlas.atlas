@@ -825,7 +825,7 @@ cpu_walk_f8_occluder
   index: -1
 dent_normal
   rotate: false
-  xy: 1238, 49
+  xy: 194, 7
   size: 3, 3
   orig: 3, 3
   offset: 0, 0
@@ -867,9 +867,1717 @@ floor_base_normal
   index: -1
 font_pixel_04_not_frame.png_normal
   rotate: false
-  xy: 2037, 61
+  xy: 197, 7
   size: 3, 3
   orig: 3, 3
+  offset: 0, 0
+  index: -1
+gunner_hearth
+  rotate: false
+  xy: 953, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f1
+  rotate: false
+  xy: 953, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f1
+  rotate: false
+  xy: 969, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f1
+  rotate: false
+  xy: 969, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f10
+  rotate: false
+  xy: 1113, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f10_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f11_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f1_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f23_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f24_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f2_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f3_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f4_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f5_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f6_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f7_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f8_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f9_normal
+  rotate: false
+  xy: 482, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f10_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f11_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f1_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f23_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f24_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f2_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f3_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f4_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f5_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f6_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f7_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f8_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f9_occluder
+  rotate: false
+  xy: 498, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f11
+  rotate: false
+  xy: 1129, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f12
+  rotate: false
+  xy: 290, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f23
+  rotate: false
+  xy: 290, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f12_normal
+  rotate: false
+  xy: 514, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f22_normal
+  rotate: false
+  xy: 514, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f12_occluder
+  rotate: false
+  xy: 530, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f22_occluder
+  rotate: false
+  xy: 530, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f13
+  rotate: false
+  xy: 306, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f13_normal
+  rotate: false
+  xy: 546, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f14_normal
+  rotate: false
+  xy: 546, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f13_occluder
+  rotate: false
+  xy: 562, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f14_occluder
+  rotate: false
+  xy: 562, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f14
+  rotate: false
+  xy: 322, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f15
+  rotate: false
+  xy: 338, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f15_normal
+  rotate: false
+  xy: 578, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f17_normal
+  rotate: false
+  xy: 578, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f15_occluder
+  rotate: false
+  xy: 594, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f17_occluder
+  rotate: false
+  xy: 594, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f16
+  rotate: false
+  xy: 354, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f16_normal
+  rotate: false
+  xy: 610, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f16_occluder
+  rotate: false
+  xy: 626, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f17
+  rotate: false
+  xy: 370, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f18
+  rotate: false
+  xy: 386, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f18_normal
+  rotate: false
+  xy: 642, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f18_occluder
+  rotate: false
+  xy: 658, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f19
+  rotate: false
+  xy: 402, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f19_normal
+  rotate: false
+  xy: 674, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f21_normal
+  rotate: false
+  xy: 674, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f19_occluder
+  rotate: false
+  xy: 690, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f21_occluder
+  rotate: false
+  xy: 690, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f2
+  rotate: false
+  xy: 985, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f2
+  rotate: false
+  xy: 985, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f20
+  rotate: false
+  xy: 418, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f20_normal
+  rotate: false
+  xy: 706, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f20_occluder
+  rotate: false
+  xy: 722, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f21
+  rotate: false
+  xy: 434, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f22
+  rotate: false
+  xy: 450, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f24
+  rotate: false
+  xy: 466, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f3
+  rotate: false
+  xy: 1001, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f4
+  rotate: false
+  xy: 1017, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f5
+  rotate: false
+  xy: 1033, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f6
+  rotate: false
+  xy: 1049, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f7
+  rotate: false
+  xy: 1065, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f8
+  rotate: false
+  xy: 1081, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_rotate_f9
+  rotate: false
+  xy: 1097, 24
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f10
+  rotate: false
+  xy: 850, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f10_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f11_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f12_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f1_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f2_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f3_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f4_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f5_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f6_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f7_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f8_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f9_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f20_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f21_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f22_normal
+  rotate: false
+  xy: 1238, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f10_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f11_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f12_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f1_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f2_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f3_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f4_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f5_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f6_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f7_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f8_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f9_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f20_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f21_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f22_occluder
+  rotate: false
+  xy: 1254, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f11
+  rotate: false
+  xy: 866, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f12
+  rotate: false
+  xy: 882, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f3
+  rotate: false
+  xy: 738, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f4
+  rotate: false
+  xy: 754, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f5
+  rotate: false
+  xy: 770, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f6
+  rotate: false
+  xy: 786, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f7
+  rotate: false
+  xy: 802, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f8
+  rotate: false
+  xy: 818, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_shoot_f9
+  rotate: false
+  xy: 834, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f1
+  rotate: false
+  xy: 1270, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f2
+  rotate: false
+  xy: 1270, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f10
+  rotate: false
+  xy: 1414, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f10_normal
+  rotate: false
+  xy: 1622, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f10_occluder
+  rotate: false
+  xy: 1638, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f11
+  rotate: false
+  xy: 1430, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f11_normal
+  rotate: false
+  xy: 1654, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f12_normal
+  rotate: false
+  xy: 1654, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f11_occluder
+  rotate: false
+  xy: 1670, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f12_occluder
+  rotate: false
+  xy: 1670, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f12
+  rotate: false
+  xy: 1446, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f13
+  rotate: false
+  xy: 1462, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f13_normal
+  rotate: false
+  xy: 1686, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f13_occluder
+  rotate: false
+  xy: 1702, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f14
+  rotate: false
+  xy: 1478, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f14_normal
+  rotate: false
+  xy: 1718, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f14_occluder
+  rotate: false
+  xy: 1734, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f15
+  rotate: false
+  xy: 1494, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f15_normal
+  rotate: false
+  xy: 1750, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f15_occluder
+  rotate: false
+  xy: 1766, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f16
+  rotate: false
+  xy: 1510, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f16_normal
+  rotate: false
+  xy: 1782, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f16_occluder
+  rotate: false
+  xy: 1798, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f17
+  rotate: false
+  xy: 1526, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f17_normal
+  rotate: false
+  xy: 1814, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f17_occluder
+  rotate: false
+  xy: 1830, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f18
+  rotate: false
+  xy: 1542, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f18_normal
+  rotate: false
+  xy: 1846, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f18_occluder
+  rotate: false
+  xy: 1862, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f19
+  rotate: false
+  xy: 1558, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f19_normal
+  rotate: false
+  xy: 1878, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f19_occluder
+  rotate: false
+  xy: 1894, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f1_normal
+  rotate: false
+  xy: 1910, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f2_normal
+  rotate: false
+  xy: 1910, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f1_occluder
+  rotate: false
+  xy: 1926, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f2_occluder
+  rotate: false
+  xy: 1926, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f2
+  rotate: false
+  xy: 1286, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f20
+  rotate: false
+  xy: 1574, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f21
+  rotate: false
+  xy: 1590, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f22
+  rotate: false
+  xy: 1606, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f2_normal
+  rotate: false
+  xy: 1942, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f2_occluder
+  rotate: false
+  xy: 1958, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f3
+  rotate: false
+  xy: 1302, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f3_normal
+  rotate: false
+  xy: 1974, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f3_occluder
+  rotate: false
+  xy: 1990, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f4
+  rotate: false
+  xy: 1318, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f4_normal
+  rotate: false
+  xy: 2006, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f4_occluder
+  rotate: false
+  xy: 2022, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f5
+  rotate: false
+  xy: 1334, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f5_normal
+  rotate: false
+  xy: 898, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f5_occluder
+  rotate: false
+  xy: 914, 7
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f6
+  rotate: false
+  xy: 1350, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f6_normal
+  rotate: false
+  xy: 930, 7
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f6_occluder
+  rotate: false
+  xy: 946, 7
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f7
+  rotate: false
+  xy: 1366, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f7_normal
+  rotate: false
+  xy: 962, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f7_occluder
+  rotate: false
+  xy: 978, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f8
+  rotate: false
+  xy: 1382, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f8_normal
+  rotate: false
+  xy: 994, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f8_occluder
+  rotate: false
+  xy: 1010, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f9
+  rotate: false
+  xy: 1398, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f9_normal
+  rotate: false
+  xy: 1026, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_f9_occluder
+  rotate: false
+  xy: 1042, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f10
+  rotate: false
+  xy: 1154, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f10_normal
+  rotate: false
+  xy: 1314, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f10_occluder
+  rotate: false
+  xy: 1330, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f11
+  rotate: false
+  xy: 1170, 16
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f11_normal
+  rotate: false
+  xy: 1346, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f11_occluder
+  rotate: false
+  xy: 1362, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f12
+  rotate: false
+  xy: 1170, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f12_normal
+  rotate: false
+  xy: 1378, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f12_occluder
+  rotate: false
+  xy: 1394, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f13
+  rotate: false
+  xy: 1186, 16
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f13_normal
+  rotate: false
+  xy: 1410, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f13_occluder
+  rotate: false
+  xy: 1426, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f14
+  rotate: false
+  xy: 1186, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f14_normal
+  rotate: false
+  xy: 1442, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f14_occluder
+  rotate: false
+  xy: 1458, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f15
+  rotate: false
+  xy: 1202, 18
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f15_normal
+  rotate: false
+  xy: 1474, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f15_occluder
+  rotate: false
+  xy: 1490, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f16
+  rotate: false
+  xy: 1218, 18
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f16_normal
+  rotate: false
+  xy: 1506, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f16_occluder
+  rotate: false
+  xy: 1522, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f17
+  rotate: false
+  xy: 1202, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f17_normal
+  rotate: false
+  xy: 1538, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f17_occluder
+  rotate: false
+  xy: 1554, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f18
+  rotate: false
+  xy: 1218, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f18_normal
+  rotate: false
+  xy: 1570, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f18_occluder
+  rotate: false
+  xy: 1586, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f19
+  rotate: false
+  xy: 1234, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f19_normal
+  rotate: false
+  xy: 1602, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f19_occluder
+  rotate: false
+  xy: 1618, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f1_normal
+  rotate: false
+  xy: 1634, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f1_occluder
+  rotate: false
+  xy: 1650, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f20
+  rotate: false
+  xy: 1250, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f20_normal
+  rotate: false
+  xy: 1666, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f20_occluder
+  rotate: false
+  xy: 1682, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f21
+  rotate: false
+  xy: 1266, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f21_normal
+  rotate: false
+  xy: 1698, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f21_occluder
+  rotate: false
+  xy: 1714, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f22
+  rotate: false
+  xy: 1282, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f22_normal
+  rotate: false
+  xy: 1730, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f22_occluder
+  rotate: false
+  xy: 1746, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f23
+  rotate: false
+  xy: 1298, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f23_normal
+  rotate: false
+  xy: 1762, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f23_occluder
+  rotate: false
+  xy: 1778, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f3
+  rotate: false
+  xy: 1058, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f3_normal
+  rotate: false
+  xy: 1794, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f3_occluder
+  rotate: false
+  xy: 1810, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f4
+  rotate: false
+  xy: 1074, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f4_normal
+  rotate: false
+  xy: 1826, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f4_occluder
+  rotate: false
+  xy: 1842, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f5
+  rotate: false
+  xy: 1090, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f5_normal
+  rotate: false
+  xy: 1858, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f5_occluder
+  rotate: false
+  xy: 1874, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f6
+  rotate: false
+  xy: 1106, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f6_normal
+  rotate: false
+  xy: 1890, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f6_occluder
+  rotate: false
+  xy: 1906, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f7
+  rotate: false
+  xy: 1122, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f7_normal
+  rotate: false
+  xy: 1922, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f7_occluder
+  rotate: false
+  xy: 1938, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f8
+  rotate: false
+  xy: 1138, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f8_normal
+  rotate: false
+  xy: 1954, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f8_occluder
+  rotate: false
+  xy: 1970, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f9
+  rotate: false
+  xy: 1154, 16
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f9_normal
+  rotate: false
+  xy: 1986, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+gunner_spawn_particles_f9_occluder
+  rotate: false
+  xy: 2002, 14
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 healthbar
@@ -972,21 +2680,21 @@ normal_down
   index: -1
 normal_left
   rotate: false
-  xy: 199, 42
+  xy: 902, 22
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 normal_up
   rotate: false
-  xy: 199, 42
+  xy: 902, 22
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 normal_right
   rotate: false
-  xy: 199, 41
+  xy: 953, 23
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

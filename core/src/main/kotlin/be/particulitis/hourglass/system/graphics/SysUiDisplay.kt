@@ -1,6 +1,5 @@
 package be.particulitis.hourglass.system.graphics
 
-import be.particulitis.hourglass.common.GHelper
 import be.particulitis.hourglass.common.GTime
 import be.particulitis.hourglass.common.drawing.GGraphics
 import be.particulitis.hourglass.common.drawing.GPalette

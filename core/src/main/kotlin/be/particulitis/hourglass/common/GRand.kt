@@ -61,4 +61,12 @@ object GRand: Random() {
     fun randY(): Float {
         return float(0f, GResolution.areaH)
     }
+
+    fun oneOrMinus(): Int {
+        return if (nextBoolean()) 1 else -1
+    }
+
+    fun oneOrMinusF(): Float {
+        return if (nextBoolean()) 1f else -1f
+    }
 }

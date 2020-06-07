@@ -74,16 +74,16 @@ class SysHourglassDisplay : BaseSystem() {
     }
 
     override fun processSystem() {
-        if (batch.isDrawing)
-            batch.end()
-        batch.shader = null
-        batch.begin()
+        if (GGraphics.batch.isDrawing)
+            GGraphics.batch.end()
+        GGraphics.batch.shader = null
+        GGraphics.batch.begin()
         transitionTime -= GTime.delta
         if (previousPhase != GTime.enemyPhase)
             transitionTime = 0.75f
         alphaTransition.add(computeAlphaTransition())
         for (i in 0 until shades.size)
-            batch.draw(shades[i], x, y, alphaTransition.get(-(i * 2)))
+            GGraphics.batch.draw(shades[i], x, y, alphaTransition.get(-(i * 2)))
         val gravity = if (GTime.enemyPhase) -1 else 1
         if (nextDrop < GTime.time) {
             nextDrop = GTime.time + dropFreq
@@ -111,8 +111,8 @@ class SysHourglassDisplay : BaseSystem() {
             it.draw(gravity, grid, sand, world, alphaTransition.get(), x, y)
         }
         previousPhase = GTime.enemyPhase
-        batch.end()
-        batch.shader = null
+        GGraphics.batch.end()
+        GGraphics.batch.shader = null
     }
 
     private fun pushBack() {
@@ -143,7 +143,7 @@ class SysHourglassDisplay : BaseSystem() {
                 true
             } else {
                 // just one for the 'viscosity'
-                it.ifFreeMoveThere(if (GRand.bool()) 1 else -1, gravity, grid)
+                it.ifFreeMoveThere(GRand.oneOrMinus(), gravity, grid)
             }
         }.forEach {
             // they have not moved
@@ -164,7 +164,6 @@ class SysHourglassDisplay : BaseSystem() {
     companion object {
         const val W = 7
         const val dropFreq = 0.024f
-        val batch = GGraphics.batch
         val hourglass = GGraphics.tr("hourglass")
         val shades = arrayListOf(
                 GGraphics.tr("hourglass_shade_______"),
@@ -222,7 +221,7 @@ class Grain(var x: Int = 9, var y: Int = 5) {
             }
             SParticles.trail(world, x + SysHourglassDisplay.center.x + rotationVector.x, y + SysHourglassDisplay.center.y + rotationVector.y, trailAnim, 1f)
         } else {
-            SysHourglassDisplay.batch.draw(normalColor, x + SysHourglassDisplay.center.x + rotationVector.x, y + SysHourglassDisplay.center.y + rotationVector.y, 1f, 1f)
+            GGraphics.batch.draw(normalColor, x + SysHourglassDisplay.center.x + rotationVector.x, y + SysHourglassDisplay.center.y + rotationVector.y, 1f, 1f)
         }
     }
 

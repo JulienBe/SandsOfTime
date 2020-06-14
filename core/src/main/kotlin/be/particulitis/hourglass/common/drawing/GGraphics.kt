@@ -1,8 +1,9 @@
 package be.particulitis.hourglass.common.drawing
 
-import be.particulitis.hourglass.ImgMan
-import be.particulitis.hourglass.comp.CompBloomer
-import be.particulitis.hourglass.comp.CompDraw
+import be.particulitis.hourglass.AssMan
+import be.particulitis.hourglass.common.GRand
+import be.particulitis.hourglass.comp.draw.CompBloomer
+import be.particulitis.hourglass.comp.draw.CompDraw
 import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.gamedata.Dim
 import com.badlogic.gdx.Gdx
@@ -12,19 +13,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import kotlin.math.roundToInt
 
-private val TextureRegion.hw: Float
+internal val TextureRegion.hw: Float
     get() {
         return regionWidth / 2f
     }
-private val TextureRegion.hh: Float
+internal val TextureRegion.hh: Float
     get() {
         return regionHeight / 2f
     }
-private val TextureRegion.w: Float
+internal val TextureRegion.w: Float
     get() {
         return regionWidth.toFloat()
     }
-private val TextureRegion.h: Float
+internal val TextureRegion.h: Float
     get() {
         return regionHeight.toFloat()
     }
@@ -41,11 +42,16 @@ class GGraphics : SpriteBatch(8191) {
     fun draw(region: TextureRegion, x: Float, y: Float, angle: Float) {
         draw(region, x.roundToInt().toFloat(), y.roundToInt().toFloat(), region.hw, region.hh, region.w, region.h, 1f, 1f, angle)
     }
+    fun draw(region: TextureRegion, x: Float, y: Float, w: Float, h: Float, angle: Float) {
+        draw(region, x.roundToInt().toFloat(), y.roundToInt().toFloat(), w / 2f, h / 2f, w, h, 1f, 1f, angle)
+    }
+    fun drawRandomCenter(region: TextureRegion, x: Float, y: Float, w: Float, h: Float, angle: Float) {
+        draw(region, x.roundToInt().toFloat(), y.roundToInt().toFloat(), GRand.float(0f, w), GRand.float(0f, w), w, h, 1f, 1f, angle)
+    }
 
     fun draw(tr: TextureRegion, space: CompSpace) {
         draw(tr, space.x, space.y)
     }
-
 
     fun drawCenteredOnBox(draw: CompDraw, space: CompSpace, textureRegion: TextureRegion) {
         draw(textureRegion,
@@ -96,10 +102,14 @@ class GGraphics : SpriteBatch(8191) {
         drawCenteredOnBoxSpaceStreched(draw, space, draw.currentImg.normal)
     }
 
+    fun drawStreched(tr: TextureRegion, space: CompSpace) {
+        batch.draw(tr, space.x, space.y, space.w, space.h)
+    }
+
     companion object {
 
         fun render(function: () -> Unit) {
-            Gdx.graphics.gL20.glClearColor(0f, 0f, 0f, 0f)
+            Gdx.graphics.gL20.glClearColor(0f, 0f, 0f, 1f)
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
             cam.update()
             batch.projectionMatrix = cam.combined
@@ -110,20 +120,20 @@ class GGraphics : SpriteBatch(8191) {
         }
 
         fun nor(s: String): TextureRegion {
-            return imgMan.nor(s)
+            return assMan.nor(s)
         }
         fun tr(s: String): TextureRegion {
-            return imgMan.tr(s)
+            return assMan.tr(s)
         }
         fun occ(s: String): TextureRegion {
-            return imgMan.occ(s)
+            return assMan.occ(s)
         }
         fun img(s: String): GImage {
-            return GImage(imgMan.tr(s), imgMan.nor(s), imgMan.occ(s))
+            return GImage(assMan.tr(s), assMan.nor(s), assMan.occ(s))
         }
 
         val batch: GGraphics = GGraphics()
-        val imgMan = ImgMan()
+        val assMan = AssMan()
         val cam = OrthographicCamera(GResolution.areaW, GResolution.areaH)
 
         val black = GImage("squares/square_black")

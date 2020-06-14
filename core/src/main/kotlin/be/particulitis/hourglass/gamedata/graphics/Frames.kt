@@ -8,14 +8,20 @@ enum class Frames {
 
     PLAYER_IDLE("running_girl"),
     PLAYER_SHOOT("shooting_girl"),
+    GUNNER_SPAWN("gunner_spawn"),
+    GUNNER_SPAWN_PARTICLES("gunner_spawn_particles"),
+    GUNNER_ROTATE("gunner_rotate"),
+    GUNNER_SHOOT("gunner_shoot"),
     CPU_SPAWN("cpu_spawn"),
     CPU_IDLE("cpu"),
     CPU_WALK("cpu_walk"),
     CPU_JUMPING("cpu_jumping"),
     CPU_LAND("cpu_land"),
-    FIRE("squares/square_yellow", "squares/square_orange", "squares/square_red"),
-    BLUE("squares/square_dark_purple", "squares/square_dark_blue", "squares/square_blue"),
-    PINK("squares/square_pink_skin", "squares/square_pink", "squares/square_red")
+    FIRE    ("squares/square_yellow", "squares/square_orange", "squares/square_red"),
+    BLUE    ("squares/square_dark_purple", "squares/square_dark_blue", "squares/square_blue"),
+    PINK    ("squares/square_pink_skin", "squares/square_pink", "squares/square_red"),
+    LAVENDER("squares/square_lavender", "squares/square_dark_purple", "squares/square_dark_blue"),
+    WHITE   ("squares/square_white", "squares/square_light_grey", "squares/square_dark_grey")
     ;
 
     val size: Int get() = frames.size
@@ -32,7 +38,7 @@ enum class Frames {
     constructor(name: String) {
         val desFesses = mutableListOf<GImage>()
         for (i in 1..GAnim.hugeMaxFrameNumberThatWillNeverEverBeReachedByOneAnimation) {
-            if (GGraphics.imgMan.regions.containsKey("${name}_f$i")) {
+            if (GGraphics.assMan.regions.containsKey("${name}_f$i")) {
                 desFesses.add(GImage("${name}_f$i"))
             } else
                 break

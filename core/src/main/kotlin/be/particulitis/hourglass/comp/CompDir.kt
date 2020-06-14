@@ -35,6 +35,10 @@ class CompDir : Comp() {
         v.scl(mul)
     }
 
+    fun setAngle(angle: Float) {
+        v.setAngle(angle)
+    }
+
     // TODO: enrich vec2 to avoid going over max speed
     fun clamp() {
         v.clamp(-maxSpeed, maxSpeed)
@@ -42,8 +46,8 @@ class CompDir : Comp() {
 
     override fun reset() {
         super.reset()
-        maxSpeed = 200f
-        maxAcceleration = 20f
+        maxSpeed = 100f
+        maxAcceleration = 10f
         v.set(0f, 0f)
     }
 

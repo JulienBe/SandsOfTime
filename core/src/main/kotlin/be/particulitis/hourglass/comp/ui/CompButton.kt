@@ -1,5 +1,6 @@
 package be.particulitis.hourglass.comp.ui
 
+import be.particulitis.hourglass.comp.CompSpace
 import be.particulitis.hourglass.font.FontPixel
 import ktx.collections.GdxArray
 
@@ -21,5 +22,18 @@ class CompButton : CompTxt() {
 
     fun activateReset() {
         reset()
+    }
+
+    override fun x(space: CompSpace): Float {
+        return space.x - 2f
+    }
+    override fun y(space: CompSpace): Float {
+        return space.y - 4f
+    }
+    override fun displayW(): Float {
+        return w.toFloat() + 2f
+    }
+    override fun displayH(): Float {
+        return h.toFloat() + 6f
     }
 }
